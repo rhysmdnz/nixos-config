@@ -74,27 +74,17 @@
     sharutils = super.sharutils.override { stdenv = badstdenv; };
     gdbm = super.gdbm.override { stdenv = badstdenv; };
     gnum4 = super.gnum4.override { stdenv = badstdenv; };
-    #libunwind = super.libunwind.override { stdenv = badstdenv; };
     python38 = super.python38.override { enableOptimizations = false; };
     python3 = python38;
     python27 = super.python27.override { enableOptimizations = false; };
     python2 = python27;
     python = python27;
     python38Packages = pkgs.lib.recurseIntoAttrs python38.pkgs;
-    #e2fsprogs = super.e2fsprogs.override { stdenv = badstdenv; libuuid = super.libuuid.override {stdenv = badstdenv;}; };
-    #llvmPackages_5 = super.llvmPackages_5.override {stdenv = badstdenv; };
-    #llvmPackages_6 = super.llvmPackages_6.override {stdenv = badstdenv; };
-    #llvmPackages_7 = super.llvmPackages_7.override {stdenv = badstdenv; };
-    #llvmPackages_8 = super.llvmPackages_8.override {stdenv = badstdenv; };
-    #llvmPackages_9 = super.llvmPackages_9.override {stdenv = badstdenv; };
-    #llvmPackages_10 = super.llvmPackages_10.override {stdenv = badstdenv; };
     crda = super.crda.override {stdenv = badstdenv; };
-    #gnu-efi = super.gnu-efi.override {stdenv = badstdenv; };
     elfutils = super.elfutils.override {stdenv = badstdenv; zlib=super.zlib.override {stdenv = badstdenv;}; };
     glibcLocales = super.glibcLocales.override {stdenv = badstdenv; };
     cpio = super.cpio.override {stdenv = badstdenv; };
     busybox = super.busybox.override {stdenv = badstdenv; };
-    #audit = super.audit.override {stdenv = super.llvmPackages_12.lldClang.stdenv; };
     linuxConfig = super.linuxConfig.override {stdenv = badstdenv; };
     gpm = super.gpm.override {stdenv = badstdenv; };
     inetutils = super.inetutils.override {stdenv = badstdenv; };
@@ -104,38 +94,18 @@
     efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
     jemalloc = super.jemalloc.override {stdenv = badstdenv; };
     libfaketime = super.libfaketime.override {stdenv = badstdenv; };
-    #libnftnl = super.libnftnl.override {stdenv = badstdenv; };
     libomxil-bellagio = super.libomxil-bellagio.override {stdenv = badstdenv; };
     iproute = super.iproute.override {stdenv = badstdenv; };
-    #libsepol = super.libsepol.override {stdenv = badstdenv; };
-    #libsepol = super.libsepol.override {stdenv = super.llvmPackages_12.lldClang.stdenv; };
-    #libselinux = super.libselinux.override {stdenv = badstdenv; pcre = super.pcre.override {stdenv = badstdenv;}; python3 = super.python3.override {stdenv = badstdenv;};};
-    #libselinux = super.libselinux.override {stdenv = badstdenv; pcre = super.pcre.override {stdenv = badstdenv;}; enablePython = false;};
     argyllcms = super.argyllcms.override {stdenv = badstdenv; };
     keyutils = super.keyutils.override {stdenv = badstdenv; };
     avahi = super.avahi.override { stdenv = badstdenv; };
-    #avahi = super.avahi.override {stdenv = badstdenv; expat = super.expat.override {stdenv = badstdenv; }; dbus = super.dbus.override {stdenv = badstdenv; systemd = super.systemd.override {stdenv = badstdenv; libgcrypt = super.libgcrypt.override {stdenv =badstdenv; libgpgerror = super.libgpgerror.override {stdenv = badstdenv; }; }; libgpgerror = super.libgpgerror.override {stdenv = badstdenv; }; gnu-efi = super.gnu-efi.override {stdenv = badstdenv;}; xz = super.xz.override {stdenv = badstdenv;}; lz4 = super.lz4.override {stdenv =badstdenv;}; libcap = super.libcap.override {stdenv=badstdenv; pam = super.pam.override {stdenv = badstdenv;}; }; libseccomp = super.libseccomp.override {stdenv = badstdenv;}; util-linux = super.util-linuxMinimal.override {stdenv = badstdenv; pam = super.pam.override{stdenv = badstdenv;};}; }; }; }; #Stupid threadding stuff :(
-    cups = super.cups.override { avahi = null; }; # avahi is bad :(
-    #geoclue = super.geoclue.override { avahi = null; }; # avahi is bad :(
-    #libnfs = super.libnfs.override { avahi = null; }; # avahi is bad :(
-    #mod_dnssd = super.mod_dnssd.override { avahi = null; }; # avahi is bad :(
-    #xrdp = super.xrdp.override { avahi = null; }; # avahi is bad :(
-    #gvfs = super.gvfs.override { avahi = null; }; # avahi is bad :(
-    #vulkan-headers = super.vulkan-headers.override { avahi = null; }; # avahi is bad :(
-    #sane-backends = super.sane-backends.override { avahi = null; };
     dmraid = super.dmraid.override {stdenv = badstdenv; };
     grub2 = super.grub2.override {stdenv = badstdenv; };
     iproute2 = super.iproute2.override {stdenv = badstdenv; };
     libdc1394 = super.libdc1394.override {stdenv = badstdenv; };
     dhcp = super.dhcp.override {stdenv = badstdenv; };
     strongswan = super.strongswan.override {stdenv = badstdenv; };
-    #aws-c-common = super.aws-c-common.override {stdenv = badstdenv; };
-    #aws-c-cal = super.aws-c-cal.override {stdenv = badstdenv; };
-    #aws-c-io = super.aws-c-io.override {stdenv = badstdenv; };
-    #aws-c-event-stream = super.aws-c-event-stream.override {stdenv = badstdenv; };
-    #aws-checksums = super.aws-checksums.override {stdenv = badstdenv; };
     guile_1_8 = super.guile_1_8.override {stdenv = badstdenv; };
-    #pixman = super.pixman.override {stdenv = badstdenv; };
     directfb = super.directfb.override {stdenv = badstdenv; };
     gmime = super.gmime.override {stdenv = badstdenv; };
     bluez5 = super.bluez5.override {stdenv = badstdenv; };
@@ -147,10 +117,8 @@
     mbrola = super.mbrola.override {stdenv = badstdenv; };
     icu = super.icu.override {stdenv = badstdenv; };
     ppp = super.ppp.override {stdenv = badstdenv; };
-    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation.override {stdenv = badstdenv;}; };
-    #expat = super.expat.override {stdenv = badstdenv; };
-    #openalSoft = super.openalSoft.override {stdenv = badstdenv; };
-
+    #haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { pandoc = super.haskell.packages.ghc8102Binary.pandoc.override { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation.override {stdenv = badstdenv;}; }; };
+    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary;
 
     # God damn llvm linking errors can't find standard library junk :(
     rust_1_45 = super.rust_1_45.override {stdenv = badstdenv; };
@@ -165,13 +133,6 @@
     valgrind = super.valgrind.override {stdenv = badstdenv; };
     nftables = super.nftables.override {stdenv = badstdenv; };
     speex = super.speex.override {stdenv = badstdenv; };
-
-    # 32bit sad land :(
-
-    #ncurses = super.ncurses.override {stdenv = badstdenv; };
-    #readline = readline6;
-    #readline6 = readline63;
-    #readline63 = super.readline63.override {stdenv = badstdenv; };
 
     openblas = super.openblas.override {stdenv = badstdenv; };
     tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
@@ -189,7 +150,6 @@
     poppler = super.poppler.override {stdenv = badstdenv; };
     postgresql_11 = super.postgresql_11.override {stdenv = badstdenv; };
     cdrkit = super.cdrkit.override {stdenv = badstdenv; };
-    #zlib = super.zlib.override {stdenv = badstdenv; };
     folks = super.folks.override {stdenv = badstdenv; };
     groff = super.groff.override {stdenv = badstdenv; };
     lame = super.lame.override {stdenv = badstdenv; };
@@ -199,11 +159,6 @@
         gnome-color-manager = superx.gnome-color-manager.override{ stdenv = badstdenv; };
       }
     );
-    #gst_all_1 = super.gst_all_1.overrideScope' (
-    #  selfx: superx: {
-    #    gst-plugins-bad = superx.gst-plugins-bad.override{ stdenv = badstdenv; };
-    #  }
-    #);
     gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override {stdenv = badstdenv; }; };
   })];
 
