@@ -118,7 +118,8 @@
     icu = super.icu.override {stdenv = badstdenv; };
     ppp = super.ppp.override {stdenv = badstdenv; };
     #haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { pandoc = super.haskell.packages.ghc8102Binary.pandoc.override { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation.override {stdenv = badstdenv;}; }; };
-    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary;
+    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { pandoc = null; };
+    #haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary;
 
     # God damn llvm linking errors can't find standard library junk :(
     rust_1_45 = super.rust_1_45.override {stdenv = badstdenv; };
