@@ -194,7 +194,7 @@
     groff = super.groff.override {stdenv = badstdenv; };
     lame = super.lame.override {stdenv = badstdenv; };
     ell = super.ell.override {stdenv = badstdenv; };
-    gnome3 = super.gnome3.overrideScope' (
+    gnome = super.gnome.overrideScope' (
       selfx: superx: {
         gnome-color-manager = superx.gnome-color-manager.override{ stdenv = badstdenv; };
       }
