@@ -194,11 +194,11 @@
     groff = super.groff.override {stdenv = badstdenv; };
     lame = super.lame.override {stdenv = badstdenv; };
     ell = super.ell.override {stdenv = badstdenv; };
-    #gnome3 = super.gnome3.overrideScope' (
-    #  selfx: superx: {
-    #    gnome-color-manager = superx.gnome-color-manager.override{ stdenv = badstdenv; };
-    #  }
-    #);
+    gnome3 = super.gnome3.overrideScope' (
+      selfx: superx: {
+        gnome-color-manager = superx.gnome-color-manager.override{ stdenv = badstdenv; };
+      }
+    );
     #gst_all_1 = super.gst_all_1.overrideScope' (
     #  selfx: superx: {
     #    gst-plugins-bad = superx.gst-plugins-bad.override{ stdenv = badstdenv; };
