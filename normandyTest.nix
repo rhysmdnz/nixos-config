@@ -147,7 +147,7 @@
     mbrola = super.mbrola.override {stdenv = badstdenv; };
     icu = super.icu.override {stdenv = badstdenv; };
     ppp = super.ppp.override {stdenv = badstdenv; };
-    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation; };
+    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation.override {stdenv = badstdenv;}; };
     #expat = super.expat.override {stdenv = badstdenv; };
     #openalSoft = super.openalSoft.override {stdenv = badstdenv; };
 
