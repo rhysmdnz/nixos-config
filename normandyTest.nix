@@ -71,54 +71,12 @@
   nixpkgs.overlays = let badstdenv = (import pkgs.path { system = "x86_64-linux"; }).stdenv;
   #nixpkgs.overlays = let badstdenv = pkgs.gccStdenv;
   in [(self: super: rec {
-    sharutils = super.sharutils.override { stdenv = badstdenv; };
-    gdbm = super.gdbm.override { stdenv = badstdenv; };
-    gnum4 = super.gnum4.override { stdenv = badstdenv; };
     python38 = super.python38.override { enableOptimizations = false; };
     python3 = python38;
     python27 = super.python27.override { enableOptimizations = false; };
     python2 = python27;
     python = python27;
     python38Packages = pkgs.lib.recurseIntoAttrs python38.pkgs;
-    crda = super.crda.override {stdenv = badstdenv; };
-    elfutils = super.elfutils.override {stdenv = badstdenv; zlib=super.zlib.override {stdenv = badstdenv;}; };
-    glibcLocales = super.glibcLocales.override {stdenv = badstdenv; };
-    cpio = super.cpio.override {stdenv = badstdenv; };
-    busybox = super.busybox.override {stdenv = badstdenv; };
-    linuxConfig = super.linuxConfig.override {stdenv = badstdenv; };
-    gpm = super.gpm.override {stdenv = badstdenv; };
-    inetutils = super.inetutils.override {stdenv = badstdenv; };
-    kbd = super.kbd.override {stdenv = badstdenv; pam = super.pam.override {stdenv = badstdenv; }; check = super.check.override {stdenv = badstdenv; }; };
-    kexectools = super.kexectools.override {stdenv = badstdenv; };
-    cyrus_sasl = super.cyrus_sasl.override {stdenv = badstdenv; };
-    efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
-    jemalloc = super.jemalloc.override {stdenv = badstdenv; };
-    libfaketime = super.libfaketime.override {stdenv = badstdenv; };
-    libomxil-bellagio = super.libomxil-bellagio.override {stdenv = badstdenv; };
-    iproute = super.iproute.override {stdenv = badstdenv; };
-    argyllcms = super.argyllcms.override {stdenv = badstdenv; };
-    keyutils = super.keyutils.override {stdenv = badstdenv; };
-    avahi = super.avahi.override { stdenv = badstdenv; };
-    dmraid = super.dmraid.override {stdenv = badstdenv; };
-    grub2 = super.grub2.override {stdenv = badstdenv; };
-    iproute2 = super.iproute2.override {stdenv = badstdenv; };
-    libdc1394 = super.libdc1394.override {stdenv = badstdenv; };
-    dhcp = super.dhcp.override {stdenv = badstdenv; };
-    strongswan = super.strongswan.override {stdenv = badstdenv; };
-    guile_1_8 = super.guile_1_8.override {stdenv = badstdenv; };
-    directfb = super.directfb.override {stdenv = badstdenv; };
-    gmime = super.gmime.override {stdenv = badstdenv; };
-    bluez5 = super.bluez5.override {stdenv = badstdenv; };
-    brltty = super.brltty.override {stdenv = badstdenv; };
-    gupnp_igd = super.gupnp_igd.override {stdenv = badstdenv; };
-    libblockdev = super.libblockdev.override {stdenv = badstdenv; };
-    lua5 = super.lua5.override {stdenv = badstdenv; };
-    lua5_3 = super.lua5_3.override {stdenv = badstdenv; };
-    mbrola = super.mbrola.override {stdenv = badstdenv; };
-    icu = super.icu.override {stdenv = badstdenv; };
-    ppp = super.ppp.override {stdenv = badstdenv; };
-    #haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8102Binary // { pandoc = super.haskell.packages.ghc8102Binary.pandoc.override { unicode-collation = super.haskell.packages.ghc8102Binary.unicode-collation.override {stdenv = badstdenv;}; }; };
-    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8105Binary;
 
     # God damn llvm linking errors can't find standard library junk :(
     rust_1_45 = super.rust_1_45.override {stdenv = badstdenv; };
@@ -133,26 +91,56 @@
     valgrind = super.valgrind.override {stdenv = badstdenv; };
     nftables = super.nftables.override {stdenv = badstdenv; };
     speex = super.speex.override {stdenv = badstdenv; };
-
-    openblas = super.openblas.override {stdenv = badstdenv; };
-    tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
-    suitesparse = super.suitesparse.override {stdenv = badstdenv; };
-    unittest-cpp = super.unittest-cpp.override {stdenv = badstdenv; };
-    transfig = super.transfig.override {stdenv = badstdenv; };
-    accountsservice = super.accountsservice.override {stdenv = badstdenv; };
+    
+    # Not being built?
+    #tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
     fwupd = super.fwupd.override {stdenv = badstdenv; };
-    libnma = super.libnma.override {stdenv = badstdenv; };
+    
+    # Command gcc not found
+    mbrola = super.mbrola.override {stdenv = badstdenv; };
     ostree = super.ostree.override {stdenv = badstdenv; };
-    udisks = super.udisks.override {stdenv = badstdenv; };
-    udisks2 = super.udisks2.override {stdenv = badstdenv; };
+    transfig = super.transfig.override {stdenv = badstdenv; };
+    iproute2 = super.iproute2.override {stdenv = badstdenv; };
+    busybox = super.busybox.override {stdenv = badstdenv; };
+    
+    # Extra warnings
+    keyutils = super.keyutils.override {stdenv = badstdenv; };
+    accountsservice = super.accountsservice.override {stdenv = badstdenv; };
     networkmanager-sstp = super.networkmanager-sstp.override {stdenv = badstdenv; };
-    openjdk8 = super.openjdk8.override {stdenv = badstdenv; };
-    poppler = super.poppler.override {stdenv = badstdenv; };
-    postgresql_11 = super.postgresql_11.override {stdenv = badstdenv; };
+    libblockdev = super.libblockdev.override {stdenv = badstdenv; };
+    brltty = super.brltty.override {stdenv = badstdenv; };
+    dhcp = super.dhcp.override {stdenv = badstdenv; };
+    dmraid = super.dmraid.override {stdenv = badstdenv; };
+
+    # Multiple definiton
     cdrkit = super.cdrkit.override {stdenv = badstdenv; };
-    folks = super.folks.override {stdenv = badstdenv; };
+    strongswan = super.strongswan.override {stdenv = badstdenv; };
+    kexectools = super.kexectools.override {stdenv = badstdenv; };
+    gpm = super.gpm.override {stdenv = badstdenv; };
+    cpio = super.cpio.override {stdenv = badstdenv; };
+    sharutils = super.sharutils.override { stdenv = badstdenv; };
+
+    # omp stuff missing?
+    openblas = super.openblas.override {stdenv = badstdenv; };
+    suitesparse = super.suitesparse.override {stdenv = badstdenv; };
+
+    # Confirmed weird to be investigated further
+    elfutils = super.elfutils.override {stdenv = badstdenv; };
+    glibcLocales = super.glibcLocales.override {stdenv = badstdenv; };
+    cyrus_sasl = super.cyrus_sasl.override {stdenv = badstdenv; };
+    libomxil-bellagio = super.libomxil-bellagio.override {stdenv = badstdenv; };
+    avahi = super.avahi.override { stdenv = badstdenv; };
+    libdc1394 = super.libdc1394.override {stdenv = badstdenv; };
+    directfb = super.directfb.override {stdenv = badstdenv; };
+    bluez5 = super.bluez5.override {stdenv = badstdenv; };
+    ppp = super.ppp.override {stdenv = badstdenv; };
+    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8105Binary;
+    unittest-cpp = super.unittest-cpp.override {stdenv = badstdenv; };
+    libnma = super.libnma.override {stdenv = badstdenv; };
+    openjdk8 = super.openjdk8.override {stdenv = badstdenv; };
+    postgresql_11 = super.postgresql_11.override {stdenv = badstdenv; };
+    poppler = super.poppler.override {stdenv = badstdenv; };
     groff = super.groff.override {stdenv = badstdenv; };
-    lame = super.lame.override {stdenv = badstdenv; };
     ell = super.ell.override {stdenv = badstdenv; };
     gnome = super.gnome.overrideScope' (
       selfx: superx: {
