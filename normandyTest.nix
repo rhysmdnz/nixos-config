@@ -162,6 +162,7 @@
     htop
     ripgrep
     fend
+    zsh
   ];
   
   services.sshd.enable = true;
