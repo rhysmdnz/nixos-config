@@ -125,6 +125,7 @@
     suitesparse = super.suitesparse.override {stdenv = badstdenv; };
 
     # Confirmed weird to be investigated further
+    hercules-ci-agent = super.hercules-ci-agent.override {stdenv = badstdenv; };
     efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
     elfutils = super.elfutils.override {stdenv = badstdenv; };
     glibcLocales = super.glibcLocales.override {stdenv = badstdenv; };
@@ -170,8 +171,8 @@
   nixpkgs.config.allowUnfree = true;
   services.flatpak.enable = true;
 
-  services.hercules-ci-agent.enable = true;
-  services.hercules-ci-agent.settings.concurrentTasks = 32;
+  #services.hercules-ci-agent.enable = true;
+  #services.hercules-ci-agent.settings.concurrentTasks = 32;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
