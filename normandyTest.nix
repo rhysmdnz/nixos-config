@@ -134,7 +134,6 @@
     directfb = super.directfb.override {stdenv = badstdenv; };
     bluez5 = super.bluez5.override {stdenv = badstdenv; };
     ppp = super.ppp.override {stdenv = badstdenv; };
-    haskellPackages = super.dontRecurseIntoAttrs super.haskell.packages.ghc8105Binary;
     unittest-cpp = super.unittest-cpp.override {stdenv = badstdenv; };
     libnma = super.libnma.override {stdenv = badstdenv; };
     openjdk8 = super.openjdk8.override {stdenv = badstdenv; };
