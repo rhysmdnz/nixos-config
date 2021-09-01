@@ -125,6 +125,7 @@
     suitesparse = super.suitesparse.override {stdenv = badstdenv; };
 
     # Confirmed weird to be investigated further
+    efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
     elfutils = super.elfutils.override {stdenv = badstdenv; };
     glibcLocales = super.glibcLocales.override {stdenv = badstdenv; };
     cyrus_sasl = super.cyrus_sasl.override {stdenv = badstdenv; };
