@@ -167,8 +167,10 @@
 #   programs.steam.enable = false;
 
   nixpkgs.config.allowUnfree = true;
-  # services.flatpak.enable = true;
+  services.flatpak.enable = true;
 
+  services.hercules-ci-agent.enable = true;
+  services.hercules-ci-agent.settings.concurrentTasks = 32;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
