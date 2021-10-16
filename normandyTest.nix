@@ -10,6 +10,6 @@
       ./normandy.nix
       ./llvm-all.nix
     ];
-  services.hercules-ci-agent.enable = false;
+  services.hercules-ci-agent.enable = mkForce false;
 }
 
