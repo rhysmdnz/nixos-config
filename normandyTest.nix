@@ -10,5 +10,6 @@
       ./normandy.nix
       ./llvm-all.nix
     ];
+  services.hercules-ci-agent.enable = true;
 }
 
