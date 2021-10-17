@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      ./elbrus-hardware-configuration.nix
       ./nix-conf.nix
     ];
 
