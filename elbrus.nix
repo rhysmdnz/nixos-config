@@ -44,14 +44,34 @@
   environment.systemPackages = with pkgs; [
     wget vim
     gnome.gnome-tweak-tool
+    gnome.gnome-boxes
     file
     git
     htop
     ripgrep
     fend
-    python3
+    chromium
+    openvpn
+    virt-manager
+    virt-viewer
     exa
+    python3
+    keepassx
   ];
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemuRunAsRoot = false;
+    extraConfig = ''
+    memory_backing_dir = "/dev/shm/"
+    '';
+  };
+  virtualisation.kvmgt.enable = true;
+  virtualisation.kvmgt.vgpus = {
+    "i915-GVTg_V5_8" = {
+      uuid = [ "f471a88a-c8b1-4ab5-9444-1e57f012eb55" ];
+    };
+  };
   
   # services.sshd.enable = true;
 
@@ -60,8 +80,17 @@
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 22 3000 ];
+  networking.firewall = {
+    enable = true;
+    logRefusedPackets = true;
+    interfaces.virbr0 = {
+      allowedTCPPorts = [ 5656 ];
+    };
+    interfaces.virbr1 = {
+      allowedTCPPorts = [ 8000 ];
+    };
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -77,15 +106,14 @@
     home = "/home/rhys";
     description = "Rhys Davies";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest" ];
+    extraGroups = [ "wheel" "libvirtd" "networkmanager" ];
   };
   
   nix.buildMachines = [
     { hostName = "localhost";
       system = "x86_64-linux";
       supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
-      maxJobs = 32;
+      maxJobs = 4;
     }
   ];
 
