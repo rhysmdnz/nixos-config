@@ -50,8 +50,6 @@
     htop
     ripgrep
     fend
-    chromium
-    openvpn
     virt-manager
     virt-viewer
     exa
@@ -77,6 +75,7 @@
 
   nixpkgs.config.allowUnfree = true;
   services.flatpak.enable = true;
+  programs.chromium.enable = true;
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
 
