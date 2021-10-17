@@ -46,6 +46,7 @@
 
     # Confirmed weird to be investigated further
     valgrind = super.valgrind.override {stdenv = badstdenv; };
+    valgrind-light = valgrind.override { gdb = null; };
     ncurses = super.ncurses.override {stdenv = badstdenv; };
     efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
     elfutils = super.elfutils.override {stdenv = badstdenv; };
