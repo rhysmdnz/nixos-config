@@ -45,6 +45,7 @@
     suitesparse = super.suitesparse.override {stdenv = badstdenv; };
 
     # Confirmed weird to be investigated further
+    valgrind = super.valgrind.override {stdenv = badstdenv; };
     ncurses = super.ncurses.override {stdenv = badstdenv; };
     efibootmgr = super.efibootmgr.override {stdenv = badstdenv; };
     elfutils = super.elfutils.override {stdenv = badstdenv; };
