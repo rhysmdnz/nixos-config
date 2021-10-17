@@ -35,10 +35,10 @@
           } ];
     };
 
-    nixosConfigurations.rhysdavies = nixpkgsHardened.lib.nixosSystem {
+    nixosConfigurations.elbrus = nixpkgsHardened.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./rhysdavies.nix
+        ./elbrus.nix
         home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

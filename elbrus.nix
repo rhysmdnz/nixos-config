@@ -16,8 +16,7 @@
   boot.plymouth.enable = true;
   boot.plymouth.theme = "solar";
 
-  networking.hostName = "rhysdavies"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "elbrus"; # Define your hostname.
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
