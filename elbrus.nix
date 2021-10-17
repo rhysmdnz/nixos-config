@@ -76,6 +76,12 @@
   nixpkgs.config.allowUnfree = true;
   services.flatpak.enable = true;
   programs.chromium.enable = true;
+  programs.chromium.extraOpts = {
+    "BrowserSignin" = 0;
+    "SyncDisabled" = true;
+    "PasswordManagerEnabled" = false;
+    "ExtensionInstallBlocklist" = "*";
+  };
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
 
