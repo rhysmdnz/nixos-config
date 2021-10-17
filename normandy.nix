@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nix-conf.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -127,16 +128,6 @@
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest" ];
   };
-  
-  nix = {
-    autoOptimiseStore = true;
-    binaryCaches = [ "s3://nix-cache?region=us-east-1&endpoint=nix-cache.memes.nz" ];
-    binaryCachePublicKeys = [ "nix-cache:JW9dxrc5qdmyDkUstVqjlVcBpunX4Jo6ueshaJIWCK4=" ];
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-   };
   
   nix.buildMachines = [
     { hostName = "localhost";
