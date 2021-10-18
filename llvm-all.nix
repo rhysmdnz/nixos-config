@@ -45,6 +45,7 @@
     suitesparse = super.suitesparse.override {stdenv = badstdenv; };
 
     # Confirmed weird to be investigated further
+    gdb = super.gdb.override {stdenv = badstdenv; };
     valgrind = super.valgrind.override {stdenv = badstdenv; };
     valgrind-light = valgrind.override { gdb = null; };
     ncurses = super.ncurses.override {stdenv = badstdenv; };

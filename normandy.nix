@@ -71,6 +71,13 @@
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
 
+
+  nixpkgs.overlays = [
+    (self: super: {
+      nvidia-x11 = super.nvidia-x11.override {disable32Bit=true;};
+    };) 
+  ];
+
   environment.systemPackages = with pkgs; [
     wget vim
     gnome.gnome-tweak-tool
