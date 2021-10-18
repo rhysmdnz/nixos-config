@@ -21,7 +21,9 @@
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.rhys = import ./home.nix;
+            home-manager.users.rhys = {
+              imports = [ nix-doom-emacs.hmModule ./home.nix ];
+            };
         }
       ];
     };
@@ -35,7 +37,9 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.rhys = import ./home.nix;
+            home-manager.users.rhys = {
+              imports = [ nix-doom-emacs.hmModule ./home.nix ];
+            };
           } ];
     };
 
