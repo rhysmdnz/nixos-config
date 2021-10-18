@@ -41,6 +41,8 @@
 
   services.fwupd.enable = true;
 
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+
   environment.systemPackages = with pkgs; [
     wget vim
     gnome.gnome-tweak-tool
@@ -55,6 +57,7 @@
     exa
     python3
     keepassx
+    chromium
   ];
 
   virtualisation.libvirtd = {
@@ -84,6 +87,9 @@
   };
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
+  programs.gnupg.agent.enable = true;
+  programs.gnupg.agent.enableSSHSupport = true;
+
 
   networking.firewall = {
     enable = true;
