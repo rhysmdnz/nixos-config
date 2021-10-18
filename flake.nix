@@ -43,7 +43,7 @@
           } ];
     };
 
-    nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.elbrus = nixpkgsHardened.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         { nixpkgs.overlays = [ emacs.overlay ]; }
