@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "sr_mod" "bcache" ];
@@ -13,22 +14,23 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
- # hardware.enableRedistributableFirmware = true;
+  # hardware.enableRedistributableFirmware = true;
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/13979cc9-cb7f-448b-885b-d7ccb99c966a";
+    {
+      device = "/dev/disk/by-uuid/13979cc9-cb7f-448b-885b-d7ccb99c966a";
       fsType = "btrfs";
       options = [ "subvol=nixos-root" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/B8DB-8587";
+    {
+      device = "/dev/disk/by-uuid/B8DB-8587";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/1b232a80-6b35-407b-9cff-7c119dab9d95"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/1b232a80-6b35-407b-9cff-7c119dab9d95"; }];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

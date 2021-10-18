@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./nix-conf.nix
     ];
@@ -47,9 +48,9 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  
+
   fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "SourceCodePro" ]; }) ];
-  
+
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -74,12 +75,13 @@
 
   nixpkgs.overlays = [
     (self: super: {
-      nvidia-x11 = super.nvidia-x11.override {disable32Bit=true;};
-    };) 
+      nvidia-x11 = super.nvidia-x11.override { disable32Bit = true; };
+    };)
   ];
 
   environment.systemPackages = with pkgs; [
-    wget vim
+    wget
+    vim
     gnome.gnome-tweak-tool
     file
     git
@@ -89,7 +91,7 @@
     python3
     exa
   ];
-  
+
   nixpkgs.config.allowUnfree = true;
   services.flatpak.enable = true;
   programs.zsh.enable = true;
@@ -135,11 +137,12 @@
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest" ];
   };
-  
+
   nix.buildMachines = [
-    { hostName = "localhost";
+    {
+      hostName = "localhost";
       system = "x86_64-linux";
-      supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
+      supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
       maxJobs = 32;
     }
   ];

@@ -18,12 +18,13 @@
       modules = [
         { nixpkgs.overlays = [ emacs.overlay ]; }
         ./normandy.nix
-        home-manager.nixosModules.home-manager {
+        home-manager.nixosModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
+          home-manager.users.rhys = {
+            imports = [ nix-doom-emacs.hmModule ./home.nix ];
+          };
         }
       ];
     };
@@ -34,13 +35,14 @@
         { nixpkgs.overlays = [ emacs.overlay ]; }
         ./normandyTest.nix
         home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          } ];
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.rhys = {
+            imports = [ nix-doom-emacs.hmModule ./home.nix ];
+          };
+        }
+      ];
     };
 
     nixosConfigurations.elbrus = nixpkgsHardened.lib.nixosSystem {
@@ -49,16 +51,16 @@
         { nixpkgs.overlays = [ emacs.overlay ]; }
         ./elbrus.nix
         home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.rhys = {
+            imports = [ nix-doom-emacs.hmModule ./home.nix ];
+          };
+        }
       ];
     };
-    
+
     hydraJobs.build.normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
     hydraJobs.build.normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
     ciNix = flake-compat-ci.lib.recurseIntoFlakeWith {

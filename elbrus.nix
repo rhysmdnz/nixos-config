@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./elbrus-hardware-configuration.nix
       ./nix-conf.nix
     ];
@@ -44,7 +45,8 @@
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
   environment.systemPackages = with pkgs; [
-    wget vim
+    wget
+    vim
     gnome.gnome-tweak-tool
     gnome.gnome-boxes
     file
@@ -64,7 +66,7 @@
     enable = true;
     qemuRunAsRoot = false;
     extraConfig = ''
-    memory_backing_dir = "/dev/shm/"
+      memory_backing_dir = "/dev/shm/"
     '';
   };
   virtualisation.kvmgt.enable = true;
@@ -73,7 +75,7 @@
       uuid = [ "f471a88a-c8b1-4ab5-9444-1e57f012eb55" ];
     };
   };
-  
+
   # services.sshd.enable = true;
 
   nixpkgs.config.allowUnfree = true;
@@ -119,11 +121,12 @@
     shell = pkgs.zsh;
     extraGroups = [ "wheel" "libvirtd" "networkmanager" ];
   };
-  
+
   nix.buildMachines = [
-    { hostName = "localhost";
+    {
+      hostName = "localhost";
       system = "x86_64-linux";
-      supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
+      supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
       maxJobs = 4;
     }
   ];

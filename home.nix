@@ -30,7 +30,7 @@
     initExtra = "setopt INC_APPEND_HISTORY";
     history = {
       share = false;
-      size = 10000000000; 
+      size = 10000000000;
     };
     plugins = [
       {
