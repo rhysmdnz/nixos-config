@@ -16,6 +16,7 @@
     nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        { nixpkgs.overlays = [ emacs.overlay ]; }
         ./normandy.nix
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
@@ -28,6 +29,7 @@
     nixosConfigurations.normandyTest = nixpkgsTweaks.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        { nixpkgs.overlays = [ emacs.overlay ]; }
         ./normandyTest.nix
         home-manager.nixosModules.home-manager
           {
