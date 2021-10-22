@@ -70,7 +70,7 @@
 
   virtualisation.libvirtd = {
     enable = true;
-    qemuRunAsRoot = false;
+    qemu.runAsRoot = false;
     extraConfig = ''
       memory_backing_dir = "/dev/shm/"
     '';
