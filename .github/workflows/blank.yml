@@ -2,6 +2,7 @@ name: "Update flakes"
 on:
   schedule:
   - cron: "0 23 * * *"
+  - workflow_dispatch:  # click the button on Github repo!
 jobs:
   tests:
     runs-on: ubuntu-latest
