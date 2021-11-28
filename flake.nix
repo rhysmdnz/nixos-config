@@ -29,11 +29,11 @@
       ];
     };
 
-    nixosConfigurations.normandyTest = nixpkgsTweaks.lib.nixosSystem {
+    nixosConfigurations.normandyTest = nixpkgsHardened.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         { nixpkgs.overlays = [ emacs.overlay ]; }
-        ./normandyTest.nix
+        ./normandy.nix
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;

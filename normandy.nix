@@ -90,6 +90,7 @@
     fend
     python3
     exa
+    chromium
   ];
 
   nixpkgs.config.allowUnfree = true;
