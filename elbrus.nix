@@ -61,12 +61,6 @@
     keepassx
     chromium
   ];
-  
-  nixpkgs.overlays = [
-    (self: super: {
-      qemu = super.qemu.overrideAttrs (x: {patches = x.patches ++ [ (pkgs.fetchpatch { url = "https://gitlab.com/qemu-project/qemu/-/commit/eb94846280df3f1e2a91b6179fc05f9890b7e384.diff"; sha256="03r58vl7n8c6ryvns6n062grn321kfxk5kn0vcyjqkfiirvmyzd7";}) ]; });
-    })
-  ];
 
   virtualisation.libvirtd = {
     enable = true;
