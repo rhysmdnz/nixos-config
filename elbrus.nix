@@ -91,6 +91,7 @@
   programs.zsh.enableCompletion = true;
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
+  security.tpm2.enable = true;
 
 
   networking.firewall = {
