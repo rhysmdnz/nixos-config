@@ -7,7 +7,7 @@
     flake-compat.flake = false;
     flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
     home-manager.url = "github:nix-community/home-manager";
-    nix-doom-emacs.url = "github:vlaci/nix-doom-emacs/develop";
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
     emacs.url = "github:nix-community/emacs-overlay";
   };
 
