@@ -136,7 +136,10 @@
     description = "Rhys Davies";
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG3Dgule7fdDIoFFENXAGL6nLMqrcxtiKLTpGnWACnAm rhys@idenna"
+    ];
   };
   users.users.jamie = {
     uid = 1001;
