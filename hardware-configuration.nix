@@ -13,6 +13,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  hardware.nvidia.modesetting.enable = true;
 
   # hardware.enableRedistributableFirmware = true;
 
