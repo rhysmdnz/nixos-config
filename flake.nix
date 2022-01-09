@@ -29,21 +29,21 @@
       ];
     };
 
-    nixosConfigurations.normandyTest = nixpkgsHardened.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        { nixpkgs.overlays = [ emacs.overlay ]; }
-        ./normandy.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.rhys = {
-            imports = [ nix-doom-emacs.hmModule ./home.nix ];
-          };
-        }
-      ];
-    };
+    #nixosConfigurations.normandyTest = nixpkgsHardened.lib.nixosSystem {
+    #  system = "x86_64-linux";
+    #  modules = [
+    #    { nixpkgs.overlays = [ emacs.overlay ]; }
+    #    ./normandy.nix
+    #    home-manager.nixosModules.home-manager
+    #    {
+    #      home-manager.useGlobalPkgs = true;
+    #      home-manager.useUserPackages = true;
+    #      home-manager.users.rhys = {
+    #        imports = [ nix-doom-emacs.hmModule ./home.nix ];
+    #      };
+    #    }
+    #  ];
+    #};
 
     nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
