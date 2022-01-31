@@ -150,7 +150,7 @@
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmjgKWGrFYlHDY67GEaOhH32DgxbucL/XNlSROXQjWU hydra@hydra" ];
   };
 
-  nix.trustedUsers = [ "jamie" ];
+  nix.settings.trusted-users = [ "jamie" ];
   nix.buildMachines = [
     {
       hostName = "localhost";
