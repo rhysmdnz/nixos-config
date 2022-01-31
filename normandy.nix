@@ -82,7 +82,7 @@
   environment.systemPackages = with pkgs; [
     wget
     vim
-    gnome.gnome-tweak-tool
+    gnome.gnome-tweaks
     file
     git
     htop

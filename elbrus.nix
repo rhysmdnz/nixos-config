@@ -47,7 +47,7 @@
   environment.systemPackages = with pkgs; [
     wget
     vim
-    gnome.gnome-tweak-tool
+    gnome.gnome-tweaks
     gnome.gnome-boxes
     file
     git
