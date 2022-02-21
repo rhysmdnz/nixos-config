@@ -60,11 +60,13 @@
     python3
     keepassx
     chromium
+    deja-dup
   ];
 
   virtualisation.libvirtd = {
     enable = true;
     qemu.runAsRoot = false;
+    qemu.ovmf.package = pkgs.OVMFFull;
     extraConfig = ''
       memory_backing_dir = "/dev/shm/"
     '';
