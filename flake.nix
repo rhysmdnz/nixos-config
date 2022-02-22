@@ -3,6 +3,7 @@
     nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/my-tweaks";
     nixpkgsHardened.url = "github:rhysmdnz/nixpkgs/hardening";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgsXone.url = "github:rhysmdnz/nixpkgs/xone";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
     flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
@@ -11,7 +12,7 @@
     emacs.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { self, nixpkgs, nixpkgsHardened, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }: {
+  outputs = { self, nixpkgs, nixpkgsXone, nixpkgsHardened, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }: {
 
     nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";

@@ -324,6 +324,22 @@
         "type": "github"
       }
     },
+    "nixpkgsXone": {
+      "locked": {
+        "lastModified": 1645334712,
+        "narHash": "sha256-EEYwPhfPJ6HODP0C8LsMwtrHEv0K2vrS0VPw98W57W0=",
+        "owner": "rhysmdnz",
+        "repo": "nixpkgs",
+        "rev": "32a44aa069898adbe2e6dc4ba82d901c3c15ee71",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rhysmdnz",
+        "ref": "xone",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1644972330,
@@ -476,7 +492,8 @@
         "nix-doom-emacs": "nix-doom-emacs",
         "nixpkgs": "nixpkgs_3",
         "nixpkgsHardened": "nixpkgsHardened",
-        "nixpkgsTweaks": "nixpkgsTweaks"
+        "nixpkgsTweaks": "nixpkgsTweaks",
+        "nixpkgsXone": "nixpkgsXone"
       }
     },
     "rotate-text": {

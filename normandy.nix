@@ -17,7 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.steam-hardware.enable = true;
-
+  hardware.xone.enable = true;
+  
   networking.hostName = "normandy"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -92,7 +93,6 @@
     fend
     python3
     exa
-    chromium
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -137,7 +137,7 @@
     home = "/home/rhys";
     description = "Rhys Davies";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
