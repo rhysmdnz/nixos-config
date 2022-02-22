@@ -14,7 +14,7 @@
 
   outputs = { self, nixpkgs, nixpkgsXone, nixpkgsHardened, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }: {
 
-    nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.normandy = nixpkgsXone.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         { nixpkgs.overlays = [ emacs.overlay ]; }
