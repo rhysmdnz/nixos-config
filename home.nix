@@ -17,6 +17,10 @@
     userEmail = "rhys@memes.nz";
   };
 
+  programs.zsh.sessionVariables = {
+    NIX_PATH = "nixpkgs=${pkgs.path}";
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -27,7 +31,10 @@
       zstyle ':completion:*' menu select
       zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
     '';
-    initExtra = "setopt INC_APPEND_HISTORY";
+    initExtra = ''
+      setopt INC_APPEND_HISTORY
+      export NIX_PATH="nixpkgs=${pkgs.path}"
+    '';
     history = {
       share = false;
       size = 10000000000;

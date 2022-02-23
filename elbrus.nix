@@ -67,6 +67,7 @@
     enable = true;
     qemu.runAsRoot = false;
     qemu.ovmf.package = pkgs.OVMFFull;
+    qemu.swtpm.enable = true;
     extraConfig = ''
       memory_backing_dir = "/dev/shm/"
     '';
