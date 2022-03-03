@@ -2,8 +2,8 @@
   inputs = {
     nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/my-tweaks";
     nixpkgsHardened.url = "github:rhysmdnz/nixpkgs/hardening";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    nixpkgsXone.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgsXone.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
     flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
