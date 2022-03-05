@@ -93,6 +93,8 @@
     fend
     python3
     exa
+    gparted
+    ntfs3g
   ];
 
   nixpkgs.config.allowUnfree = true;
