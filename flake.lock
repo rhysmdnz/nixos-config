@@ -35,11 +35,11 @@
     },
     "emacs": {
       "locked": {
-        "lastModified": 1647365429,
-        "narHash": "sha256-UkczRDQlJRAXlZPDe5sul5u71GWdiIiXq/UgDUHRsls=",
+        "lastModified": 1647396147,
+        "narHash": "sha256-KvIbNi8FEbakfnL32iUTrjRgT0N9mCj8B4DNcyEMSRU=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "29a7a34412e17ada1c2c6271d2ab3d8e0bfefdd8",
+        "rev": "d7768391bccd5200645cc52324f6ff672269bf31",
         "type": "github"
       },
       "original": {
@@ -292,6 +292,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgsGnome": {
+      "locked": {
+        "lastModified": 1647384321,
+        "narHash": "sha256-DkJlFgqlghViKXIqkzUv+IkZmeOR48dXARFEQpbgsGw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7a9d7e3b2fcf994c7de46210aa71497477b16539",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "gnome",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgsHardened": {
       "locked": {
         "lastModified": 1638258277,
@@ -475,6 +491,7 @@
         "home-manager": "home-manager",
         "nix-doom-emacs": "nix-doom-emacs",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgsGnome": "nixpkgsGnome",
         "nixpkgsHardened": "nixpkgsHardened",
         "nixpkgsTweaks": "nixpkgsTweaks"
       }
