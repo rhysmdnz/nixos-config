@@ -292,22 +292,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgsGnome": {
-      "locked": {
-        "lastModified": 1650353420,
-        "narHash": "sha256-xDHo5u8B8An4etNvAhyNgQ2yXsRip9FGRaToxDV9VWE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "c10c8912eed56322bbe5e2124e53d0361d2017cb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable-small",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgsHardened": {
       "locked": {
         "lastModified": 1638258277,
@@ -491,7 +475,6 @@
         "home-manager": "home-manager",
         "nix-doom-emacs": "nix-doom-emacs",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgsGnome": "nixpkgsGnome",
         "nixpkgsHardened": "nixpkgsHardened",
         "nixpkgsTweaks": "nixpkgsTweaks"
       }
