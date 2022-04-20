@@ -151,7 +151,7 @@
     home = "/home/jamie";
     description = "Jamie";
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmjgKWGrFYlHDY67GEaOhH32DgxbucL/XNlSROXQjWU hydra@hydra" ];
+    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpDBWqUFKaNthEoVRjNa5GWnrzVQRZsKBczsYM++B7F root@nixos" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmjgKWGrFYlHDY67GEaOhH32DgxbucL/XNlSROXQjWU hydra@hydra" ];
   };
 
   nix.settings.trusted-users = [ "jamie" ];
