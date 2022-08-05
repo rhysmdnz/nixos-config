@@ -66,7 +66,7 @@
   virtualisation.libvirtd = {
     enable = true;
     qemu.runAsRoot = false;
-    qemu.ovmf.package = pkgs.OVMFFull;
+    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     qemu.swtpm.enable = true;
     extraConfig = ''
       memory_backing_dir = "/dev/shm/"
@@ -83,6 +83,7 @@
 
   nixpkgs.config.allowUnfree = true;
   services.flatpak.enable = true;
+  services.printing.enable = true;
   programs.chromium.enable = true;
   programs.chromium.extraOpts = {
     "BrowserSignin" = 0;
