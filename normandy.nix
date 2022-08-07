@@ -86,6 +86,7 @@
     wget
     vim
     gnome.gnome-tweaks
+    virt-manager
     file
     git
     htop
@@ -139,7 +140,7 @@
     home = "/home/rhys";
     description = "Rhys Davies";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "libvirtd" "networkmanager" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
@@ -152,6 +153,16 @@
     description = "Jamie";
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpDBWqUFKaNthEoVRjNa5GWnrzVQRZsKBczsYM++B7F root@nixos" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmjgKWGrFYlHDY67GEaOhH32DgxbucL/XNlSROXQjWU hydra@hydra" ];
+  };
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.runAsRoot = false;
+    qemu.ovmf.package = pkgs.OVMFFull;
+    qemu.swtpm.enable = true;
+    extraConfig = ''
+      memory_backing_dir = "/dev/shm/"
+    '';
   };
 
   nix.settings.trusted-users = [ "jamie" ];
