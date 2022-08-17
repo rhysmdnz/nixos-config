@@ -1,7 +1,6 @@
 {
   inputs = {
-    nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/my-tweaks";
-    nixpkgsHardened.url = "github:rhysmdnz/nixpkgs/hardening";
+    nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/update-edk2";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
@@ -45,7 +44,7 @@
     #  ];
     #};
 
-    nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.elbrus = nixpkgsTweaks.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         { nixpkgs.overlays = [ emacs.overlay ]; }
