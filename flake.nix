@@ -10,7 +10,7 @@
     emacs.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { self, nixpkgs, nixpkgsHardened, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }: {
+  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }: {
 
     nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
