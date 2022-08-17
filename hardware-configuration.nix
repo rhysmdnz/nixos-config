@@ -9,17 +9,25 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "sr_mod" "bcache" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   hardware.nvidia.modesetting.enable = true;
 
-  # hardware.enableRedistributableFirmware = true;
+  hardware.enableRedistributableFirmware = true;
+
+  boot.initrd.luks.devices = {
+    root = {
+      device = "/dev/disk/by-uuid/893b99e5-e698-4683-87bc-27d06b9db814";
+      preLVM = true;
+      allowDiscards = true;
+    };
+  };
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/13979cc9-cb7f-448b-885b-d7ccb99c966a";
+      device = "/dev/disk/by-uuid/0a6aff31-5c31-4b6f-b6c9-061cd045e6bd";
       fsType = "btrfs";
       options = [ "subvol=nixos-root" ];
     };
@@ -31,7 +39,9 @@
     };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/1b232a80-6b35-407b-9cff-7c119dab9d95"; }];
+    [{ device = "/dev/disk/by-uuid/c1ef00a9-228b-4010-978f-26f1864714bb"; }];
+
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

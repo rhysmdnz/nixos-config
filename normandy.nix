@@ -16,6 +16,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.initrd.systemd.enable = true;
+
   hardware.steam-hardware.enable = true;
   hardware.xone.enable = true;
   
