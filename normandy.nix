@@ -18,6 +18,15 @@
 
   boot.initrd.systemd.enable = true;
 
+  boot.kernelPatches = [ {
+        name = "builtin-tpm";
+        patch = null;
+        extraStructuredConfig = with lib.kernel; {
+          TCG_TPM = yes;
+          TCG_CRB = yes;
+        };
+      } ];
+
   hardware.steam-hardware.enable = true;
   hardware.xone.enable = true;
   
