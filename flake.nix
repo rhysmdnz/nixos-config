@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/update-edk2";
+    nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/bootspec-rfc";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
@@ -10,22 +10,21 @@
     emacs.url = "github:nix-community/emacs-overlay";
   };
 
-  inputs.nixpkgsBootspec.url = "github:DeterminateSystems/nixpkgs/bootspec-rfc";
   inputs.bootspec-secureboot = {
     url = "github:DeterminateSystems/bootspec-secureboot/main";
-    inputs.nixpkgsBootspec.follows = "nixpkgs";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgsBootspec, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, ... }:
+  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, ... }:
 
     let
-      patchedNixpkgs = nixpkgsBootspec.legacyPackages.x86_64-linux.applyPatches {
+      patchedNixpkgs = nixpkgsTweaks.legacyPackages.x86_64-linux.applyPatches {
         name = "patched-nixpkgs-source";
-        src = nixpkgsBootspec.outPath;
+        src = nixpkgsTweaks.outPath;
         patches = [
-          (nixpkgsBootspec.legacyPackages.x86_64-linux.fetchpatch {
+          (nixpkgsTweaks.legacyPackages.x86_64-linux.fetchpatch {
             url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/189676.patch";
-            sha256 = "sha256-wOw+Lie8x8/rtXvxAsNoCWZrRB6PndHBCXO/ZYDbYgQ=";
+            sha256 = "sha256-hZfvNG1nH+M3ysOs2prIRE5nqodZsDZV5+RsipKpI18=";
           })
         ];
       };
@@ -65,7 +64,7 @@
       #  ];
       #};
 
-      nixosConfigurations.elbrus = nixpkgsTweaks.lib.nixosSystem {
+      nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           { nixpkgs.overlays = [ emacs.overlay ]; }

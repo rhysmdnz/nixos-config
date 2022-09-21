@@ -13,8 +13,13 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.secureboot = {
+    enable = true;
+    signingKeyPath = "/path/to/the/signing/key";
+    signingCertPath = "/path/to/the/signing/cert";
+  };
 
   boot.initrd.systemd.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
