@@ -10,14 +10,20 @@
     emacs.url = "github:nix-community/emacs-overlay";
   };
 
-  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, ... }:
+  inputs.nixpkgsBootspec.url = "github:DeterminateSystems/nixpkgs/bootspec-rfc";
+  inputs.bootspec-secureboot = {
+    url = "github:DeterminateSystems/bootspec-secureboot/main";
+    inputs.nixpkgsBootspec.follows = "nixpkgs";
+  };
+
+  outputs = { self, nixpkgs, nixpkgsBootspec, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, ... }:
 
     let
-      patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
+      patchedNixpkgs = nixpkgsBootspec.legacyPackages.x86_64-linux.applyPatches {
         name = "patched-nixpkgs-source";
-        src = nixpkgs.outPath;
+        src = nixpkgsBootspec.outPath;
         patches = [
-          (nixpkgs.legacyPackages.x86_64-linux.fetchpatch {
+          (nixpkgsBootspec.legacyPackages.x86_64-linux.fetchpatch {
             url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/189676.patch";
             sha256 = "sha256-wOw+Lie8x8/rtXvxAsNoCWZrRB6PndHBCXO/ZYDbYgQ=";
           })
@@ -29,6 +35,7 @@
       nixosConfigurations.normandy = coolNixosSystem {
         system = "x86_64-linux";
         modules = [
+          bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./normandy.nix
           home-manager.nixosModules.home-manager

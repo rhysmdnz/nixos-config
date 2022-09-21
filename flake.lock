@@ -1,5 +1,24 @@
 {
   "nodes": {
+    "bootspec-secureboot": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1663598402,
+        "narHash": "sha256-z2Hqm2lciJcD00+YG1vO1PGbRBGDrj99MTt+QEEs6KI=",
+        "owner": "DeterminateSystems",
+        "repo": "bootspec-secureboot",
+        "rev": "31cc8d0acd716f93ee8fdc1fb618cc1145b19e09",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DeterminateSystems",
+        "ref": "main",
+        "repo": "bootspec-secureboot",
+        "type": "github"
+      }
+    },
     "doom-emacs": {
       "flake": false,
       "locked": {
@@ -36,14 +55,14 @@
     "emacs": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1663700519,
-        "narHash": "sha256-OA7fE3bsG81Sr3XC0tbKlkQqdCNglv1WlmEnUOvnHlI=",
+        "lastModified": 1663735551,
+        "narHash": "sha256-SIghVJ0qDGrDj0J53cUuzrM1s6Ff0WtJuL9g3GN5qr8=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "8e54a8980aa438c4f35807ad676acbf7578acce3",
+        "rev": "8c4c2b3925183b939cf57301e96d14c0130d0a1e",
         "type": "github"
       },
       "original": {
@@ -260,7 +279,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "utils": "utils"
       },
       "locked": {
@@ -292,7 +311,7 @@
         "flake-utils": "flake-utils_2",
         "format-all": "format-all",
         "nix-straight": "nix-straight",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "nose": "nose",
         "ob-racket": "ob-racket",
         "org": "org",
@@ -337,16 +356,34 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1663634720,
-        "narHash": "sha256-wMYXWKgysznBUHmvq5fN0uzUTNpnBLREPupM17xP8MY=",
-        "owner": "NixOS",
+        "lastModified": 1659131907,
+        "narHash": "sha256-8bz4k18M/FuVC+EVcI4aREN2PsEKT7LGmU2orfjnpCg=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "998f0f7924198b2460458728de59fe738997f28e",
+        "rev": "8d435fca5c561da8168abb30270788d2da2a7951",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgsBootspec": {
+      "locked": {
+        "lastModified": 1660331947,
+        "narHash": "sha256-AgX1L2FCHoXQ1MZyzhg2r04wb5aP6KoVA/fDIdhVFb4=",
+        "owner": "DeterminateSystems",
+        "repo": "nixpkgs",
+        "rev": "e1e8c44614df3a7c66c1206ab52f7753f1bffea5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DeterminateSystems",
+        "ref": "bootspec-rfc",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgsTweaks": {
@@ -367,6 +404,20 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1663634720,
+        "narHash": "sha256-wMYXWKgysznBUHmvq5fN0uzUTNpnBLREPupM17xP8MY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "998f0f7924198b2460458728de59fe738997f28e",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1662996720,
         "narHash": "sha256-XvLQ3SuXnDMJMpM1sv1ifPjBuRytiDYhB12H/BNTjgY=",
         "owner": "nixos",
@@ -381,7 +432,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1662096612,
         "narHash": "sha256-R+Q8l5JuyJryRPdiIaYpO5O3A55rT+/pItBrKcy7LM4=",
@@ -396,7 +447,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1663494472,
         "narHash": "sha256-fSowlaoXXWcAM8m9wA6u+eTJJtvruYHMA+Lb/tFi/qM=",
@@ -526,12 +577,14 @@
     },
     "root": {
       "inputs": {
+        "bootspec-secureboot": "bootspec-secureboot",
         "emacs": "emacs",
         "flake-compat": "flake-compat",
         "flake-compat-ci": "flake-compat-ci",
         "home-manager": "home-manager",
         "nix-doom-emacs": "nix-doom-emacs",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_5",
+        "nixpkgsBootspec": "nixpkgsBootspec",
         "nixpkgsTweaks": "nixpkgsTweaks"
       }
     },
