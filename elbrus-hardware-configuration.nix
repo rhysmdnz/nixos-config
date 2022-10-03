@@ -10,8 +10,8 @@
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" "dm-thin-pool" ];
+  boot.kernelModules = [ "kvm-intel" "dm-thin-pool" ];
   boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices = {

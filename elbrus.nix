@@ -17,6 +17,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.plymouth.enable = true;
   boot.plymouth.theme = "solar";
+  services.lvm.boot.thin.enable = true;
 
   networking.hostName = "elbrus"; # Define your hostname.
 
@@ -61,6 +62,7 @@
     keepassx
     chromium
     deja-dup
+    thin-provisioning-tools
   ];
 
   virtualisation.libvirtd = {
