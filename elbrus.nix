@@ -59,7 +59,6 @@
     virt-viewer
     exa
     python3
-    keepassx
     chromium
     deja-dup
     thin-provisioning-tools
