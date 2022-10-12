@@ -18,6 +18,8 @@
   boot.plymouth.enable = true;
   boot.plymouth.theme = "solar";
   services.lvm.boot.thin.enable = true;
+  boot.initrd.systemd.enable = true;
+  services.fstrim.enable = true;
 
   networking.hostName = "elbrus"; # Define your hostname.
 
