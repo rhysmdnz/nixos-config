@@ -20,6 +20,8 @@
   services.lvm.boot.thin.enable = true;
   boot.initrd.systemd.enable = true;
   services.fstrim.enable = true;
+  services.hardware.openrgb.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
 
   networking.hostName = "elbrus"; # Define your hostname.
 
