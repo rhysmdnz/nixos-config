@@ -17,8 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.secureboot = {
     enable = true;
-    signingKeyPath = "/path/to/the/signing/key";
-    signingCertPath = "/path/to/the/signing/cert";
+    signingKeyPath = "/etc/secureboot/db.key";
+    signingCertPath = "/etc/secureboot/db.crt";
   };
 
   boot.initrd.systemd.enable = true;
