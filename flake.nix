@@ -6,8 +6,13 @@
     flake-compat.flake = false;
     flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
     home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
     emacs.url = "github:nix-community/emacs-overlay";
+    emacs.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.url = "github:lnl7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   inputs.bootspec-secureboot = {
@@ -15,7 +20,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, ... }:
+  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
 
     let
       patchedNixpkgs = nixpkgsTweaks.legacyPackages.x86_64-linux.applyPatches {
@@ -70,6 +75,22 @@
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./elbrus.nix
           home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.rhys = {
+              imports = [ nix-doom-emacs.hmModule ./home.nix ];
+            };
+          }
+        ];
+      };
+
+      
+      darwinConfigurations.idenna = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./idenna.nix
+          home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
