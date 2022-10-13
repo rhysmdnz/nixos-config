@@ -29,7 +29,7 @@
         patches = [
           (nixpkgsTweaks.legacyPackages.x86_64-linux.fetchpatch {
             url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/189676.patch";
-            sha256 = "sha256-hZfvNG1nH+M3ysOs2prIRE5nqodZsDZV5+RsipKpI18=";
+            sha256 = "sha256-Z58LHvn2L6NuFn+GucfnQ4lnj3zvbcdWD8SHFRIy9/Q=";
           })
         ];
       };
