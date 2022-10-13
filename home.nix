@@ -1,12 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
-  home.packages = [
-    pkgs.starship
-  ];
-
   programs.doom-emacs = {
-    enable = true;
+    enable = lib.mkIf pkgs.stdenv.isLinux true;
     doomPrivateDir = ./doom.d;
     emacsPackage = pkgs.emacsPgtkNativeComp;
   };
@@ -26,14 +22,13 @@
     enableAutosuggestions = true;
     enableCompletion = true;
     enableSyntaxHighlighting = true;
-    enableVteIntegration = true;
+    enableVteIntegration = if pkgs.stdenv.isLinux then true else false;
     initExtraBeforeCompInit = ''
       zstyle ':completion:*' menu select
       zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
     '';
     initExtra = ''
       setopt INC_APPEND_HISTORY
-      export NIX_PATH="nixpkgs=${pkgs.path}"
     '';
     history = {
       share = false;

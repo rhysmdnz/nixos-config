@@ -15,7 +15,6 @@
     nixpkgs-fmt
     binwalk
     fd
-    nodePackages.firebase-tools
     gh
     git
     jq
