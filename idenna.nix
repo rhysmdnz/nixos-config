@@ -29,6 +29,7 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix.gc.automatic = true;
+  nix.gc.options = "-d";
   nix.settings.auto-optimise-store = true;
   nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''

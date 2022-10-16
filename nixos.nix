@@ -103,6 +103,7 @@
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   nix.gc.automatic = true;
+  nix.gc.options = "-d";
   nix.settings.auto-optimise-store = true;
 
   services.nscd.enable = false;
