@@ -105,6 +105,7 @@
   nix.settings.auto-optimise-store = true;
 
   services.nscd.enable = false;
+  system.nssModules = lib.mkForce [ ];
 
   hardware.enableRedistributableFirmware = true;
 }
