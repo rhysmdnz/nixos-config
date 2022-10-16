@@ -106,13 +106,5 @@
 
   services.nscd.enable = false;
 
-  nix.buildMachines = [
-    {
-      hostName = "localhost";
-      system = "x86_64-linux";
-      supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-    }
-  ];
-
   hardware.enableRedistributableFirmware = true;
 }

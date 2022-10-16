@@ -41,11 +41,6 @@
   };
 
   nix.settings.trusted-users = [ "jamie" ];
-  nix.buildMachines = [
-    {
-      maxJobs = 32;
-    }
-  ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "tpm_crb" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
