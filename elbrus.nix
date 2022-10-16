@@ -1,82 +1,19 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./elbrus-hardware-configuration.nix
-      ./nix-conf.nix
-    ];
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
   boot.plymouth.enable = true;
   boot.plymouth.theme = "solar";
-  services.lvm.boot.thin.enable = true;
-  boot.initrd.systemd.enable = true;
-  services.fstrim.enable = true;
-  services.hardware.openrgb.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
 
-  networking.hostName = "elbrus"; # Define your hostname.
-
-  # Set your time zone.
-  time.timeZone = "Pacific/Auckland";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  # networking.useDHCP = false;
-  # networking.interfaces.enp0s31f6.useDHCP = true;
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_NZ.UTF-8";
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-
-  # Enable the GNOME 3 Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  services.fwupd.enable = true;
-
-  services.udev.packages = [ pkgs.yubikey-personalization ];
+  networking.hostName = "elbrus";
 
   environment.systemPackages = with pkgs; [
-    wget
-    vim
-    gnome.gnome-tweaks
-    gnome.gnome-boxes
-    file
-    git
-    htop
-    ripgrep
-    fend
-    virt-manager
-    virt-viewer
-    exa
-    python3
     chromium
-    deja-dup
-    thin-provisioning-tools
   ];
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.runAsRoot = false;
-    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
-    qemu.swtpm.enable = true;
-    extraConfig = ''
-      memory_backing_dir = "/dev/shm/"
-    '';
-  };
   virtualisation.kvmgt.enable = true;
   virtualisation.kvmgt.vgpus = {
     "i915-GVTg_V5_8" = {
@@ -84,11 +21,6 @@
     };
   };
 
-  # services.sshd.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
-  services.flatpak.enable = true;
-  services.printing.enable = true;
   programs.chromium.enable = true;
   programs.chromium.extraOpts = {
     "BrowserSignin" = 0;
@@ -96,12 +28,6 @@
     "PasswordManagerEnabled" = false;
     "ExtensionInstallBlocklist" = "*";
   };
-  programs.zsh.enable = true;
-  programs.zsh.enableCompletion = true;
-  programs.gnupg.agent.enable = true;
-  programs.gnupg.agent.enableSSHSupport = true;
-  security.tpm2.enable = true;
-
 
   networking.firewall = {
     enable = true;
@@ -123,23 +49,49 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
 
-  users.users.rhys = {
-    uid = 1000;
-    isNormalUser = true;
-    home = "/home/rhys";
-    description = "Rhys Davies";
-    shell = pkgs.zsh;
-    extraGroups = [ "wheel" "libvirtd" "networkmanager" ];
-  };
-
   nix.buildMachines = [
     {
-      hostName = "localhost";
-      system = "x86_64-linux";
-      supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
       maxJobs = 4;
     }
   ];
+
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" "dm-thin-pool" ];
+  boot.extraModulePackages = [ ];
+
+  boot.initrd.luks.devices = {
+    root = {
+      device = "/dev/disk/by-uuid/784ad5d8-4807-4a72-948a-876e32f83c49";
+      preLVM = true;
+      allowDiscards = true;
+    };
+  };
+  fileSystems."/" =
+    {
+      device = "/dev/disk/by-uuid/933ef0e3-bc3b-466c-ad3b-66302d439f0e";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    {
+      device = "/dev/disk/by-uuid/8AA7-64F6";
+      fsType = "vfat";
+    };
+
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/638528b1-a315-47c3-93c4-619eddaf89bb"; }];
+
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.opengl = {
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
 
 }
 

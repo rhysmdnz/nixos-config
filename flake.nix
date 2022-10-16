@@ -42,6 +42,7 @@
         modules = [
           bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
+          ./nixos.nix
           ./normandy.nix
           home-manager.nixosModules.home-manager
           {
@@ -74,6 +75,7 @@
         system = "x86_64-linux";
         modules = [
           { nixpkgs.overlays = [ emacs.overlay ]; }
+          ./nixos.nix
           ./elbrus.nix
           home-manager.nixosModules.home-manager
           {
