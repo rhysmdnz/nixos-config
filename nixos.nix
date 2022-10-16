@@ -14,6 +14,7 @@
   services.fstrim.enable = true;
   services.hardware.openrgb.enable = true;
   services.fwupd.enable = true;
+  services.resolved.enable = true;
 
   security.rtkit.enable = true;
   hardware.pulseaudio.enable = false;
