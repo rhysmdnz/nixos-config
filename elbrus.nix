@@ -11,7 +11,7 @@
   networking.hostName = "elbrus";
 
   environment.systemPackages = with pkgs; [
-    chromium
+    microsoft-edge
   ];
 
   virtualisation.kvmgt.enable = true;
