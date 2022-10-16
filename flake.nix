@@ -20,17 +20,18 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgsTweaks, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
+  outputs = { self, nixpkgs, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
 
     let
-      patchedNixpkgs = nixpkgsTweaks.legacyPackages.x86_64-linux.applyPatches {
+      patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
         name = "patched-nixpkgs-source";
-        src = nixpkgsTweaks.outPath;
+        src = nixpkgs.outPath;
         patches = [
-          (nixpkgsTweaks.legacyPackages.x86_64-linux.fetchpatch {
+          (nixpkgs.legacyPackages.x86_64-linux.fetchpatch {
             url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/189676.patch";
             sha256 = "sha256-Z58LHvn2L6NuFn+GucfnQ4lnj3zvbcdWD8SHFRIy9/Q=";
           })
+          ./bootspec.patch
         ];
       };
       coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
@@ -85,7 +86,7 @@
         ];
       };
 
-      
+
       darwinConfigurations.idenna = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
