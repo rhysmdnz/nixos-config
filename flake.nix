@@ -27,10 +27,6 @@
         name = "patched-nixpkgs-source";
         src = nixpkgs.outPath;
         patches = [
-          (nixpkgs.legacyPackages.x86_64-linux.fetchpatch {
-            url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/189676.patch";
-            sha256 = "sha256-Z58LHvn2L6NuFn+GucfnQ4lnj3zvbcdWD8SHFRIy9/Q=";
-          })
           ./bootspec.patch
         ];
       };
