@@ -50,9 +50,12 @@
   system.stateVersion = "21.05"; # Did you read the comment?
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernelModules = [ "kvm-intel" "dm-thin-pool" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  services.lvm.boot.thin.enable = true;
+
 
   boot.initrd.luks.devices = {
     root = {
