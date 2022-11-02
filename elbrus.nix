@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -49,19 +50,19 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "tpm_tis" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   services.lvm.boot.thin.enable = true;
 
-
   boot.initrd.luks.devices = {
     root = {
       device = "/dev/disk/by-uuid/784ad5d8-4807-4a72-948a-876e32f83c49";
       preLVM = true;
       allowDiscards = true;
+      crypttabExtraOpts = [ "tpm2-device=auto" ];
     };
   };
   fileSystems."/" =
