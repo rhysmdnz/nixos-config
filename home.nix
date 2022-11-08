@@ -30,6 +30,10 @@
     '';
     initExtra = ''
       setopt INC_APPEND_HISTORY
+      function set_win_title(){
+        echo -ne "\033]0; ''${PWD/''$HOME/~}\007"
+      }
+      precmd_functions+=(set_win_title)
     '';
     history = {
       share = false;
@@ -54,6 +58,8 @@
   programs.starship.enable = true;
   programs.starship.settings = {
     add_newline = false;
+    gcloud.disabled = true;
+    aws.disabled = true;
   };
   programs.dircolors.enable = true;
 
