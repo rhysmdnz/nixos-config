@@ -26,7 +26,7 @@ jobs:
         export MESSAGE="Flake update"
         export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
         export CONTENT=$( base64 -i $FILE_TO_COMMIT )
-        if git diff flake.lock; then
+        if git diff --quiet flake.lock; then
           exit 0
         fi
         gh api --method PUT /repos/:owner/:repo/contents/$FILE_TO_COMMIT \
