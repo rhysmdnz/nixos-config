@@ -2,9 +2,6 @@
   inputs = {
     nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/bootspec-rfc";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    flake-compat.url = "github:edolstra/flake-compat";
-    flake-compat.flake = false;
-    flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
@@ -20,7 +17,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-compat-ci, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
 
     let
       patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
@@ -102,9 +99,5 @@
 
       hydraJobs.build.normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
       hydraJobs.build.normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
-      ciNix = flake-compat-ci.lib.recurseIntoFlakeWith {
-        flake = self;
-        systems = [ "x86_64-linux" ];
-      };
     };
 }
