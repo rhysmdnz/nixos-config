@@ -101,12 +101,8 @@
       hydraJobs.build.normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
       herculesCI.onPush.default = {
         outputs = { ... }: {
-          elbrus = {
-              self.nixosConfigurations.elbrus.config.system.build.toplevel;
-          };
-          normandy = {
-              self.nixosConfigurations.normandy.config.system.build.toplevel;
-          };
+          elbrus = self.nixosConfigurations.elbrus.config.system.build.toplevel;
+          normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
         };
       };
     };
