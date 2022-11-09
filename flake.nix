@@ -99,5 +99,6 @@
 
       hydraJobs.build.normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
       hydraJobs.build.normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
+      herculesCI.ciSystems = [ "x86_64-linux" ];
     };
 }
