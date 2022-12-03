@@ -12,8 +12,6 @@ jobs:
       with:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - run: nix build
-    - run: nix flake check
     - run: nix flake update
     - name: Commit changes
       env:
