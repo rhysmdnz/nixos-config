@@ -4,7 +4,7 @@
   programs.doom-emacs = {
     enable = lib.mkIf pkgs.stdenv.isLinux true;
     doomPrivateDir = ./doom.d;
-    emacsPackage = pkgs.emacsPgtkNativeComp;
+    emacsPackage = pkgs.emacsPgtk;
   };
 
   programs.git = {
