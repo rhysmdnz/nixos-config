@@ -35,6 +35,7 @@
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
+  nix.settings.trusted-users = [ "rhys" ];
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
