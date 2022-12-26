@@ -1,6 +1,5 @@
 {
   inputs = {
-    nixpkgsTweaks.url = "github:rhysmdnz/nixpkgs/bootspec-rfc";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -18,19 +17,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
-
-    let
-      patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-        name = "patched-nixpkgs-source";
-        src = nixpkgs.outPath;
-        patches = [
-          ./bootspec.patch
-        ];
-      };
-      coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
-    in
     {
-      nixosConfigurations.normandy = coolNixosSystem {
+      nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           bootspec-secureboot.nixosModules.bootspec-secureboot
