@@ -24,6 +24,7 @@
   services.hercules-ci-agent.settings.concurrentTasks = 32;
   
   virtualisation.docker.enable = true;
+  services.tailscale.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
