@@ -89,6 +89,7 @@
         );
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
         libapparmor = super.libapparmor.override { stdenv = badstdenv; };
+        systemd = super.systemd.override { stdenv = badstdenv; };
       })
     ];
 
