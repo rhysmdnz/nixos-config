@@ -1,0 +1,13 @@
+diff --git a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix b/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
+index aa725afdb8b..412f4f49ddb 100644
+--- a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
++++ b/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
+@@ -24,6 +24,8 @@ stdenv.mkDerivation {
+     "-DSCUDO_DEFAULT_OPTIONS=DeleteSizeMismatch=0:DeallocationTypeMismatch=0"
+   ];
+ 
++  hardeningDisable = [ "fortify" ];
++
+   cmakeFlags = [
+     "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
+     "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"

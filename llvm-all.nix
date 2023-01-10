@@ -82,11 +82,6 @@
         poppler = super.poppler.override { stdenv = badstdenv; };
         groff = super.groff.override { stdenv = badstdenv; };
         ell = super.ell.override { stdenv = badstdenv; };
-        llvmPackages_11 = super.llvmPackages_11 // { 
-            compiler-rt-libc = super.llvmPackages_11.compiler-rt-libc.overrideAttrs( attrs: { hardeningDisable = [ "fortify" ]; });
-            compiler-rt-no-libc = super.llvmPackages_11.compiler-rt-no-libc.overrideAttrs( attrs: { hardeningDisable = [ "fortify" ]; });
-            compiler-rt = super.llvmPackages_11.compiler-rt.overrideAttrs( attrs: { hardeningDisable = [ "fortify" ]; });
-        };
         gnome = super.gnome.overrideScope' (
           selfx: superx: {
             gnome-color-manager = superx.gnome-color-manager.override { stdenv = badstdenv; };

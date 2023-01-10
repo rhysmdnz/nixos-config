@@ -17,6 +17,16 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
+let
+       patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
+         name = "patched-nixpkgs-source";
+         src = nixpkgs.outPath;
+         patches = [
+           ./llvm.patch
+         ];
+       };
+       coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
+     in
     {
       nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -36,7 +46,7 @@
         ];
       };
 
-      nixosConfigurations.normandyTest = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.normandyTest = coolNixosSystem {
         system = "x86_64-linux";
         modules = [
         bootspec-secureboot.nixosModules.bootspec-secureboot
