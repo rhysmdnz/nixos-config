@@ -39,6 +39,7 @@
       nixosConfigurations.normandyTest = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+        bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./normandy.nix
           ./llvm-all.nix
