@@ -41,7 +41,8 @@
         modules = [
         bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
-          ./normandy.nix
+         ./nixos.nix
+         ./normandy.nix
           ./llvm-all.nix
             home-manager.nixosModules.home-manager
           {
