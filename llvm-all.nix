@@ -45,6 +45,9 @@
         iproute2 = super.iproute2.override { stdenv = badstdenv; };
         busybox = super.busybox.override { stdenv = badstdenv; };
         boost-build = super.boost-build.override { stdenv = badstdenv; };
+        yodl = super.yodl.override { stdenv = badstdenv; };
+        fwupd-efi = super.fwupd-efi.override { stdenv = badstdenv; };
+        efivar = super.efivar.override { stdenv = badstdenv; };
 
         # Extra warnings
         keyutils = super.keyutils.override { stdenv = badstdenv; };
@@ -54,6 +57,9 @@
         brltty = super.brltty.override { stdenv = badstdenv; };
         dhcp = super.dhcp.override { stdenv = badstdenv; };
         dmraid = super.dmraid.override { stdenv = badstdenv; };
+        sbsigntool = super.sbsigntool.override { stdenv = badstdenv; };
+        nfs-utils = super.nfs-utils.override { stdenv = badstdenv; };
+        edk2 = super.edk2.override { stdenv = badstdenv; };
 
         # omp stuff missing?
         openblas = super.openblas.override { stdenv = badstdenv; };
@@ -90,6 +96,11 @@
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
         libapparmor = super.libapparmor.override { stdenv = badstdenv; };
         systemd = super.systemd.override { stdenv = badstdenv; };
+        openssl_3 = super.openssl_3.override { stdenv = badstdenv; };
+        openssl = super.openssl.override { stdenv = badstdenv; };
+        jemalloc = super.jemalloc.override { stdenv = badstdenv; };
+        acpica-tools = super.acpica-tools.override { stdenv = badstdenv; };
+        libclc = super.libclc.override { stdenv = badstdenv; };
       })
     ];
 

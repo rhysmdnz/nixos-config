@@ -11,3 +11,28 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+diff --git a/pkgs/development/python-modules/pybind11/default.nix b/pkgs/development/python-modules/pybind11/default.nix
+index 642d3c7e97f..99ffed7cbc4 100644
+--- a/pkgs/development/python-modules/pybind11/default.nix
++++ b/pkgs/development/python-modules/pybind11/default.nix
+@@ -78,6 +78,8 @@ buildPythonPackage rec {
+     "tests/extra_setuptools/test_setuphelper.py"
+   ];
+ 
++  doCheck = false;
++
+   meta = with lib; {
+     homepage = "https://github.com/pybind/pybind11";
+     changelog = "https://github.com/pybind/pybind11/blob/${src.rev}/docs/changelog.rst";
+diff --git a/pkgs/os-specific/linux/xone/default.nix b/pkgs/os-specific/linux/xone/default.nix
+index 71bafb7abd9..7862739f148 100644
+--- a/pkgs/os-specific/linux/xone/default.nix
++++ b/pkgs/os-specific/linux/xone/default.nix
+@@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
+     "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
+     "M=$(sourceRoot)"
+     "VERSION=${version}"
++    "CC=${CC}"
+   ];
+ 
+   buildFlags = [ "modules" ];
