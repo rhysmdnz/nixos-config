@@ -28,9 +28,9 @@
 	});
 
 
-	gnu-efi = super.gnu-efi.overrideAttrs (finalAttrs: previousAttrs: {
-		#patches = previousAttrs.patches ++ [./gnu-efi/clang.patch];
-		makeFlags = previousAttrs.makeFlags ++ ["CC=${super.buildPackages.stdenv.cc.targetPrefix}cc"];
+	gnu-efi = super.gnu-efi.overrideAttrs (attrs: {
+		patches = [./gnu-efi/clang.patch];
+		makeFlags = attrs.makeFlags ++ ["CC=${super.buildPackages.stdenv.cc.targetPrefix}cc"];
 	});
 
 
