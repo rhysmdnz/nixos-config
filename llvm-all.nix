@@ -79,6 +79,6 @@
     ];
 
 
-  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_13.stdenv;
+  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.stdenv;
 }
 
