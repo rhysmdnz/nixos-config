@@ -22,6 +22,11 @@
         rustPackages = rustPackages_1_65;
         inherit (rustPackages) cargo clippy rustc rustPlatform;
 
+	# disable tests
+	pixman = super.pixman.overrideAttrs (finalAttrs: previousAttrs: {
+		doCheck = false;
+	});
+
         # Not being built?
         #tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
         fwupd = super.fwupd.override { stdenv = badstdenv; };
