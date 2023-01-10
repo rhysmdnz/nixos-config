@@ -27,6 +27,13 @@
 		doCheck = false;
 	});
 
+
+	gnu-efi = super.gnu-efi.overrideAttrs (finalAttrs: previousAttrs: {
+		#patches = previousAttrs.patches ++ [./gnu-efi/clang.patch];
+		makeFlags = previousAttrs.makeFlags ++ ["CC=${super.buildPackages.stdenv.cc.targetPrefix}cc"];
+	});
+
+
         # Not being built?
         #tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
         fwupd = super.fwupd.override { stdenv = badstdenv; };
