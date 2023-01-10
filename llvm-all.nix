@@ -15,11 +15,11 @@
 
         # God damn llvm linking errors can't find standard library junk :(
         rust_1_45 = super.rust_1_45.override { stdenv = badstdenv; };
-        rust_1_55 = super.rust_1_55.override { stdenv = badstdenv; };
-        rust = rust_1_55;
+        rust_1_65 = super.rust_1_65.override { stdenv = badstdenv; };
+        rust = rust_1_65;
         rustPackages_1_45 = rust_1_45.packages.stable;
-        rustPackages_1_55 = rust_1_55.packages.stable;
-        rustPackages = rustPackages_1_55;
+        rustPackages_1_65 = rust_1_65.packages.stable;
+        rustPackages = rustPackages_1_65;
         inherit (rustPackages) cargo clippy rustc rustPlatform;
 
         # Not being built?
