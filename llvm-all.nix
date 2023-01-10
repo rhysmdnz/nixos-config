@@ -6,12 +6,12 @@
     in
     [
       (self: super: rec {
-        python38 = super.python38.override { enableOptimizations = false; };
-        python3 = python38;
+        python310 = super.python310.override { enableOptimizations = false; };
+        python3 = python310;
         python27 = super.python27.override { enableOptimizations = false; };
         python2 = python27;
         python = python27;
-        python38Packages = pkgs.lib.recurseIntoAttrs python38.pkgs;
+        python310Packages = pkgs.lib.recurseIntoAttrs python310.pkgs;
 
         # God damn llvm linking errors can't find standard library junk :(
         rust_1_45 = super.rust_1_45.override { stdenv = badstdenv; };
