@@ -59,8 +59,8 @@
         ncurses = super.ncurses.override { stdenv = badstdenv; };
         efibootmgr = super.efibootmgr.override { stdenv = badstdenv; };
         elfutils = super.elfutils.override { stdenv = badstdenv; };
-        glibcLocales = super.glibcLocales.override { stdenv = badstdenv; };
-        glibcLocalesUtf8 = super.glibcLocalesUtf8.override { stdenv = badstdenv; };
+        glibcLocales = (import pkgs.path { system = "x86_64-linux"; }).glibcLocales;
+        glibcLocalesUtf8 = (import pkgs.path { system = "x86_64-linux"; }).glibcLocalesUtf8;
         cyrus_sasl = super.cyrus_sasl.override { stdenv = badstdenv; };
         libomxil-bellagio = super.libomxil-bellagio.override { stdenv = badstdenv; };
         avahi = super.avahi.override { stdenv = badstdenv; };
