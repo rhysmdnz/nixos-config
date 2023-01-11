@@ -12,7 +12,7 @@ index aa725afdb8b..412f4f49ddb 100644
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 26c0e239420..a6bffc375fd 100644
+index 26c0e239420..531c3c3111c 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
 +++ b/pkgs/development/compilers/llvm/14/default.nix
 @@ -53,14 +53,8 @@ let
@@ -32,7 +32,23 @@ index 26c0e239420..a6bffc375fd 100644
  
    in {
  
-@@ -152,7 +146,7 @@ let
+@@ -104,6 +98,7 @@ let
+       cc = tools.clang-unwrapped;
+       # libstdcxx is taken from gcc in an ad-hoc way in cc-wrapper.
+       libcxx = null;
++      bintools = tools.bintools;
+       extraPackages = [
+         targetLlvmLibraries.compiler-rt
+       ];
+@@ -113,6 +108,7 @@ let
+     libcxxClang = wrapCCWith rec {
+       cc = tools.clang-unwrapped;
+       libcxx = targetLlvmLibraries.libcxx;
++      bintools = tools.bintools;
+       extraPackages = [
+         targetLlvmLibraries.libcxxabi
+         targetLlvmLibraries.compiler-rt
+@@ -152,7 +148,7 @@ let
      clangUseLLVM = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = targetLlvmLibraries.libcxx;
@@ -41,7 +57,7 @@ index 26c0e239420..a6bffc375fd 100644
        extraPackages = [
          targetLlvmLibraries.libcxxabi
          targetLlvmLibraries.compiler-rt
-@@ -175,7 +169,7 @@ let
+@@ -175,7 +171,7 @@ let
      clangNoLibcxx = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = null;
@@ -50,7 +66,7 @@ index 26c0e239420..a6bffc375fd 100644
        extraPackages = [
          targetLlvmLibraries.compiler-rt
        ];
-@@ -190,7 +184,7 @@ let
+@@ -190,7 +186,7 @@ let
      clangNoLibc = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = null;
@@ -59,7 +75,7 @@ index 26c0e239420..a6bffc375fd 100644
        extraPackages = [
          targetLlvmLibraries.compiler-rt
        ];
-@@ -204,7 +198,7 @@ let
+@@ -204,7 +200,7 @@ let
      clangNoCompilerRt = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = null;
@@ -68,7 +84,7 @@ index 26c0e239420..a6bffc375fd 100644
        extraPackages = [ ];
        extraBuildCommands = mkExtraBuildCommands0 cc;
        nixSupport.cc-cflags = [ "-nostartfiles" ];
-@@ -213,7 +207,7 @@ let
+@@ -213,7 +209,7 @@ let
      clangNoCompilerRtWithLibc = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = null;

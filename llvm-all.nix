@@ -114,6 +114,6 @@
     ];
 
 
-  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.clangUseLLVM;
+  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.stdenv;
 }
 
