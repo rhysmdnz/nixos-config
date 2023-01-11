@@ -12,7 +12,7 @@ index aa725afdb8b..412f4f49ddb 100644
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 26c0e239420..35fe5cc409e 100644
+index 26c0e239420..a6bffc375fd 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
 +++ b/pkgs/development/compilers/llvm/14/default.nix
 @@ -53,14 +53,8 @@ let
@@ -37,7 +37,7 @@ index 26c0e239420..35fe5cc409e 100644
        cc = tools.clang-unwrapped;
        libcxx = targetLlvmLibraries.libcxx;
 -      bintools = bintools';
-+      bintools = bintools;
++      bintools = tools.bintools;
        extraPackages = [
          targetLlvmLibraries.libcxxabi
          targetLlvmLibraries.compiler-rt
@@ -46,7 +46,7 @@ index 26c0e239420..35fe5cc409e 100644
        cc = tools.clang-unwrapped;
        libcxx = null;
 -      bintools = bintools';
-+      bintools = bintools;
++      bintools = tools.bintools;
        extraPackages = [
          targetLlvmLibraries.compiler-rt
        ];
@@ -55,7 +55,7 @@ index 26c0e239420..35fe5cc409e 100644
        cc = tools.clang-unwrapped;
        libcxx = null;
 -      bintools = bintoolsNoLibc';
-+      bintools = bintoolsNoLibc;
++      bintools = tools.bintoolsNoLibc;
        extraPackages = [
          targetLlvmLibraries.compiler-rt
        ];
@@ -64,7 +64,7 @@ index 26c0e239420..35fe5cc409e 100644
        cc = tools.clang-unwrapped;
        libcxx = null;
 -      bintools = bintoolsNoLibc';
-+      bintools = bintoolsNoLibc;
++      bintools = tools.bintoolsNoLibc;
        extraPackages = [ ];
        extraBuildCommands = mkExtraBuildCommands0 cc;
        nixSupport.cc-cflags = [ "-nostartfiles" ];
