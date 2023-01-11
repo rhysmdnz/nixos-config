@@ -103,6 +103,8 @@
         acpica-tools = super.acpica-tools.override { stdenv = badstdenv; };
         libclc = super.libclc.override { stdenv = badstdenv; };
         libssh2 = super.libssh2.override { stdenv = badstdenv; };
+        ffmpeg = super.ffmpeg.override { stdenv = badstdenv; };
+        ffmpeg_4 = super.ffmpeg_4.override { stdenv = badstdenv; };
         ffmpeg-headless = super.ffmpeg-headless.override { stdenv = badstdenv; };
         ffmpeg_4-headless = super.ffmpeg_4-headless.override { stdenv = badstdenv; };
         udisks2 = super.udisks2.override { stdenv = badstdenv; };
