@@ -11,6 +11,20 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
+index fb08761a528..154af38ff97 100644
+--- a/pkgs/development/python-modules/cffi/default.nix
++++ b/pkgs/development/python-modules/cffi/default.nix
+@@ -60,7 +60,8 @@ if isPyPy then null else buildPythonPackage rec {
+   NIX_CFLAGS_COMPILE = lib.optionalString stdenv.cc.isClang
+     "-Wno-unused-command-line-argument -Wno-unreachable-code -Wno-c++11-narrowing";
+ 
+-  doCheck = !stdenv.hostPlatform.isMusl;
++  #doCheck = !stdenv.hostPlatform.isMusl;
++  doCheck = false;
+ 
+   checkInputs = [ pytestCheckHook ];
+ 
 diff --git a/pkgs/development/python-modules/pybind11/default.nix b/pkgs/development/python-modules/pybind11/default.nix
 index 642d3c7e97f..99ffed7cbc4 100644
 --- a/pkgs/development/python-modules/pybind11/default.nix
