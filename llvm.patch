@@ -1,16 +1,3 @@
-diff --git a/lib/systems/default.nix b/lib/systems/default.nix
-index 4a5e66caec7..8144a070827 100644
---- a/lib/systems/default.nix
-+++ b/lib/systems/default.nix
-@@ -65,7 +65,7 @@ rec {
-         # "bfd" and "gold" both come from GNU binutils. The existence of Gold
-         # is why we use the more obscure "bfd" and not "binutils" for this
-         # choice.
--        else                                     "bfd";
-+        else                                     "lld";
-       extensions = rec {
-         sharedLibrary =
-           /**/ if final.isDarwin  then ".dylib"
 diff --git a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix b/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
 index aa725afdb8b..412f4f49ddb 100644
 --- a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
@@ -24,6 +11,27 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
+index 26c0e239420..93b8edbc95d 100644
+--- a/pkgs/development/compilers/llvm/14/default.nix
++++ b/pkgs/development/compilers/llvm/14/default.nix
+@@ -53,14 +53,8 @@ let
+       ln -s "${targetLlvmLibraries.compiler-rt.out}/share" "$rsrc/share"
+     '';
+ 
+-  bintoolsNoLibc' =
+-    if bootBintoolsNoLibc == null
+-    then tools.bintoolsNoLibc
+-    else bootBintoolsNoLibc;
+-  bintools' =
+-    if bootBintools == null
+-    then tools.bintools
+-    else bootBintools;
++  bintoolsNoLibc' = tools.bintoolsNoLibc;
++  bintools' = tools.bintools;
+ 
+   in {
+ 
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
