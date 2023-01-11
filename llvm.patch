@@ -12,7 +12,7 @@ index aa725afdb8b..412f4f49ddb 100644
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 26c0e239420..732b4c599ef 100644
+index 26c0e239420..530a2a461dc 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
 +++ b/pkgs/development/compilers/llvm/14/default.nix
 @@ -7,14 +7,8 @@
@@ -27,8 +27,8 @@ index 26c0e239420..732b4c599ef 100644
 -    if stdenv.targetPlatform.linker == "lld"
 -    then null
 -    else pkgs.bintools
-+, bootBintoolsNoLibc = null 
-+, bootBintools = null
++, bootBintoolsNoLibc null 
++, bootBintools null
  , darwin
  }:
  
