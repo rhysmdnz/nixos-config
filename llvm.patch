@@ -1,3 +1,20 @@
+diff --git a/pkgs/development/compilers/ghc/9.2.4.nix b/pkgs/development/compilers/ghc/9.2.4.nix
+index 6b8efae06e5..cde24180653 100644
+--- a/pkgs/development/compilers/ghc/9.2.4.nix
++++ b/pkgs/development/compilers/ghc/9.2.4.nix
+@@ -227,10 +227,10 @@ stdenv.mkDerivation (rec {
+     export NM="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}nm"
+     export RANLIB="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}ranlib"
+     export READELF="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}readelf"
+-    export STRIP="${bintoolsFor.strip}/bin/${bintoolsFor.strip.targetPrefix}strip"
++    export STRIP="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}strip"
+   '' + lib.optionalString (stdenv.targetPlatform.linker == "cctools") ''
+     export OTOOL="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}otool"
+-    export INSTALL_NAME_TOOL="${bintoolsFor.install_name_tool}/bin/${bintoolsFor.install_name_tool.targetPrefix}install_name_tool"
++    export INSTALL_NAME_TOOL="${targetCC.bintools.bintools}/bin/${targetCC.bintools.targetPrefix}install_name_tool"
+   '' + lib.optionalString useLLVM ''
+     export LLC="${lib.getBin buildTargetLlvmPackages.llvm}/bin/llc"
+     export OPT="${lib.getBin buildTargetLlvmPackages.llvm}/bin/opt"
 diff --git a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix b/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
 index aa725afdb8b..412f4f49ddb 100644
 --- a/pkgs/development/compilers/llvm/11/compiler-rt/default.nix
