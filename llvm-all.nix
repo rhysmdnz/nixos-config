@@ -106,6 +106,6 @@
     ];
 
 
-  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.stdenv;
+  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.overrideCC pkgs.llvmPackages_14.stdenv pkgs.wrapCCWith rec { bintools = llvmPackages_14.bintools };
 }
 
