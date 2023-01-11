@@ -11,6 +11,27 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
+index 26c0e239420..732b4c599ef 100644
+--- a/pkgs/development/compilers/llvm/14/default.nix
++++ b/pkgs/development/compilers/llvm/14/default.nix
+@@ -7,14 +7,8 @@
+ # This is the default binutils, but with *this* version of LLD rather
+ # than the default LLVM verion's, if LLD is the choice. We use these for
+ # the `useLLVM` bootstrapping below.
+-, bootBintoolsNoLibc ?
+-    if stdenv.targetPlatform.linker == "lld"
+-    then null
+-    else pkgs.bintoolsNoLibc
+-, bootBintools ?
+-    if stdenv.targetPlatform.linker == "lld"
+-    then null
+-    else pkgs.bintools
++, bootBintoolsNoLibc = null 
++, bootBintools = null
+ , darwin
+ }:
+ 
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
