@@ -103,6 +103,7 @@
         libclc = super.libclc.override { stdenv = badstdenv; };
         libssh2 = super.libssh2.override { stdenv = badstdenv; };
         ffmpeg = super.ffmpeg.override { stdenv = badstdenv; };
+        ffmpeg_4 = super.ffmpeg_4.override { stdenv = badstdenv; };
         udisks2 = super.udisks2.override { stdenv = badstdenv; };
         udisks = super.udisks.override { stdenv = badstdenv; };
       })
