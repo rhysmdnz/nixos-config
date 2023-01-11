@@ -60,6 +60,7 @@
         sbsigntool = super.sbsigntool.override { stdenv = badstdenv; };
         nfs-utils = super.nfs-utils.override { stdenv = badstdenv; };
         edk2 = super.edk2.override { stdenv = badstdenv; };
+        seabios = super.seabios.override { stdenv = badstdenv; };
 
         # omp stuff missing?
         openblas = super.openblas.override { stdenv = badstdenv; };
