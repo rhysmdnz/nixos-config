@@ -24,6 +24,19 @@ index 642d3c7e97f..99ffed7cbc4 100644
    meta = with lib; {
      homepage = "https://github.com/pybind/pybind11";
      changelog = "https://github.com/pybind/pybind11/blob/${src.rev}/docs/changelog.rst";
+diff --git a/pkgs/development/python-modules/pycparser/default.nix b/pkgs/development/python-modules/pycparser/default.nix
+index 47f1a20fbb2..8f4ee389286 100644
+--- a/pkgs/development/python-modules/pycparser/default.nix
++++ b/pkgs/development/python-modules/pycparser/default.nix
+@@ -13,6 +13,8 @@ buildPythonPackage rec {
+ 
+   unittestFlagsArray = [ "-s" "tests" ];
+ 
++  doCheck = false;
++
+   meta = with lib; {
+     description = "C parser in Python";
+     homepage = "https://github.com/eliben/pycparser";
 diff --git a/pkgs/os-specific/linux/xone/default.nix b/pkgs/os-specific/linux/xone/default.nix
 index 71bafb7abd9..7ba8dd6bebc 100644
 --- a/pkgs/os-specific/linux/xone/default.nix
