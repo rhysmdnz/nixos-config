@@ -73,14 +73,14 @@ index 47f1a20fbb2..8f4ee389286 100644
      description = "C parser in Python";
      homepage = "https://github.com/eliben/pycparser";
 diff --git a/pkgs/os-specific/linux/xone/default.nix b/pkgs/os-specific/linux/xone/default.nix
-index 71bafb7abd9..7ba8dd6bebc 100644
+index 71bafb7abd9..d2d4634fa70 100644
 --- a/pkgs/os-specific/linux/xone/default.nix
 +++ b/pkgs/os-specific/linux/xone/default.nix
 @@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
      "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
      "M=$(sourceRoot)"
      "VERSION=${version}"
-+    "CC=$CC"
++    "CC=${stdenv.cc.targetPrefix}cc"
    ];
  
    buildFlags = [ "modules" ];
