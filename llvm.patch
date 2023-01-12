@@ -41,6 +41,18 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
+diff --git a/pkgs/development/compilers/llvm/14/bintools/default.nix b/pkgs/development/compilers/llvm/14/bintools/default.nix
+index 53f7941e336..c333614041e 100644
+--- a/pkgs/development/compilers/llvm/14/bintools/default.nix
++++ b/pkgs/development/compilers/llvm/14/bintools/default.nix
+@@ -24,6 +24,7 @@ in runCommand "llvm-binutils-${version}" { preferLocalBuild = true; } ''
+    ln -s ${llvm}/bin/llvm-readelf $out/bin/${prefix}readelf
+    ln -s ${llvm}/bin/llvm-size $out/bin/${prefix}size
+    ln -s ${llvm}/bin/llvm-strip $out/bin/${prefix}strip
++   ln -s ${llvm}/bin/llvm-strings $out/bin/${prefix}strings
+ 
+    ln -s ${lld}/bin/lld $out/bin/${prefix}ld
+ ''
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
 index 26c0e239420..531c3c3111c 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
