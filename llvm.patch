@@ -123,19 +123,6 @@ index 26c0e239420..531c3c3111c 100644
        extraPackages = [ ];
        extraBuildCommands = mkExtraBuildCommands0 cc;
      };
-diff --git a/pkgs/development/libraries/glib/default.nix b/pkgs/development/libraries/glib/default.nix
-index 5b4b18cf919..de375406699 100644
---- a/pkgs/development/libraries/glib/default.nix
-+++ b/pkgs/development/libraries/glib/default.nix
-@@ -284,6 +284,8 @@ stdenv.mkDerivation (finalAttrs: {
-         });
-   };
- 
-+  doCheck = false;
-+
-   meta = with lib; {
-     description = "C library of programming buildings blocks";
-     homepage    = "https://www.gtk.org/";
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
