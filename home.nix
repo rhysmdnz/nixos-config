@@ -2,7 +2,7 @@
 {
 
   programs.doom-emacs = {
-    enable = lib.mkIf pkgs.stdenv.isLinux true;
+    enable = pkgs.stdenv.isLinux && pkgs.stdenv.isGNU;
     doomPrivateDir = ./doom.d;
     emacsPackage = pkgs.emacsPgtk;
   };
