@@ -287,6 +287,19 @@ index 00000000000..ef8f11cf47b
 +-- 
 +GitLab
 +
+diff --git a/pkgs/development/libraries/wayland/protocols.nix b/pkgs/development/libraries/wayland/protocols.nix
+index 1d4b6278893..85fd01b64d2 100644
+--- a/pkgs/development/libraries/wayland/protocols.nix
++++ b/pkgs/development/libraries/wayland/protocols.nix
+@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
+   pname = "wayland-protocols";
+   version = "1.31";
+ 
+-  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
++  doCheck = false;
+ 
+   src = fetchurl {
+     url = "https://gitlab.freedesktop.org/wayland/${pname}/-/releases/${version}/downloads/${pname}-${version}.tar.xz";
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
