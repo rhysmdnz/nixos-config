@@ -102,7 +102,7 @@
         jemalloc = super.jemalloc.override { stdenv = badstdenv; };
         acpica-tools = super.acpica-tools.override { stdenv = badstdenv; };
         libclc = super.libclc.override { stdenv = badstdenv; };
-        libssh2 = super.libssh2.override { stdenv = badstdenv; };
+        #libssh2 = super.libssh2.override { stdenv = badstdenv; };
         ffmpeg = super.ffmpeg.override { stdenv = badstdenv; };
         ffmpeg_4 = super.ffmpeg_4.override { stdenv = badstdenv; };
         ffmpeg-headless = super.ffmpeg-headless.override { stdenv = badstdenv; };
