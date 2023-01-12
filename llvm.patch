@@ -1,3 +1,16 @@
+diff --git a/pkgs/build-support/bintools-wrapper/ld-wrapper.sh b/pkgs/build-support/bintools-wrapper/ld-wrapper.sh
+index 86a74160220..17b5bfc57a6 100644
+--- a/pkgs/build-support/bintools-wrapper/ld-wrapper.sh
++++ b/pkgs/build-support/bintools-wrapper/ld-wrapper.sh
+@@ -233,7 +233,7 @@ fi
+ # Only add --build-id if this is a final link. FIXME: should build gcc
+ # with --enable-linker-build-id instead?
+ if [ "$NIX_SET_BUILD_ID_@suffixSalt@" = 1 ] && ! (( "$relocatable" )); then
+-    extraAfter+=(--build-id)
++    extraAfter+=(--build-id=sha1)
+ fi
+ 
+ 
 diff --git a/pkgs/development/compilers/ghc/9.2.4.nix b/pkgs/development/compilers/ghc/9.2.4.nix
 index 6b8efae06e5..cde24180653 100644
 --- a/pkgs/development/compilers/ghc/9.2.4.nix
