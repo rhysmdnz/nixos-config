@@ -136,6 +136,118 @@ index 5b4b18cf919..e50dc4db13d 100644
    ];
  
    outputs = [ "bin" "out" "dev" "devdoc" ];
+diff --git a/pkgs/development/libraries/glib/lld.patch b/pkgs/development/libraries/glib/lld.patch
+new file mode 100644
+index 00000000000..ef8f11cf47b
+--- /dev/null
++++ b/pkgs/development/libraries/glib/lld.patch
+@@ -0,0 +1,106 @@
++From e8a658663599841a6255fdb430f023e9b73214f3 Mon Sep 17 00:00:00 2001
++From: Alex Richardson <arichardson@FreeBSD.org>
++Date: Sun, 8 Jan 2023 11:14:35 +0000
++Subject: [PATCH 1/2] Fix building gio/tests/test_resources.o with LLVM ld
++MIME-Version: 1.0
++Content-Type: text/plain; charset=UTF-8
++Content-Transfer-Encoding: 8bit
++
++Unlike GNU ld which has a default target architecture, ld.lld is always a
++cross-linker and has the same behaviour for all targets. If you don't tell
++ld.lld what the target architecture is it can't infer the right ELF flags
++for the resulting object file.
++```
++$ ~/cheri/output/sdk/bin/ld -r -b binary gio/tests/test5.gresource -o gio/tests/test_resources.o -v
++LLD 14.0.0 (compatible with GNU linkers)
++ld: error: target emulation unknown: -m or at least one .o file required
++```
++
++As you can see from the error message it can't infer the target
++architecture (you need a least one valid .o file or the -m flag).
++If you use the compiler instead of directly invoking the linker it will
++pass the appropriate flags:
++```
++$ ~/cheri/output/sdk/bin/clang -r -Wl,-b,binary gio/tests/test5.gresource -o gio/tests/test_resources.o -v
++clang version 14.0.0 (https://github.com/CTSRD-CHERI/llvm-project.git ff66b683475fc44355b2010dbcbe1202d785e6f8)
++Target: x86_64-unknown-linux-gnu
++Thread model: posix
++InstalledDir: /home/alexrichardson/cheri/output/sdk/bin
++Found candidate GCC installation: /usr/lib/gcc/x86_64-linux-gnu/10
++Found candidate GCC installation: /usr/lib/gcc/x86_64-linux-gnu/11
++Found candidate GCC installation: /usr/lib/gcc/x86_64-linux-gnu/12
++Selected GCC installation: /usr/lib/gcc/x86_64-linux-gnu/12
++Candidate multilib: .;@m64
++Selected multilib: .;@m64
++ "/home/alexrichardson/cheri/output/sdk/bin/ld" --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o gio/tests/test_resources.o -L/usr/lib/gcc/x86_64-linux-gnu/12 -L/usr/lib/gcc/x86_64-linux-gnu/12/../../../../lib64 -L/lib/x86_64-linux-gnu -L/lib/../lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib64 -L/home/alexrichardson/cheri/output/sdk/bin/../lib -L/lib -L/usr/lib -r -b binary gio/tests/test5.gresource
++â¯ file gio/tests/test_resources.o
++gio/tests/test_resources.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
++```
++
++This works for most architectures, but ones that need additional metadata
++sections to encode the used ABI, etc. will require a different approach
++using .incbin. However, that is a change for another MR.
++
++Partially fixes: https://gitlab.gnome.org/GNOME/glib/-/issues/2720
++---
++ gio/tests/meson.build | 8 ++------
++ 1 file changed, 2 insertions(+), 6 deletions(-)
++
++diff --git a/gio/tests/meson.build b/gio/tests/meson.build
++index 13a1775ce8..ec2f3e62ac 100644
++--- a/gio/tests/meson.build
+++++ b/gio/tests/meson.build
++@@ -926,12 +926,8 @@ if not meson.is_cross_build()
++     test_resources_binary = custom_target('test_resources.o',
++       input : test_gresource_binary,
++       output : 'test_resources.o',
++-      command : [ld,
++-                 '-z', 'noexecstack',
++-                 '-r',
++-                 '-b','binary',
++-                 '@INPUT@',
++-                 '-o','@OUTPUT@'])
+++      command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
+++                                  '@INPUT@', '-o','@OUTPUT@'])
++ 
++     # Rename symbol to match the one in the C file
++     if cc.get_id() == 'gcc' and host_system == 'windows'
++-- 
++GitLab
++
++
++From 350cf95a991fa4d74ac1d36cb2824385f895bd69 Mon Sep 17 00:00:00 2001
++From: Alex Richardson <arichardson@FreeBSD.org>
++Date: Sun, 8 Jan 2023 11:17:19 +0000
++Subject: [PATCH 2/2] Fix build of gio/ttests/est_resources2.o with LLVM
++ objcopy
++
++LLVM objcopy's --strip-all is more aggressive that GNU objcopy --strip-all
++and will remove everything that is not actually used. In this case we
++see the following error:
++`error: 'gio/tests/test_resources.o': Symbol table has link index of 5 which is not a valid index`
++
++Fix this by only removing debug symbols instead of all unused symbols and
++sections.
++
++Helps: https://gitlab.gnome.org/GNOME/glib/-/issues/2720
++---
++ gio/tests/meson.build | 2 +-
++ 1 file changed, 1 insertion(+), 1 deletion(-)
++
++diff --git a/gio/tests/meson.build b/gio/tests/meson.build
++index ec2f3e62ac..53d4da2238 100644
++--- a/gio/tests/meson.build
+++++ b/gio/tests/meson.build
++@@ -939,7 +939,7 @@ if not meson.is_cross_build()
++       input : test_resources_binary,
++       output : 'test_resources2.o',
++       command : [objcopy,
++-                 '--strip-all',
+++                 '--strip-debug',
++                  '--add-symbol', underscore + '_g_binary_test1_resource_data=.data:0',
++                  '@INPUT@',
++                  '@OUTPUT@'])
++-- 
++GitLab
++
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
