@@ -97,8 +97,8 @@
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
         libapparmor = super.libapparmor.override { stdenv = badstdenv; };
         systemd = super.systemd.override { stdenv = badstdenv; };
-        openssl_3 = super.openssl_3.override { stdenv = badstdenv; };
-        openssl = super.openssl.override { stdenv = badstdenv; };
+        #openssl_3 = super.openssl_3.override { stdenv = badstdenv; };
+        #openssl = super.openssl.override { stdenv = badstdenv; };
         jemalloc = super.jemalloc.override { stdenv = badstdenv; };
         acpica-tools = super.acpica-tools.override { stdenv = badstdenv; };
         libclc = super.libclc.override { stdenv = badstdenv; };
