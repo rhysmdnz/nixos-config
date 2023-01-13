@@ -466,6 +466,18 @@ index 74addc6c501..630292bc819 100644
    # 32 bit libs only version of this package
  , lib32 ? null
    # Whether to extract the GSP firmware
+diff --git a/pkgs/os-specific/linux/systemd/default.nix b/pkgs/os-specific/linux/systemd/default.nix
+index 4e3f3762370..c96d1284fc2 100644
+--- a/pkgs/os-specific/linux/systemd/default.nix
++++ b/pkgs/os-specific/linux/systemd/default.nix
+@@ -521,6 +521,7 @@ stdenv.mkDerivation {
+     "-Dnss-systemd=false"
+   ] ++ lib.optionals withLibBPF [
+     "-Dbpf-framework=true"
++    "-Dbpf-compiler=clang"
+   ] ++ lib.optionals withTpm2Tss [
+     "-Dtpm2=true"
+   ] ++ lib.optionals (!withUtmp) [
 diff --git a/pkgs/os-specific/linux/xone/default.nix b/pkgs/os-specific/linux/xone/default.nix
 index 71bafb7abd9..d2d4634fa70 100644
 --- a/pkgs/os-specific/linux/xone/default.nix
