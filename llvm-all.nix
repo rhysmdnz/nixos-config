@@ -96,6 +96,8 @@
         gnome = super.gnome.overrideScope' (
           selfx: superx: {
             gnome-color-manager = superx.gnome-color-manager.override { stdenv = badstdenv; };
+            seahorse = superx.seahorse.override { stdenv = badstdenv; };
+            gnome-remote-desktop = superx.gnome-remote-desktop.override { stdenv = badstdenv; };
           }
         );
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
@@ -115,6 +117,8 @@
         udisks = super.udisks.override { stdenv = badstdenv; };
         OVMFFull = super.OVMFFull.override { stdenv = badstdenv; };
         nss = super.nss.override { stdenv = badstdenv; };
+        mupdf = super.mupdf.override { stdenv = badstdenv; };
+        nvidia-vaapi-driver = super.nvidia-vaapi-driver.override { stdenv = badstdenv; };
 
 
        webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
