@@ -12,7 +12,7 @@
   hardware.xone.enable = true;
 
   services.fstrim.enable = true;
-  services.hardware.openrgb.enable = true;
+  services.hardware.openrgb.enable = false;
   services.fwupd.enable = true;
   services.resolved.enable = true;
 
