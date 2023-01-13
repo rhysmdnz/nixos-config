@@ -109,7 +109,7 @@
         ffmpeg_4-headless = super.ffmpeg_4-headless.override { stdenv = badstdenv; };
         udisks2 = super.udisks2.override { stdenv = badstdenv; };
         udisks = super.udisks.override { stdenv = badstdenv; };
-        OVMF = super.OVMFFull.override { stdenv = badstdenv; };
+        OVMFFull = super.OVMFFull.override { stdenv = badstdenv; };
       })
     ];
 
