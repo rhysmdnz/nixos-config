@@ -15,7 +15,6 @@
         python27 = super.python27.override { enableOptimizations = false; };
         python2 = python27;
         python = python27;
-         = ;
         python310Packages = (pkgs.lib.recurseIntoAttrs python310.pkgs).overrideScope (
           selfx: superx: {
             afdko = superx.afdko.override { stdenv = badstdenv; };
