@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 
+
+# Notes to self
+# My GCC hacks mean it's linking with ld.bfd :(
+
 {
   nixpkgs.overlays =
     let badstdenv = (import pkgs.path { system = "x86_64-linux"; }).stdenv;
@@ -110,6 +114,7 @@
         udisks2 = super.udisks2.override { stdenv = badstdenv; };
         udisks = super.udisks.override { stdenv = badstdenv; };
         OVMFFull = super.OVMFFull.override { stdenv = badstdenv; };
+        nss = super.nss.override { stdenv = badstdenv; };
       })
     ];
 
