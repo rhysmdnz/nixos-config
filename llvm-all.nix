@@ -75,32 +75,35 @@
         openblas = super.openblas.override { stdenv = badstdenv; };
         suitesparse = super.suitesparse.override { stdenv = badstdenv; };
 
-        # Confirmed weird to be investigated further
+        # GNU stuff
         gdb = super.gdb.override { stdenv = badstdenv; };
-        valgrind = super.valgrind.override { stdenv = badstdenv; };
-        valgrind-light = valgrind.override { gdb = null; };
-        ncurses = super.ncurses.override { stdenv = badstdenv; };
-        efibootmgr = super.efibootmgr.override { stdenv = badstdenv; };
-        elfutils = super.elfutils.override { stdenv = badstdenv; };
         glibcLocales = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; };
         glibcLocalesUtf8 = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; allLocales = false; };
-        cyrus_sasl = super.cyrus_sasl.override { stdenv = badstdenv; };
-        libomxil-bellagio = super.libomxil-bellagio.override { stdenv = badstdenv; };
-        avahi = super.avahi.override { stdenv = badstdenv; };
-        libdc1394 = super.libdc1394.override { stdenv = badstdenv; };
-        directfb = super.directfb.override { stdenv = badstdenv; };
-        bluez5 = super.bluez5.override { stdenv = badstdenv; };
-        ppp = super.ppp.override { stdenv = badstdenv; };
-        unittest-cpp = super.unittest-cpp.override { stdenv = badstdenv; };
-        libnma = super.libnma.override { stdenv = badstdenv; };
-        openjdk8 = super.openjdk8.override { stdenv = badstdenv; };
-        postgresql_11 = super.postgresql_11.override { stdenv = badstdenv; };
-        poppler = super.poppler.override { stdenv = badstdenv; };
-        groff = super.groff.override { stdenv = badstdenv; };
-        ell = super.ell.override { stdenv = badstdenv; };
+
+
+        # Confirmed weird to be investigated further
+        #valgrind = super.valgrind.override { stdenv = badstdenv; };
+        #valgrind-light = valgrind.override { gdb = null; };
+        #ncurses = super.ncurses.override { stdenv = badstdenv; };
+        #efibootmgr = super.efibootmgr.override { stdenv = badstdenv; };
+        #elfutils = super.elfutils.override { stdenv = badstdenv; };
+        #cyrus_sasl = super.cyrus_sasl.override { stdenv = badstdenv; };
+        #libomxil-bellagio = super.libomxil-bellagio.override { stdenv = badstdenv; };
+        #avahi = super.avahi.override { stdenv = badstdenv; };
+        #libdc1394 = super.libdc1394.override { stdenv = badstdenv; };
+        #directfb = super.directfb.override { stdenv = badstdenv; };
+        #bluez5 = super.bluez5.override { stdenv = badstdenv; };
+        #ppp = super.ppp.override { stdenv = badstdenv; };
+        #unittest-cpp = super.unittest-cpp.override { stdenv = badstdenv; };
+        #libnma = super.libnma.override { stdenv = badstdenv; };
+        #openjdk8 = super.openjdk8.override { stdenv = badstdenv; };
+        #postgresql_11 = super.postgresql_11.override { stdenv = badstdenv; };
+        #poppler = super.poppler.override { stdenv = badstdenv; };
+        #groff = super.groff.override { stdenv = badstdenv; };
+        #ell = super.ell.override { stdenv = badstdenv; };
         gnome = super.gnome.overrideScope' (
           selfx: superx: {
-            gnome-color-manager = superx.gnome-color-manager.override { stdenv = badstdenv; };
+            #gnome-color-manager = superx.gnome-color-manager.override { stdenv = badstdenv; };
             seahorse = superx.seahorse.override { stdenv = badstdenv; };
             gnome-remote-desktop = superx.gnome-remote-desktop.override { stdenv = badstdenv; };
           }
