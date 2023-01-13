@@ -23,7 +23,7 @@
   services.hercules-ci-agent.enable = true;
   services.hercules-ci-agent.settings.concurrentTasks = 32;
   
-  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = true;
   services.tailscale.enable = true;
 
   systemd.targets.sleep.enable = false;
@@ -37,7 +37,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "22.11"; # Did you read the comment?
 
   users.users.jamie = {
     uid = 1001;
