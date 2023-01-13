@@ -105,6 +105,7 @@
             gnome-color-manager = superx.gnome-color-manager.override { stdenv = badstdenv; };
             seahorse = superx.seahorse.override { stdenv = badstdenv; };
             gnome-remote-desktop = superx.gnome-remote-desktop.override { stdenv = badstdenv; };
+            gnome-contacts = superx.gnome-contacts.override { stdenv = badstdenv; };
           }
         );
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
