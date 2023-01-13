@@ -21,6 +21,8 @@
           }
         );
         python3Packages = lib.dontRecurseIntoAttrs python310Packages;
+        afdko = super.afdko.override { stdenv = badstdenv; };
+       
 
         # God damn llvm linking errors can't find standard library junk :(
         rust_1_45 = super.rust_1_45.override { stdenv = badstdenv; };
