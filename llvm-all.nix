@@ -129,6 +129,7 @@
         nvidia-vaapi-driver = super.nvidia-vaapi-driver.override { stdenv = badstdenv; };
         catatonit = super.catatonit.override { stdenv = badstdenv; };
         gexiv2 = super.gexiv2.override { stdenv = badstdenv; };
+        lensfun = super.lensfun.override { stdenv = badstdenv; };
 
 
        webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
