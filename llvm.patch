@@ -302,10 +302,37 @@ index 11d00dfa1c0..510b9d7b1da 100644
        build-aux/meson/gen-demo-header.py
 diff --git a/pkgs/development/libraries/gtk/patches/4.0-lld.patch b/pkgs/development/libraries/gtk/patches/4.0-lld.patch
 new file mode 100644
-index 00000000000..d085b598b39
+index 00000000000..9f7efdaec8a
 --- /dev/null
 +++ b/pkgs/development/libraries/gtk/patches/4.0-lld.patch
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,81 @@
++diff --git a/demos/gtk-demo/meson.build b/demos/gtk-demo/meson.build
++index 5537cf20a5..d24d45390c 100644
++--- a/demos/gtk-demo/meson.build
+++++ b/demos/gtk-demo/meson.build
++@@ -198,19 +198,15 @@ if not meson.is_cross_build() and build_machine.cpu_family() != 'arm' and build_
++   gtkdemo_resources_binary = custom_target('gtkdemo_resources.o',
++       input : gtkdemo_gresource,
++       output : 'gtkdemo_resources.o',
++-      command : [ld,
++-                 '-z', 'noexecstack',
++-                 '-r',
++-                 '-b','binary',
++-                 '@INPUT@',
++-                 '-o','@OUTPUT@'])
+++      command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
+++                                  '@INPUT@', '-o','@OUTPUT@'])
++ 
++   # Rename symbol to match the one in the C file
++   gtkdemo_resources_o = custom_target('gtkdemo_resources2.o',
++     input : gtkdemo_resources_binary,
++     output : 'gtkdemo_resources2.o',
++     command : [objcopy,
++-                 '--strip-all',
+++                 '--strip-debug',
++                  '--add-symbol','_g_binary_gtkdemo_resource_data=.data:0',
++                  '@INPUT@',
++                  '@OUTPUT@'])
 +diff --git a/demos/widget-factory/meson.build b/demos/widget-factory/meson.build
 +index 0513555a3f..78543d89ed 100644
 +--- a/demos/widget-factory/meson.build
@@ -333,6 +360,33 @@ index 00000000000..d085b598b39
 +                  '--add-symbol','_g_binary_widgetfactory_resource_data=.data:0',
 +                  '@INPUT@',
 +                  '@OUTPUT@'])
++diff --git a/gtk/meson.build b/gtk/meson.build
++index 7ac245419a..59843fbd66 100644
++--- a/gtk/meson.build
+++++ b/gtk/meson.build
++@@ -855,19 +855,15 @@ if not meson.is_cross_build() and build_machine.cpu_family() == 'x86_64' and bui
++   gtk_resources_binary = custom_target('gtkresources_blob.o',
++       input : gtk_gresource,
++       output : 'gtkresources_blob.o',
++-      command : [ld,
++-                 '-z', 'noexecstack',
++-                 '-r',
++-                 '-b','binary',
++-                 '@INPUT@',
++-                 '-o','@OUTPUT@'])
+++      command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
+++                                  '@INPUT@', '-o','@OUTPUT@'])
++ 
++   # Rename symbol to match the one in the C file
++   gtk_resources_o = custom_target('gtkresources_blob2.o',
++     input : gtk_resources_binary,
++     output : 'gtkresources_blob2.o',
++     command : [objcopy,
++-                 '--strip-all',
+++                 '--strip-debug',
++                  '--rename-section', '.data=.gresource.gtk',
++                  '--add-symbol','_gtk_resource_data=.gresource.gtk:0',
++                  '@INPUT@',
 diff --git a/pkgs/development/libraries/wayland/protocols.nix b/pkgs/development/libraries/wayland/protocols.nix
 index 1d4b6278893..85fd01b64d2 100644
 --- a/pkgs/development/libraries/wayland/protocols.nix
