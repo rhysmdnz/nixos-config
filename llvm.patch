@@ -400,6 +400,19 @@ index 1d4b6278893..85fd01b64d2 100644
  
    src = fetchurl {
      url = "https://gitlab.freedesktop.org/wayland/${pname}/-/releases/${version}/downloads/${pname}-${version}.tar.xz";
+diff --git a/pkgs/development/python-modules/afdko/default.nix b/pkgs/development/python-modules/afdko/default.nix
+index 739198fa4ae..c00737e17bc 100644
+--- a/pkgs/development/python-modules/afdko/default.nix
++++ b/pkgs/development/python-modules/afdko/default.nix
+@@ -25,6 +25,8 @@ buildPythonPackage rec {
+ 
+   format = "pyproject";
+ 
++  hardeningDisable = [ "fortify" ];
++
+   nativeBuildInputs = [
+     setuptools-scm
+     scikit-build
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
 index fb08761a528..154af38ff97 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
