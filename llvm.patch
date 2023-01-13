@@ -340,6 +340,19 @@ index 47f1a20fbb2..8f4ee389286 100644
    meta = with lib; {
      description = "C parser in Python";
      homepage = "https://github.com/eliben/pycparser";
+diff --git a/pkgs/os-specific/linux/criu/default.nix b/pkgs/os-specific/linux/criu/default.nix
+index 5475a565b09..2664fdcf587 100644
+--- a/pkgs/os-specific/linux/criu/default.nix
++++ b/pkgs/os-specific/linux/criu/default.nix
+@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
+     ln -sf ${protobuf}/include/google/protobuf/descriptor.proto ./images/google/protobuf/descriptor.proto
+   '';
+ 
+-  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" ];
++  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" "HOSTCC=${stdenv.cc.targetPrefix}cc" ];
+ 
+   outputs = [ "out" "dev" "man" ];
+ 
 diff --git a/pkgs/os-specific/linux/nvidia-x11/generic.nix b/pkgs/os-specific/linux/nvidia-x11/generic.nix
 index 74addc6c501..630292bc819 100644
 --- a/pkgs/os-specific/linux/nvidia-x11/generic.nix
