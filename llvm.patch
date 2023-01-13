@@ -287,6 +287,47 @@ index 00000000000..ef8f11cf47b
 +-- 
 +GitLab
 +
+diff --git a/pkgs/development/libraries/gtk/4.x.nix b/pkgs/development/libraries/gtk/4.x.nix
+index 11d00dfa1c0..510b9d7b1da 100644
+--- a/pkgs/development/libraries/gtk/4.x.nix
++++ b/pkgs/development/libraries/gtk/4.x.nix
+@@ -177,6 +177,8 @@ stdenv.mkDerivation rec {
+   # See: https://developer.gnome.org/gtk3/stable/gtk-building.html#extra-configuration-options
+   NIX_CFLAGS_COMPILE = "-DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS";
+ 
++  patches = [ ./patches/4.0-lld.patch ];
++
+   postPatch = ''
+     files=(
+       build-aux/meson/gen-demo-header.py
+diff --git a/pkgs/development/libraries/gtk/patches/4.0-lld.patch b/pkgs/development/libraries/gtk/patches/4.0-lld.patch
+new file mode 100644
+index 00000000000..1bf567f8dd4
+--- /dev/null
++++ b/pkgs/development/libraries/gtk/patches/4.0-lld.patch
+@@ -0,0 +1,22 @@
++diff --git a/demos/widget-factory/meson.build b/demos/widget-factory/meson.build
++index 0513555a3f..1dfcb9d820 100644
++--- a/demos/widget-factory/meson.build
+++++ b/demos/widget-factory/meson.build
++@@ -45,6 +45,8 @@ if not meson.is_cross_build() and build_machine.cpu_family() != 'arm' and build_
++   widgetfactory_resources_binary = custom_target('widgetfactory_resources.o',
++       input : widgetfactory_gresource,
++       output : 'widgetfactory_resources.o',
+++      command : cc.cmd_array() + ['-Wl,-z,noexecstack', '-r', '-Wl,-b,binary',
+++                                  '@INPUT@', '-o','@OUTPUT@'])
++       command : [ld,
++                  '-z', 'noexecstack',
++                  '-r',
++@@ -57,7 +59,7 @@ if not meson.is_cross_build() and build_machine.cpu_family() != 'arm' and build_
++     input : widgetfactory_resources_binary,
++     output : 'widgetfactory_resources2.o',
++     command : [objcopy,
++-                 '--strip-all',
+++                 '--strip-debug',
++                  '--add-symbol','_g_binary_widgetfactory_resource_data=.data:0',
++                  '@INPUT@',
++                  '@OUTPUT@'])
 diff --git a/pkgs/development/libraries/wayland/protocols.nix b/pkgs/development/libraries/wayland/protocols.nix
 index 1d4b6278893..85fd01b64d2 100644
 --- a/pkgs/development/libraries/wayland/protocols.nix
