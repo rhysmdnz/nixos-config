@@ -115,6 +115,11 @@
         udisks = super.udisks.override { stdenv = badstdenv; };
         OVMFFull = super.OVMFFull.override { stdenv = badstdenv; };
         nss = super.nss.override { stdenv = badstdenv; };
+
+
+       webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
+       webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
+      
       })
     ];
 
