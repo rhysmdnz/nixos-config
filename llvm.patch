@@ -493,13 +493,14 @@ index 5a39ef91500..b9589b7a892 100644
            CC=$CC OBJCOPY=$OBJCOPY OBJDUMP=$OBJDUMP READELF=$READELF \
            $makeFlags
 diff --git a/pkgs/os-specific/linux/kernel/manual-config.nix b/pkgs/os-specific/linux/kernel/manual-config.nix
-index 310178b9a1f..64d25107f9b 100644
+index 310178b9a1f..640929a05c8 100644
 --- a/pkgs/os-specific/linux/kernel/manual-config.nix
 +++ b/pkgs/os-specific/linux/kernel/manual-config.nix
-@@ -387,6 +387,7 @@ stdenv.mkDerivation ((drvAttrs config stdenv.hostPlatform.linux-kernel kernelPat
+@@ -387,6 +387,8 @@ stdenv.mkDerivation ((drvAttrs config stdenv.hostPlatform.linux-kernel kernelPat
  
    # Absolute paths for compilers avoid any PATH-clobbering issues.
    makeFlags = [
++    "LLVM=1"
 +    "V=1"
      "O=$(buildRoot)"
      "CC=${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc"
