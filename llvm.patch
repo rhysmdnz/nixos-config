@@ -479,6 +479,19 @@ index 5475a565b09..2664fdcf587 100644
  
    outputs = [ "out" "dev" "man" ];
  
+diff --git a/pkgs/os-specific/linux/kernel/generic.nix b/pkgs/os-specific/linux/kernel/generic.nix
+index 5a39ef91500..b9589b7a892 100644
+--- a/pkgs/os-specific/linux/kernel/generic.nix
++++ b/pkgs/os-specific/linux/kernel/generic.nix
+@@ -158,7 +158,7 @@ let
+       # Get a basic config file for later refinement with $generateConfig.
+       make $makeFlags \
+           -C . O="$buildRoot" $kernelBaseConfig \
+-          ARCH=$kernelArch \
++          ARCH=$kernelArch V=2\
+           HOSTCC=$HOSTCC HOSTCXX=$HOSTCXX HOSTAR=$HOSTAR HOSTLD=$HOSTLD \
+           CC=$CC OBJCOPY=$OBJCOPY OBJDUMP=$OBJDUMP READELF=$READELF \
+           $makeFlags
 diff --git a/pkgs/os-specific/linux/nvidia-x11/generic.nix b/pkgs/os-specific/linux/nvidia-x11/generic.nix
 index 74addc6c501..630292bc819 100644
 --- a/pkgs/os-specific/linux/nvidia-x11/generic.nix
