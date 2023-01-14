@@ -387,6 +387,19 @@ index 00000000000..9f7efdaec8a
 +                  '--rename-section', '.data=.gresource.gtk',
 +                  '--add-symbol','_gtk_resource_data=.gresource.gtk:0',
 +                  '@INPUT@',
+diff --git a/pkgs/development/libraries/qt-5/modules/qtbase.nix b/pkgs/development/libraries/qt-5/modules/qtbase.nix
+index 0102c2fd1b6..b4cca866fdd 100644
+--- a/pkgs/development/libraries/qt-5/modules/qtbase.nix
++++ b/pkgs/development/libraries/qt-5/modules/qtbase.nix
+@@ -323,6 +323,8 @@ stdenv.mkDerivation {
+     ] ++ lib.optionals (libmysqlclient != null) [
+       "-L" "${libmysqlclient}/lib"
+       "-I" "${libmysqlclient}/include"
++    ] ++ lib.optionals stdenv.cc.isClang [
++      "-platform linux-clang"
+     ]
+   );
+ 
 diff --git a/pkgs/development/libraries/wayland/protocols.nix b/pkgs/development/libraries/wayland/protocols.nix
 index 1d4b6278893..85fd01b64d2 100644
 --- a/pkgs/development/libraries/wayland/protocols.nix
