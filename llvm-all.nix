@@ -6,7 +6,7 @@
 
 {
   nixpkgs.overlays =
-    let badstdenv = (import pkgs.path { system = "x86_64-linux"; }).stdenv;
+    let badstdenv = pkgs.gccStdenv;
     in
     [
       (self: super: rec {
@@ -15,13 +15,7 @@
         python27 = super.python27.override { enableOptimizations = false; };
         python2 = python27;
         python = python27;
-        python310Packages = (pkgs.lib.recurseIntoAttrs python310.pkgs).overrideScope (
-          selfx: superx: {
-            afdko = superx.afdko.override { stdenv = badstdenv; };
-          }
-        );
-        python3Packages = lib.dontRecurseIntoAttrs python310Packages;
-        afdko = super.afdko.override { stdenv = badstdenv; };
+        python310Packages = pkgs.lib.recurseIntoAttrs python310.pkgs;
        
 
         # God damn llvm linking errors can't find standard library junk :(
@@ -110,13 +104,9 @@
         );
         gst_all_1 = super.gst_all_1 // { gst-plugins-bad = super.gst_all_1.gst-plugins-bad.override { stdenv = badstdenv; }; };
         libapparmor = super.libapparmor.override { stdenv = badstdenv; };
-        #systemd = super.systemd.override { stdenv = badstdenv; };
-        #openssl_3 = super.openssl_3.override { stdenv = badstdenv; };
-        #openssl = super.openssl.override { stdenv = badstdenv; };
         jemalloc = super.jemalloc.override { stdenv = badstdenv; };
         acpica-tools = super.acpica-tools.override { stdenv = badstdenv; };
         libclc = super.libclc.override { stdenv = badstdenv; };
-        #libssh2 = super.libssh2.override { stdenv = badstdenv; };
         ffmpeg = super.ffmpeg.override { stdenv = badstdenv; };
         ffmpeg_4 = super.ffmpeg_4.override { stdenv = badstdenv; };
         ffmpeg-headless = super.ffmpeg-headless.override { stdenv = badstdenv; };
@@ -128,12 +118,12 @@
         mupdf = super.mupdf.override { stdenv = badstdenv; };
         nvidia-vaapi-driver = super.nvidia-vaapi-driver.override { stdenv = badstdenv; };
         catatonit = super.catatonit.override { stdenv = badstdenv; };
-        gexiv2 = super.gexiv2.override { stdenv = badstdenv; };
+        gexiv2 = super.gexiv2.override { stdenv = super.gccStdenv; };
         lensfun = super.lensfun.override { stdenv = super.gccStdenv; };
 
 
-       webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
-       webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
+        webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
+        webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
       
       })
     ];
