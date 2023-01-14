@@ -40,7 +40,6 @@
 
 
         # Not being built?
-        #tpm2-tools = super.tpm2-tools.override {stdenv = badstdenv; };
         fwupd = super.fwupd.override { stdenv = badstdenv; };
 
         # Command gcc not found
@@ -71,15 +70,18 @@
         openblas = super.openblas.override { stdenv = badstdenv; };
         suitesparse = super.suitesparse.override { stdenv = badstdenv; };
 
-        # Confirmed weird to be investigated further
+
+        # GNU Stuff
         gdb = super.gdb.override { stdenv = badstdenv; };
+        glibcLocales = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; };
+        glibcLocalesUtf8 = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; allLocales = false; };
+
+        # Confirmed weird to be investigated further
         valgrind = super.valgrind.override { stdenv = badstdenv; };
         valgrind-light = valgrind.override { gdb = null; };
         ncurses = super.ncurses.override { stdenv = badstdenv; };
         efibootmgr = super.efibootmgr.override { stdenv = badstdenv; };
         elfutils = super.elfutils.override { stdenv = badstdenv; };
-        glibcLocales = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; };
-        glibcLocalesUtf8 = super.callPackage (super.path + "/pkgs/development/libraries/glibc/locales.nix") { stdenv = badstdenv; allLocales = false; };
         cyrus_sasl = super.cyrus_sasl.override { stdenv = badstdenv; };
         libomxil-bellagio = super.libomxil-bellagio.override { stdenv = badstdenv; };
         avahi = super.avahi.override { stdenv = badstdenv; };
