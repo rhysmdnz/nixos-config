@@ -5,6 +5,8 @@
 # My GCC hacks mean it's linking with ld.bfd :(
 
 {
+
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest.override { stdenv = pkgs.gccStdenv; });
   nixpkgs.overlays =
     let badstdenv = pkgs.gccStdenv;
     in
@@ -127,7 +129,6 @@
         webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
         webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
 
-        linuxPackages_latest = super.linuxPackagesFor (super.linux_latest.override { stdenv = badstdenv; });
       
       })
     ];
