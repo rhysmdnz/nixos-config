@@ -126,6 +126,8 @@
 
         webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
         webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
+
+        linuxPackages_latest = super.linuxPackagesFor super.linux_latest.override { stdenv = badstdenv; };
       
       })
     ];
