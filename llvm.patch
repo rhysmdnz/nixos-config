@@ -479,6 +479,21 @@ index 5475a565b09..2664fdcf587 100644
  
    outputs = [ "out" "dev" "man" ];
  
+diff --git a/pkgs/os-specific/linux/kernel/manual-config.nix b/pkgs/os-specific/linux/kernel/manual-config.nix
+index 310178b9a1f..8b7db3f2e45 100644
+--- a/pkgs/os-specific/linux/kernel/manual-config.nix
++++ b/pkgs/os-specific/linux/kernel/manual-config.nix
+@@ -389,8 +389,8 @@ stdenv.mkDerivation ((drvAttrs config stdenv.hostPlatform.linux-kernel kernelPat
+   makeFlags = [
+     "O=$(buildRoot)"
+     "CC=${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc"
+-    "HOSTCC=${buildPackages.stdenv.cc}/bin/${buildPackages.stdenv.cc.targetPrefix}cc"
+-    "HOSTLD=${buildPackages.stdenv.cc.bintools}/bin/${buildPackages.stdenv.cc.targetPrefix}ld"
++    "HOSTCC=${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc"
++    "HOSTLD=${stdenv.cc.bintools}/bin/${stdenv.cc.targetPrefix}ld"
+     "ARCH=${stdenv.hostPlatform.linuxArch}"
+   ] ++ lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
+     "CROSS_COMPILE=${stdenv.cc.targetPrefix}"
 diff --git a/pkgs/os-specific/linux/nvidia-x11/generic.nix b/pkgs/os-specific/linux/nvidia-x11/generic.nix
 index 74addc6c501..630292bc819 100644
 --- a/pkgs/os-specific/linux/nvidia-x11/generic.nix
