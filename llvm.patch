@@ -54,7 +54,7 @@ index 53f7941e336..c333614041e 100644
     ln -s ${lld}/bin/lld $out/bin/${prefix}ld
  ''
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 26c0e239420..ab7cf2daa00 100644
+index 26c0e239420..a953d4f1c80 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
 +++ b/pkgs/development/compilers/llvm/14/default.nix
 @@ -53,14 +53,8 @@ let
@@ -90,7 +90,7 @@ index 26c0e239420..ab7cf2daa00 100644
        extraPackages = [
          targetLlvmLibraries.libcxxabi
          targetLlvmLibraries.compiler-rt
-@@ -152,7 +148,7 @@ let
+@@ -152,12 +148,12 @@ let
      clangUseLLVM = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = targetLlvmLibraries.libcxx;
@@ -99,16 +99,28 @@ index 26c0e239420..ab7cf2daa00 100644
        extraPackages = [
          targetLlvmLibraries.libcxxabi
          targetLlvmLibraries.compiler-rt
-@@ -167,7 +163,7 @@ let
+-      ] ++ lib.optionals (!stdenv.targetPlatform.isWasm) [
+-        targetLlvmLibraries.libunwind
++#      ] ++ lib.optionals (!stdenv.targetPlatform.isWasm) [
++#        targetLlvmLibraries.libunwind
+       ];
+       extraBuildCommands = mkExtraBuildCommands cc;
+       nixSupport.cc-cflags =
+@@ -165,17 +161,17 @@ let
+           "-Wno-unused-command-line-argument"
+           "-B${targetLlvmLibraries.compiler-rt}/lib"
          ]
-         ++ lib.optional (!stdenv.targetPlatform.isWasm) "--unwindlib=libunwind"
-         ++ lib.optional
+-        ++ lib.optional (!stdenv.targetPlatform.isWasm) "--unwindlib=libunwind"
+-        ++ lib.optional
 -          (!stdenv.targetPlatform.isWasm && !stdenv.targetPlatform.isFreeBSD && stdenv.targetPlatform.useLLVM or false)
-+          (!stdenv.targetPlatform.isWasm)
-           "-lunwind"
+-          "-lunwind"
++#        ++ lib.optional (!stdenv.targetPlatform.isWasm) "--unwindlib=libunwind"
++#        ++ lib.optional
++#          (!stdenv.targetPlatform.isWasm)
++#          "-lunwind"
          ++ lib.optional stdenv.targetPlatform.isWasm "-fno-exceptions";
      };
-@@ -175,7 +171,7 @@ let
+ 
      clangNoLibcxx = wrapCCWith rec {
        cc = tools.clang-unwrapped;
        libcxx = null;
