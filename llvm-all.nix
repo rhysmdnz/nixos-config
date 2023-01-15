@@ -6,7 +6,7 @@
 
 {
 
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest.override { stdenv = pkgs.gccStdenv; });
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackagesFor (pkgs.linux_latest.override { stdenv = pkgs.gccStdenv; });
   nixpkgs.overlays =
     let badstdenv = pkgs.gccStdenv;
     in
