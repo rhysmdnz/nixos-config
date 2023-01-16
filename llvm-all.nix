@@ -6,7 +6,7 @@
 
 {
 
-  boot.kernelPackages = lib.mkForce ((import pkgs.path { system = "x86_64-linux"; }).linuxPackages_latest);
+  #boot.kernelPackages = lib.mkForce ((import pkgs.path { system = "x86_64-linux"; }).linuxPackages_latest);
   nixpkgs.overlays =
     let badstdenv = pkgs.gccStdenv;
     in
