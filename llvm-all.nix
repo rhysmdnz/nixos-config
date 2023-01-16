@@ -6,7 +6,7 @@
 
 {
 
-  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.linux_latest.override { stdenv = pkgs.gccStdenv; }));
+  boot.kernelPackages = lib.mkForce ((import pkgs.path { system = "x86_64-linux"; }).linuxPackages_latest);
   nixpkgs.overlays =
     let badstdenv = pkgs.gccStdenv;
     in
@@ -134,7 +134,6 @@
     ];
 
 
-  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.overrideCC pkgs.stdenv pkgs.llvmPackages_14.clangUseLLVM;
-  #nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.stdenv;
+  nixpkgs.config.replaceStdenv = { pkgs }: pkgs.llvmPackages_14.stdenv;
 }
 
