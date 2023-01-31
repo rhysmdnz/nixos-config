@@ -41,20 +41,8 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
-diff --git a/pkgs/development/compilers/llvm/14/bintools/default.nix b/pkgs/development/compilers/llvm/14/bintools/default.nix
-index 53f7941e336..c333614041e 100644
---- a/pkgs/development/compilers/llvm/14/bintools/default.nix
-+++ b/pkgs/development/compilers/llvm/14/bintools/default.nix
-@@ -24,6 +24,7 @@ in runCommand "llvm-binutils-${version}" { preferLocalBuild = true; } ''
-    ln -s ${llvm}/bin/llvm-readelf $out/bin/${prefix}readelf
-    ln -s ${llvm}/bin/llvm-size $out/bin/${prefix}size
-    ln -s ${llvm}/bin/llvm-strip $out/bin/${prefix}strip
-+   ln -s ${llvm}/bin/llvm-strings $out/bin/${prefix}strings
- 
-    ln -s ${lld}/bin/lld $out/bin/${prefix}ld
- ''
 diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 26c0e239420..531c3c3111c 100644
+index 5d14c2f5f93..1a4550507f9 100644
 --- a/pkgs/development/compilers/llvm/14/default.nix
 +++ b/pkgs/development/compilers/llvm/14/default.nix
 @@ -53,14 +53,8 @@ let
@@ -88,7 +76,7 @@ index 26c0e239420..531c3c3111c 100644
        libcxx = targetLlvmLibraries.libcxx;
 +      bintools = tools.bintools;
        extraPackages = [
-         targetLlvmLibraries.libcxxabi
+         libcxx.cxxabi
          targetLlvmLibraries.compiler-rt
 @@ -152,7 +148,7 @@ let
      clangUseLLVM = wrapCCWith rec {
@@ -97,7 +85,7 @@ index 26c0e239420..531c3c3111c 100644
 -      bintools = bintools';
 +      bintools = tools.bintools;
        extraPackages = [
-         targetLlvmLibraries.libcxxabi
+         libcxx.cxxabi
          targetLlvmLibraries.compiler-rt
 @@ -175,7 +171,7 @@ let
      clangNoLibcxx = wrapCCWith rec {
@@ -163,7 +151,7 @@ index c1e7b52c040..e2e23249084 100644
  
    enableParallelBuilding = true;
 diff --git a/pkgs/development/libraries/glib/default.nix b/pkgs/development/libraries/glib/default.nix
-index 7cecc8e545d..06a039495ea 100644
+index ac7977d0f62..35f39500373 100644
 --- a/pkgs/development/libraries/glib/default.nix
 +++ b/pkgs/development/libraries/glib/default.nix
 @@ -131,6 +131,7 @@ stdenv.mkDerivation (finalAttrs: {
@@ -400,7 +388,7 @@ index 44f72701854..606738badca 100644
    );
  
 diff --git a/pkgs/development/libraries/wayland/protocols.nix b/pkgs/development/libraries/wayland/protocols.nix
-index bd94cc6b47e..94f3bb375d6 100644
+index f9dc3c4e807..3ffe1dcae8f 100644
 --- a/pkgs/development/libraries/wayland/protocols.nix
 +++ b/pkgs/development/libraries/wayland/protocols.nix
 @@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
@@ -413,7 +401,7 @@ index bd94cc6b47e..94f3bb375d6 100644
    src = fetchurl {
      url = "https://gitlab.freedesktop.org/wayland/${pname}/-/releases/${version}/downloads/${pname}-${version}.tar.xz";
 diff --git a/pkgs/development/python-modules/afdko/default.nix b/pkgs/development/python-modules/afdko/default.nix
-index bba034b3837..f1dc780467c 100644
+index 397ad4e17b7..bbdc0e22c08 100644
 --- a/pkgs/development/python-modules/afdko/default.nix
 +++ b/pkgs/development/python-modules/afdko/default.nix
 @@ -43,6 +43,9 @@ buildPythonPackage rec {
@@ -427,7 +415,7 @@ index bba034b3837..f1dc780467c 100644
      setuptools-scm
      scikit-build
 diff --git a/pkgs/development/python-modules/cffi/default.nix b/pkgs/development/python-modules/cffi/default.nix
-index 07c76f81a4b..b8464487bc4 100644
+index 87c8f898899..a4310e66f19 100644
 --- a/pkgs/development/python-modules/cffi/default.nix
 +++ b/pkgs/development/python-modules/cffi/default.nix
 @@ -78,7 +78,8 @@ if isPyPy then null else buildPythonPackage rec {
@@ -438,10 +426,10 @@ index 07c76f81a4b..b8464487bc4 100644
 +  #doCheck = !stdenv.hostPlatform.isMusl;
 +  doCheck = false;
  
-   checkInputs = [ pytestCheckHook ];
+   nativeCheckInputs = [ pytestCheckHook ];
  
 diff --git a/pkgs/development/python-modules/pybind11/default.nix b/pkgs/development/python-modules/pybind11/default.nix
-index 7b35cbb3008..7bc426df179 100644
+index a5154a3e4ab..11cc304bb19 100644
 --- a/pkgs/development/python-modules/pybind11/default.nix
 +++ b/pkgs/development/python-modules/pybind11/default.nix
 @@ -84,6 +84,8 @@ buildPythonPackage rec {
@@ -454,7 +442,7 @@ index 7b35cbb3008..7bc426df179 100644
      homepage = "https://github.com/pybind/pybind11";
      changelog = "https://github.com/pybind/pybind11/blob/${src.rev}/docs/changelog.rst";
 diff --git a/pkgs/development/python-modules/pycparser/default.nix b/pkgs/development/python-modules/pycparser/default.nix
-index 47f1a20fbb2..8f4ee389286 100644
+index edc6744f672..f4c7607f109 100644
 --- a/pkgs/development/python-modules/pycparser/default.nix
 +++ b/pkgs/development/python-modules/pycparser/default.nix
 @@ -13,6 +13,8 @@ buildPythonPackage rec {
@@ -467,18 +455,17 @@ index 47f1a20fbb2..8f4ee389286 100644
      description = "C parser in Python";
      homepage = "https://github.com/eliben/pycparser";
 diff --git a/pkgs/os-specific/linux/criu/default.nix b/pkgs/os-specific/linux/criu/default.nix
-index 5475a565b09..2664fdcf587 100644
+index 71bde6220a0..1bc7d0ce7b3 100644
 --- a/pkgs/os-specific/linux/criu/default.nix
 +++ b/pkgs/os-specific/linux/criu/default.nix
-@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
-     ln -sf ${protobuf}/include/google/protobuf/descriptor.proto ./images/google/protobuf/descriptor.proto
-   '';
- 
--  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" ];
-+  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" "HOSTCC=${stdenv.cc.targetPrefix}cc" ];
- 
-   outputs = [ "out" "dev" "man" ];
- 
+@@ -78,6 +78,7 @@ stdenv.mkDerivation rec {
+     "PREFIX=$(out)"
+     "ASCIIDOC=${buildPackages.asciidoc}/bin/asciidoc"
+     "XMLTO=${buildPackages.xmlto}/bin/xmlto"
++    "HOSTCC=${stdenv.cc.targetPrefix}cc"
+   ] ++ (lib.optionals (stdenv.buildPlatform != stdenv.targetPlatform) [
+     "ARCH=${linuxArchMapping."${stdenv.targetPlatform.linuxArch}"}"
+     "CROSS_COMPILE=${stdenv.targetPlatform.config}-"
 diff --git a/pkgs/os-specific/linux/kernel/manual-config.nix b/pkgs/os-specific/linux/kernel/manual-config.nix
 index 310178b9a1f..8b7db3f2e45 100644
 --- a/pkgs/os-specific/linux/kernel/manual-config.nix
@@ -508,7 +495,7 @@ index 74addc6c501..630292bc819 100644
  , lib32 ? null
    # Whether to extract the GSP firmware
 diff --git a/pkgs/os-specific/linux/systemd/default.nix b/pkgs/os-specific/linux/systemd/default.nix
-index 4799cdb06b7..1953dfa0316 100644
+index e871d6618c3..3caeb9acdb5 100644
 --- a/pkgs/os-specific/linux/systemd/default.nix
 +++ b/pkgs/os-specific/linux/systemd/default.nix
 @@ -66,6 +66,7 @@
@@ -519,7 +506,7 @@ index 4799cdb06b7..1953dfa0316 100644
  
    # the (optional) BPF feature requires bpftool, libbpf, clang and llvm-strip to be available during build time.
    # Only libbpf should be a runtime dependency.
-@@ -364,6 +365,7 @@ stdenv.mkDerivation {
+@@ -366,6 +367,7 @@ stdenv.mkDerivation {
      ]
      ++ lib.optionals withLibBPF [
        bpftools
@@ -527,7 +514,7 @@ index 4799cdb06b7..1953dfa0316 100644
        buildPackages.llvmPackages.clang
        buildPackages.llvmPackages.libllvm
      ]
-@@ -510,6 +512,7 @@ stdenv.mkDerivation {
+@@ -512,6 +514,7 @@ stdenv.mkDerivation {
      "-Dnss-systemd=false"
    ] ++ lib.optionals withLibBPF [
      "-Dbpf-framework=true"
