@@ -429,7 +429,7 @@ index 87c8f898899..a4310e66f19 100644
    nativeCheckInputs = [ pytestCheckHook ];
  
 diff --git a/pkgs/development/python-modules/pybind11/default.nix b/pkgs/development/python-modules/pybind11/default.nix
-index a5154a3e4ab..11cc304bb19 100644
+index 1286805a918..1bbde68dc59 100644
 --- a/pkgs/development/python-modules/pybind11/default.nix
 +++ b/pkgs/development/python-modules/pybind11/default.nix
 @@ -84,6 +84,8 @@ buildPythonPackage rec {
@@ -455,17 +455,18 @@ index edc6744f672..f4c7607f109 100644
      description = "C parser in Python";
      homepage = "https://github.com/eliben/pycparser";
 diff --git a/pkgs/os-specific/linux/criu/default.nix b/pkgs/os-specific/linux/criu/default.nix
-index 71bde6220a0..1bc7d0ce7b3 100644
+index 5475a565b09..2664fdcf587 100644
 --- a/pkgs/os-specific/linux/criu/default.nix
 +++ b/pkgs/os-specific/linux/criu/default.nix
-@@ -78,6 +78,7 @@ stdenv.mkDerivation rec {
-     "PREFIX=$(out)"
-     "ASCIIDOC=${buildPackages.asciidoc}/bin/asciidoc"
-     "XMLTO=${buildPackages.xmlto}/bin/xmlto"
-+    "HOSTCC=${stdenv.cc.targetPrefix}cc"
-   ] ++ (lib.optionals (stdenv.buildPlatform != stdenv.targetPlatform) [
-     "ARCH=${linuxArchMapping."${stdenv.targetPlatform.linuxArch}"}"
-     "CROSS_COMPILE=${stdenv.targetPlatform.config}-"
+@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
+     ln -sf ${protobuf}/include/google/protobuf/descriptor.proto ./images/google/protobuf/descriptor.proto
+   '';
+ 
+-  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" ];
++  makeFlags = [ "PREFIX=$(out)" "ASCIIDOC=${asciidoc}/bin/asciidoc" "XMLTO=${xmlto}/bin/xmlto" "HOSTCC=${stdenv.cc.targetPrefix}cc" ];
+ 
+   outputs = [ "out" "dev" "man" ];
+ 
 diff --git a/pkgs/os-specific/linux/kernel/manual-config.nix b/pkgs/os-specific/linux/kernel/manual-config.nix
 index 310178b9a1f..8b7db3f2e45 100644
 --- a/pkgs/os-specific/linux/kernel/manual-config.nix
