@@ -41,28 +41,11 @@ index aa725afdb8b..412f4f49ddb 100644
    cmakeFlags = [
      "-DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON"
      "-DCMAKE_C_COMPILER_TARGET=${stdenv.hostPlatform.config}"
-diff --git a/pkgs/development/compilers/llvm/14/default.nix b/pkgs/development/compilers/llvm/14/default.nix
-index 5d14c2f5f93..1a4550507f9 100644
---- a/pkgs/development/compilers/llvm/14/default.nix
-+++ b/pkgs/development/compilers/llvm/14/default.nix
-@@ -53,14 +53,8 @@ let
-       ln -s "${targetLlvmLibraries.compiler-rt.out}/share" "$rsrc/share"
-     '';
- 
--  bintoolsNoLibc' =
--    if bootBintoolsNoLibc == null
--    then tools.bintoolsNoLibc
--    else bootBintoolsNoLibc;
--  bintools' =
--    if bootBintools == null
--    then tools.bintools
--    else bootBintools;
-+  bintoolsNoLibc' = tools.bintoolsNoLibc;
-+  bintools' = tools.bintools;
- 
-   in {
- 
-@@ -104,6 +98,7 @@ let
+diff --git a/pkgs/development/compilers/llvm/15/default.nix b/pkgs/development/compilers/llvm/15/default.nix
+index db98f2854a0..f3cc1d279ff 100644
+--- a/pkgs/development/compilers/llvm/15/default.nix
++++ b/pkgs/development/compilers/llvm/15/default.nix
+@@ -152,6 +152,7 @@ in let
        cc = tools.clang-unwrapped;
        # libstdcxx is taken from gcc in an ad-hoc way in cc-wrapper.
        libcxx = null;
@@ -70,59 +53,6 @@ index 5d14c2f5f93..1a4550507f9 100644
        extraPackages = [
          targetLlvmLibraries.compiler-rt
        ];
-@@ -113,6 +108,7 @@ let
-     libcxxClang = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = targetLlvmLibraries.libcxx;
-+      bintools = tools.bintools;
-       extraPackages = [
-         libcxx.cxxabi
-         targetLlvmLibraries.compiler-rt
-@@ -152,7 +148,7 @@ let
-     clangUseLLVM = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = targetLlvmLibraries.libcxx;
--      bintools = bintools';
-+      bintools = tools.bintools;
-       extraPackages = [
-         libcxx.cxxabi
-         targetLlvmLibraries.compiler-rt
-@@ -175,7 +171,7 @@ let
-     clangNoLibcxx = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = null;
--      bintools = bintools';
-+      bintools = tools.bintools;
-       extraPackages = [
-         targetLlvmLibraries.compiler-rt
-       ];
-@@ -190,7 +186,7 @@ let
-     clangNoLibc = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = null;
--      bintools = bintoolsNoLibc';
-+      bintools = tools.bintoolsNoLibc;
-       extraPackages = [
-         targetLlvmLibraries.compiler-rt
-       ];
-@@ -204,7 +200,7 @@ let
-     clangNoCompilerRt = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = null;
--      bintools = bintoolsNoLibc';
-+      bintools = tools.bintoolsNoLibc;
-       extraPackages = [ ];
-       extraBuildCommands = mkExtraBuildCommands0 cc;
-       nixSupport.cc-cflags = [ "-nostartfiles" ];
-@@ -213,7 +209,7 @@ let
-     clangNoCompilerRtWithLibc = wrapCCWith rec {
-       cc = tools.clang-unwrapped;
-       libcxx = null;
--      bintools = bintools';
-+      bintools = bintools;
-       extraPackages = [ ];
-       extraBuildCommands = mkExtraBuildCommands0 cc;
-     };
 diff --git a/pkgs/development/libraries/cairo/default.nix b/pkgs/development/libraries/cairo/default.nix
 index c1e7b52c040..e2e23249084 100644
 --- a/pkgs/development/libraries/cairo/default.nix
