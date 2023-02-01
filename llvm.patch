@@ -384,6 +384,18 @@ index edc6744f672..f4c7607f109 100644
    meta = with lib; {
      description = "C parser in Python";
      homepage = "https://github.com/eliben/pycparser";
+diff --git a/pkgs/development/tools/misc/pkg-config/default.nix b/pkgs/development/tools/misc/pkg-config/default.nix
+index d4feca6dfe6..44c5f64ee01 100644
+--- a/pkgs/development/tools/misc/pkg-config/default.nix
++++ b/pkgs/development/tools/misc/pkg-config/default.nix
+@@ -35,6 +35,7 @@ stdenv.mkDerivation rec {
+          "ac_cv_func_posix_getgrgid_r=yes"
+        ];
+ 
++  makeFlags = [ "-Wno-int-conversion" ];
+   enableParallelBuilding = true;
+   doCheck = true;
+ 
 diff --git a/pkgs/os-specific/linux/criu/default.nix b/pkgs/os-specific/linux/criu/default.nix
 index 5475a565b09..2664fdcf587 100644
 --- a/pkgs/os-specific/linux/criu/default.nix
