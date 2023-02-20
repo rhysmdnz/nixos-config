@@ -46,24 +46,24 @@ let
         ];
       };
 
-      nixosConfigurations.normandyTest = coolNixosSystem {
-        system = "x86_64-linux";
-        modules = [
-        bootspec-secureboot.nixosModules.bootspec-secureboot
-          { nixpkgs.overlays = [ emacs.overlay ]; }
-         ./nixos.nix
-         ./normandy.nix
-          ./llvm-all.nix
-            home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-             imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
-        ];
-      };
+#      nixosConfigurations.normandyTest = coolNixosSystem {
+#        system = "x86_64-linux";
+#        modules = [
+#        bootspec-secureboot.nixosModules.bootspec-secureboot
+#          { nixpkgs.overlays = [ emacs.overlay ]; }
+#         ./nixos.nix
+#         ./normandy.nix
+#          ./llvm-all.nix
+#            home-manager.nixosModules.home-manager
+#          {
+#            home-manager.useGlobalPkgs = true;
+#            home-manager.useUserPackages = true;
+#            home-manager.users.rhys = {
+#             imports = [ nix-doom-emacs.hmModule ./home.nix ];
+#            };
+#          }
+#        ];
+#      };
 
       nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
