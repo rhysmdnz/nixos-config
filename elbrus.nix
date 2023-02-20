@@ -30,6 +30,8 @@
     "ExtensionInstallBlocklist" = "*";
   };
 
+  virtualisation.podman.enable = true;
+
   networking.firewall = {
     enable = true;
     logRefusedPackets = true;
