@@ -18,7 +18,7 @@
         python2 = python27;
         python = python27;
         python310Packages = pkgs.lib.recurseIntoAttrs python310.pkgs;
-       
+
 
         # God damn llvm linking errors can't find standard library junk :(
         rust_1_45 = super.rust_1_45.override { stdenv = badstdenv; };
@@ -29,16 +29,16 @@
         rustPackages = rustPackages_1_66;
         inherit (rustPackages) cargo clippy rustc rustPlatform;
 
-	# disable tests
-	pixman = super.pixman.overrideAttrs (finalAttrs: previousAttrs: {
-		doCheck = false;
-	});
+        # disable tests
+        pixman = super.pixman.overrideAttrs (finalAttrs: previousAttrs: {
+          doCheck = false;
+        });
 
 
-	gnu-efi = super.gnu-efi.overrideAttrs (attrs: {
-		patches = [./gnu-efi/clang.patch];
-		makeFlags = attrs.makeFlags ++ ["CC=${super.buildPackages.stdenv.cc.targetPrefix}cc"];
-	});
+        gnu-efi = super.gnu-efi.overrideAttrs (attrs: {
+          patches = [ ./gnu-efi/clang.patch ];
+          makeFlags = attrs.makeFlags ++ [ "CC=${super.buildPackages.stdenv.cc.targetPrefix}cc" ];
+        });
 
 
         # Not being built?
@@ -129,7 +129,7 @@
         webkitgtk_4_1 = super.webkitgtk_4_1.override { stdenv = badstdenv; };
         webkitgtk_5_0 = super.webkitgtk_5_0.override { stdenv = badstdenv; };
 
-      
+
       })
     ];
 

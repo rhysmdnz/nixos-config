@@ -22,7 +22,7 @@
 
   services.hercules-ci-agent.enable = true;
   services.hercules-ci-agent.settings.concurrentTasks = 32;
-  
+
   virtualisation.podman.enable = true;
   services.tailscale.enable = true;
 

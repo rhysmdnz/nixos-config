@@ -9,6 +9,8 @@
     emacs.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   inputs.bootspec-secureboot = {
@@ -16,20 +18,26 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, ... }:
-let
-       patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-         name = "patched-nixpkgs-source";
-         src = nixpkgs.outPath;
-         patches = [
-           ./llvm.patch
-         ];
-       };
-       coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
-     in
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, ... } @ inputs:
+    let
+      patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
+        name = "patched-nixpkgs-source";
+        src = nixpkgs.outPath;
+        patches = [
+          ./llvm.patch
+        ];
+      };
+      coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
+      inherit (self) outputs;
+    in
+    rec
     {
+      nixosModules = import ./modules/nixos;
+      overlays = import ./overlays;
+
       nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs outputs; };
         modules = [
           bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
@@ -46,31 +54,33 @@ let
         ];
       };
 
-#      nixosConfigurations.normandyTest = coolNixosSystem {
-#        system = "x86_64-linux";
-#        modules = [
-#        bootspec-secureboot.nixosModules.bootspec-secureboot
-#          { nixpkgs.overlays = [ emacs.overlay ]; }
-#         ./nixos.nix
-#         ./normandy.nix
-#          ./llvm-all.nix
-#            home-manager.nixosModules.home-manager
-#          {
-#            home-manager.useGlobalPkgs = true;
-#            home-manager.useUserPackages = true;
-#            home-manager.users.rhys = {
-#             imports = [ nix-doom-emacs.hmModule ./home.nix ];
-#            };
-#          }
-#        ];
-#      };
+      #      nixosConfigurations.normandyTest = coolNixosSystem {
+      #        system = "x86_64-linux";
+      #        modules = [
+      #        bootspec-secureboot.nixosModules.bootspec-secureboot
+      #          { nixpkgs.overlays = [ emacs.overlay ]; }
+      #         ./nixos.nix
+      #         ./normandy.nix
+      #          ./llvm-all.nix
+      #            home-manager.nixosModules.home-manager
+      #          {
+      #            home-manager.useGlobalPkgs = true;
+      #            home-manager.useUserPackages = true;
+      #            home-manager.users.rhys = {
+      #             imports = [ nix-doom-emacs.hmModule ./home.nix ];
+      #            };
+      #          }
+      #        ];
+      #      };
 
       nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs outputs; };
         modules = [
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./nixos.nix
           ./elbrus.nix
+          lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

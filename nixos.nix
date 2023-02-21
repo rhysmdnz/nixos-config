@@ -1,10 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, outputs, ... }:
 
 {
   imports =
     [
       ./nix-conf.nix
-    ];
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   boot.initrd.systemd.enable = true;
 
@@ -25,6 +26,8 @@
   #    alsa.support32Bit = true;
   #    pulse.enable = true;
   #  };
+
+
 
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -67,7 +70,21 @@
     thin-provisioning-tools
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    overlays = builtins.attrValues outputs.overlays ++ [
+      (self: super: rec {
+        microsoft-edge = super.microsoft-edge.overrideAttrs (finalAttrs: previousAttrs: {
+          buildPhase = let msalsdkPath = lib.makeLibraryPath [ pkgs.msalsdk-dbusclient ]; in previousAttrs.buildPhase + ''
+            patchelf \
+              --add-rpath "${msalsdkPath}" \
+                opt/microsoft/msedge/liboneauth.so
+          '';
+        });
+      })
+    ];
+    config.allowUnfree = true;
+  };
+
   services.flatpak.enable = true;
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
@@ -103,7 +120,7 @@
   virtualisation.spiceUSBRedirection.enable = true;
 
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  # networking.firewall.allowedTCPPorts = [ 22 ];
 
   nix.gc.automatic = true;
   nix.gc.options = "-d";
