@@ -104,7 +104,7 @@ let
         outputs = { ... }: {
           elbrus = self.nixosConfigurations.elbrus.config.system.build.toplevel;
           normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
-          normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
+          #normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
         };
       };
     };
