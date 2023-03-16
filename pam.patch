@@ -1,0 +1,35 @@
+diff --git a/nixos/modules/security/pam.nix b/nixos/modules/security/pam.nix
+index 4224722f879..51bad0f4fd6 100644
+--- a/nixos/modules/security/pam.nix
++++ b/nixos/modules/security/pam.nix
+@@ -579,6 +579,9 @@ let
+               optionalString cfg.enableGnomeKeyring ''
+                 auth optional ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+               '' +
++              ''
++                auth optional ${pkgs.intune-portal}/lib/security/pam_intune.so
++              '' +
+               optionalString cfg.gnupg.enable ''
+                 auth optional ${pkgs.pam_gnupg}/lib/security/pam_gnupg.so ${optionalString cfg.gnupg.storeOnly " store-only"}
+               '' +
+@@ -620,7 +623,9 @@ let
+           optionalString config.services.homed.enable ''
+             password sufficient ${config.systemd.package}/lib/security/pam_systemd_home.so
+           '' + ''
+-            password sufficient pam_unix.so nullok sha512
++            password optional pam_unix.so nullok sha512
++            password optional ${pkgs.intune-portal}/lib/security/pam_intune.so
++            password sufficient pam_unix.so nullok sha512 try_first_pass
+           '' +
+           optionalString config.security.pam.enableEcryptfs ''
+             password optional ${pkgs.ecryptfs}/lib/security/pam_ecryptfs.so
+@@ -729,6 +734,9 @@ let
+           '' +
+           optionalString (config.virtualisation.lxc.lxcfs.enable) ''
+             session optional ${pkgs.lxc}/lib/security/pam_cgfs.so -c all
++          '' +
++          ''
++            session optional ${pkgs.intune-portal}/lib/security/pam_intune.so
+           ''
+         );
+     };

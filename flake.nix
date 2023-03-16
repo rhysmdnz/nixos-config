@@ -24,7 +24,7 @@
         name = "patched-nixpkgs-source";
         src = nixpkgs.outPath;
         patches = [
-          ./llvm.patch
+          ./pam.patch
         ];
       };
       coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
@@ -54,7 +54,7 @@
         ];
       };
 
-      #      nixosConfigurations.normandyTest = coolNixosSystem {
+      #      nixosConfigurations.normandyTest = coolnixossystem {
       #        system = "x86_64-linux";
       #        modules = [
       #        bootspec-secureboot.nixosModules.bootspec-secureboot
@@ -73,7 +73,7 @@
       #        ];
       #      };
 
-      nixosConfigurations.elbrus = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.elbrus = coolNixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs outputs; };
         modules = [

@@ -32,6 +32,7 @@ in
     systemd.packages = [ cfg.identityBrokerPackage ];
     systemd.services.microsoft-identity-device-broker.enable = true;
     systemd.user.services.microsoft-identity-broker.enable = true;
+    systemd.tmpfiles.packages = [ pkgs.intune-portal ];
     # Only really want the wants file set, but haven't been able to figure out how to do what without setting the whole thing here
     systemd.user.timers.intune-agent = {
       enable = true;

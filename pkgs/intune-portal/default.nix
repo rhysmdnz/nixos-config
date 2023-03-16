@@ -58,7 +58,9 @@ stdenv.mkDerivation rec {
     cp -a opt/microsoft/intune/bin/* $out/bin/
     cp -R usr/share $out
     cp -R lib $out
-    cp -R ./usr/lib/x86_64-linux-gnu/security/pam_intune.so lib/
+    mkdir -p $out/lib/security
+    cp -R ./usr/lib/x86_64-linux-gnu/security/pam_intune.so $out/lib/security/
+    cp -R usr/lib/tmpfiles.d $out/lib
 
     substituteInPlace $out/share/applications/intune-portal.desktop \
       --replace /opt/microsoft/intune/bin/intune-portal $out/bin/intune-portal
