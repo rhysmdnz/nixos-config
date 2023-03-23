@@ -73,10 +73,10 @@
       };
 
       herculesCI.onPush.default = {
-        outputs = { ... }: {
-          elbrus = self.nixosConfigurations.elbrus.config.system.build.toplevel;
-          normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
-        };
+        outputs = { ... }:
+          utils.flattenTree {
+            systems = self.nixosConfigurations;
+          };
       };
     };
 
