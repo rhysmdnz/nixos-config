@@ -29,6 +29,8 @@
     utils.lib.mkFlake {
       inherit self inputs;
 
+      channelsConfig = { allowUnfree = true; };
+
       channels.intuneNixpkgs.patches = [
         intune-patch
       ];

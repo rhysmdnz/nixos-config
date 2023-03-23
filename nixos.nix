@@ -69,10 +69,6 @@
     thin-provisioning-tools
   ];
 
-  nixpkgs = {
-    config.allowUnfree = true;
-  };
-
   services.flatpak.enable = true;
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
