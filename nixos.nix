@@ -71,17 +71,7 @@
   ];
 
   nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays ++ [
-      (self: super: rec {
-        microsoft-edge = super.microsoft-edge.overrideAttrs (finalAttrs: previousAttrs: {
-          buildPhase = let msalsdkPath = lib.makeLibraryPath [ pkgs.msalsdk-dbusclient ]; in previousAttrs.buildPhase + ''
-            patchelf \
-              --add-rpath "${msalsdkPath}" \
-                opt/microsoft/msedge/liboneauth.so
-          '';
-        });
-      })
-    ];
+    overlays = builtins.attrValues outputs.overlays;
     config.allowUnfree = true;
   };
 
@@ -120,11 +110,7 @@
   virtualisation.spiceUSBRedirection.enable = true;
 
   networking.firewall.enable = true;
-  # networking.firewall.allowedTCPPorts = [ 22 ];
-
-  nix.gc.automatic = true;
-  nix.gc.options = "-d";
-  nix.settings.auto-optimise-store = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.nscd.enable = false;
   system.nssModules = lib.mkForce [ ];

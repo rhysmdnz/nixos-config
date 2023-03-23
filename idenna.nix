@@ -1,6 +1,14 @@
 { config, pkgs, ... }:
 
 {
+  imports =
+    [
+      ./nix-conf.nix
+    ];
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+
   users.users.rhys = {
     name = "rhys";
     home = "/Users/rhys";
@@ -28,14 +36,7 @@
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  nix.gc.automatic = true;
-  nix.gc.options = "-d";
-  nix.settings.auto-optimise-store = true;
-  nix.package = pkgs.nixUnstable;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.settings.trusted-users = [ "rhys" ];
+
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina

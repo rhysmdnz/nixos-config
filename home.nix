@@ -14,7 +14,6 @@
   };
 
   programs.zsh.sessionVariables = {
-    NIX_PATH = "nixpkgs=${pkgs.path}";
     SSH_AUTH_SOCK = lib.optionalString pkgs.stdenv.isDarwin "/Users/rhys/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
   };
 

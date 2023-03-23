@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    intuneNixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
@@ -11,6 +12,7 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
   };
 
   inputs.bootspec-secureboot = {
@@ -18,26 +20,29 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, ... } @ inputs:
-    let
-      patchedNixpkgs = nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-        name = "patched-nixpkgs-source";
-        src = nixpkgs.outPath;
-        patches = [
-          ./pam.patch
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, utils, intuneNixpkgs, ... } @ inputs:
+    utils.lib.mkFlake {
+      inherit self inputs;
+
+      channels.intuneNixpkgs.patches = [ ./pam.patch ];
+
+      hosts.idenna = {
+        system = "aarch64-darwin";
+        output = "darwinConfigurations";
+        builder = darwin.lib.darwinSystem;
+
+        modules = [
+          ./idenna.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.users.rhys = {
+              imports = [ nix-doom-emacs.hmModule ./home.nix ];
+            };
+          }
         ];
       };
-      coolNixosSystem = import "${patchedNixpkgs}/nixos/lib/eval-config.nix";
-      inherit (self) outputs;
-    in
-    rec
-    {
-      nixosModules = import ./modules/nixos;
-      overlays = import ./overlays;
 
-      nixosConfigurations.normandy = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs outputs; };
+      hosts.normandy = {
         modules = [
           bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
@@ -54,28 +59,8 @@
         ];
       };
 
-      #      nixosConfigurations.normandyTest = coolnixossystem {
-      #        system = "x86_64-linux";
-      #        modules = [
-      #        bootspec-secureboot.nixosModules.bootspec-secureboot
-      #          { nixpkgs.overlays = [ emacs.overlay ]; }
-      #         ./nixos.nix
-      #         ./normandy.nix
-      #          ./llvm-all.nix
-      #            home-manager.nixosModules.home-manager
-      #          {
-      #            home-manager.useGlobalPkgs = true;
-      #            home-manager.useUserPackages = true;
-      #            home-manager.users.rhys = {
-      #             imports = [ nix-doom-emacs.hmModule ./home.nix ];
-      #            };
-      #          }
-      #        ];
-      #      };
-
-      nixosConfigurations.elbrus = coolNixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs outputs; };
+      hosts.elbrus = {
+        channelName = "intuneNixpkgs";
         modules = [
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./nixos.nix
@@ -92,30 +77,13 @@
         ];
       };
 
-
-      darwinConfigurations.idenna = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          ./idenna.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
-        ];
-      };
-
-      hydraJobs.build.normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
-      hydraJobs.build.normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
       herculesCI.onPush.default = {
         outputs = { ... }: {
           elbrus = self.nixosConfigurations.elbrus.config.system.build.toplevel;
           normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
-          #normandyTest = self.nixosConfigurations.normandyTest.config.system.build.toplevel;
         };
       };
     };
+
+};
 }
