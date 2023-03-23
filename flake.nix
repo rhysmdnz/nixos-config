@@ -74,7 +74,7 @@
 
       herculesCI.onPush.default = {
         outputs = { ... }:
-          utils.flattenTree {
+          utils.lib.flattenTree {
             systems = self.nixosConfigurations;
           };
       };
