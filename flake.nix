@@ -30,6 +30,8 @@
         intune-patch
       ];
 
+      sharedOverlays = [ emacs.overlay ];
+
       hostDefaults.modules = [
         {
           home-manager.useGlobalPkgs = true;
@@ -53,7 +55,11 @@
 
       hosts.normandy = {
         modules = [
+<<<<<<< Updated upstream
           { nixpkgs.overlays = [ emacs.overlay ]; }
+=======
+          bootspec-secureboot.nixosModules.bootspec-secureboot
+>>>>>>> Stashed changes
           ./nixos.nix
           ./normandy.nix
           lanzaboote.nixosModules.lanzaboote
@@ -64,7 +70,6 @@
       hosts.elbrus = {
         channelName = "intuneNixpkgs";
         modules = [
-          { nixpkgs.overlays = [ emacs.overlay ]; }
           ./nixos.nix
           ./elbrus.nix
           lanzaboote.nixosModules.lanzaboote
