@@ -6,9 +6,6 @@
       ./nix-conf.nix
     ];
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-
   users.users.rhys = {
     name = "rhys";
     home = "/Users/rhys";

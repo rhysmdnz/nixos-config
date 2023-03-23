@@ -35,6 +35,16 @@
         intune-patch
       ];
 
+      hostDefaults.modules = [
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.rhys = {
+            imports = [ nix-doom-emacs.hmModule ./home.nix ];
+          };
+        }
+      ];
+
       hosts.idenna = {
         system = "aarch64-darwin";
         output = "darwinConfigurations";
@@ -43,11 +53,6 @@
         modules = [
           ./idenna.nix
           home-manager.darwinModules.home-manager
-          {
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
         ];
       };
 
@@ -58,13 +63,6 @@
           ./nixos.nix
           ./normandy.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
         ];
       };
 
@@ -76,13 +74,6 @@
           ./elbrus.nix
           lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.rhys = {
-              imports = [ nix-doom-emacs.hmModule ./home.nix ];
-            };
-          }
         ];
       };
 
