@@ -55,11 +55,6 @@
 
       hosts.normandy = {
         modules = [
-<<<<<<< Updated upstream
-          { nixpkgs.overlays = [ emacs.overlay ]; }
-=======
-          bootspec-secureboot.nixosModules.bootspec-secureboot
->>>>>>> Stashed changes
           ./nixos.nix
           ./normandy.nix
           lanzaboote.nixosModules.lanzaboote
