@@ -441,6 +441,18 @@
         "type": "github"
       }
     },
+    "intune-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-GjIVOfwjEoqWMI1m0M7Q4zG7M3RotodiAe4US+pbH6Q=",
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -740,6 +752,7 @@
         "darwin": "darwin",
         "emacs": "emacs",
         "home-manager": "home-manager",
+        "intune-patch": "intune-patch",
         "intuneNixpkgs": [
           "nixpkgs"
         ],

@@ -4,8 +4,7 @@
   imports =
     [
       ./nix-conf.nix
-    ]
-    ++ (builtins.attrValues outputs.nixosModules);
+    ];
 
   boot.initrd.systemd.enable = true;
 
@@ -71,7 +70,6 @@
   ];
 
   nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays;
     config.allowUnfree = true;
   };
 

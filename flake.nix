@@ -20,11 +20,18 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, utils, intuneNixpkgs, ... } @ inputs:
+  inputs.intune-patch = {
+    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
+    flake = false;
+  };
+
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
-      channels.intuneNixpkgs.patches = [ ./pam.patch ];
+      channels.intuneNixpkgs.patches = [
+        intune-patch
+      ];
 
       hosts.idenna = {
         system = "aarch64-darwin";
