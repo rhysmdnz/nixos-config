@@ -15,17 +15,12 @@
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
   };
 
-  inputs.bootspec-secureboot = {
-    url = "github:DeterminateSystems/bootspec-secureboot/main";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   inputs.intune-patch = {
     url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
     flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, bootspec-secureboot, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -58,10 +53,10 @@
 
       hosts.normandy = {
         modules = [
-          bootspec-secureboot.nixosModules.bootspec-secureboot
           { nixpkgs.overlays = [ emacs.overlay ]; }
           ./nixos.nix
           ./normandy.nix
+          lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
         ];
       };

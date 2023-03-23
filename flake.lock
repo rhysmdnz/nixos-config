@@ -1,26 +1,5 @@
 {
   "nodes": {
-    "bootspec-secureboot": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1678122644,
-        "narHash": "sha256-1cuW9/kvjcTajyJavbq+BTmRVEjHzVk6WizxJO4Edhs=",
-        "owner": "DeterminateSystems",
-        "repo": "bootspec-secureboot",
-        "rev": "d83204f82081d67417d1b379e316733540d6eb59",
-        "type": "github"
-      },
-      "original": {
-        "owner": "DeterminateSystems",
-        "ref": "main",
-        "repo": "bootspec-secureboot",
-        "type": "github"
-      }
-    },
     "crane": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -748,7 +727,6 @@
     },
     "root": {
       "inputs": {
-        "bootspec-secureboot": "bootspec-secureboot",
         "darwin": "darwin",
         "emacs": "emacs",
         "home-manager": "home-manager",
