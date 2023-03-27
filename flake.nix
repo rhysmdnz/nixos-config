@@ -10,7 +10,7 @@
     emacs.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    lanzaboote.url = "github:nix-community/lanzaboote";
+    lanzaboote.url = "github:nix-community/lanzaboote/v0.2.0";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
   };
