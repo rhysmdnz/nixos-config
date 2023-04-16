@@ -17,6 +17,8 @@
 
   networking.hostName = "elbrus";
 
+  services.resolved.dnssec = "false";
+
   environment.systemPackages = with pkgs; [
     microsoft-edge
   ];
@@ -53,6 +55,8 @@
     enable = true;
   };
 
+  services.fprintd.enable = true;
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -62,7 +66,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "tpm_tis" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" "tpm_tis" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -71,10 +75,11 @@
 
   boot.initrd.luks.devices = {
     root = {
-      device = "/dev/disk/by-uuid/784ad5d8-4807-4a72-948a-876e32f83c49";
+      device = "/dev/disk/by-uuid/e7734748-b2ac-4362-b363-bca3e83ad246";
       preLVM = true;
       allowDiscards = true;
       crypttabExtraOpts = [ "tpm2-device=auto" ];
+      bypassWorkqueues = true;
     };
   };
   fileSystems."/" =
@@ -85,12 +90,12 @@
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/8AA7-64F6";
+      device = "/dev/disk/by-uuid/29A3-03ED";
       fsType = "vfat";
     };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/638528b1-a315-47c3-93c4-619eddaf89bb"; }];
+    [{ device = "/dev/disk/by-partuuid/0df7c43a-4fe7-4f4a-b54e-acdf930a289a"; randomEncryption.enable = true; randomEncryption.allowDiscards = true; }];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = true;
@@ -104,4 +109,3 @@
   };
 
 }
-

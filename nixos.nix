@@ -69,6 +69,18 @@
     thin-provisioning-tools
   ];
 
+  nixpkgs = {
+    overlays = [
+      (self: super: rec {
+        microsoft-edge = super.microsoft-edge.overrideAttrs (finalAttrs: previousAttrs: {
+          postFixup = previousAttrs.postFixup + ''
+            wrapProgram "$out/bin/microsoft-edge"  --add-flags --ozone-platform-hint=auto
+          '';
+        });
+      })
+    ];
+  };
+
   services.flatpak.enable = true;
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
