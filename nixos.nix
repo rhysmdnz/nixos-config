@@ -29,7 +29,7 @@
 
 
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
@@ -80,6 +80,9 @@
       })
     ];
   };
+
+  programs.nix-index.enable = true;
+  programs.command-not-found.enable = false;
 
   services.flatpak.enable = true;
   programs.zsh.enable = true;

@@ -13,6 +13,8 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     #lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   inputs.intune-patch = {
@@ -20,19 +22,21 @@
     flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
 
       channels.intuneNixpkgs.patches = [
-        intune-patch
+        #intune-patch
+        ./intune.patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
 
       hostDefaults.modules = [
+        nix-index-database.nixosModules.nix-index
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
