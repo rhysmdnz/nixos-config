@@ -17,8 +17,6 @@
 
   networking.hostName = "elbrus";
 
-  services.resolved.dnssec = "false";
-
   environment.systemPackages = with pkgs; [
     microsoft-edge
   ];
@@ -56,6 +54,9 @@
   };
 
   services.fprintd.enable = true;
+
+  security.tpm2.enable = true;
+  security.tpm2.pkcs11.enable = true;
 
 
   # This value determines the NixOS release from which the default
@@ -107,5 +108,8 @@
       libvdpau-va-gl
     ];
   };
+
+  hardware.ipu6.enable = true;
+  hardware.ipu6.platform = "ipu6ep";
 
 }
