@@ -34,6 +34,7 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
+  programs.nix-index.enable = true;
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
