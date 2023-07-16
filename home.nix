@@ -21,7 +21,7 @@
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     enableVteIntegration = pkgs.stdenv.isLinux;
     initExtraBeforeCompInit = ''
       zstyle ':completion:*' menu select
