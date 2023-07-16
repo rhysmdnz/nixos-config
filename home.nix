@@ -1,11 +1,11 @@
 { pkgs, lib, ... }:
 {
 
-  programs.doom-emacs = {
-    enable = pkgs.stdenv.isLinux && pkgs.stdenv.cc.isGNU;
-    doomPrivateDir = ./doom.d;
-    emacsPackage = pkgs.emacsPgtk;
-  };
+#  programs.doom-emacs = {
+#    enable = pkgs.stdenv.isLinux && pkgs.stdenv.cc.isGNU;
+#    doomPrivateDir = ./doom.d;
+#    emacsPackage = pkgs.emacsPgtk;
+#  };
 
   programs.git = {
     enable = true;
