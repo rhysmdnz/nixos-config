@@ -68,7 +68,7 @@
     ntfs3g
     deja-dup
     thin-provisioning-tools
-    emacsPgtk 
+    emacs-pgtk 
   ];
 
   nixpkgs = {
