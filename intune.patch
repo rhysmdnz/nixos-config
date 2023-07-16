@@ -54,10 +54,10 @@ index 6e8be412de8..c3589ebe960 100644
        '' +
 diff --git a/nixos/modules/services/security/intune.nix b/nixos/modules/services/security/intune.nix
 new file mode 100644
-index 00000000000..7e2d05be978
+index 00000000000..8e3739277d0
 --- /dev/null
 +++ b/nixos/modules/services/security/intune.nix
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,35 @@
 +{ config
 +, pkgs
 +, lib
@@ -82,31 +82,10 @@ index 00000000000..7e2d05be978
 +    environment.systemPackages = [ pkgs.microsoft-identity-broker pkgs.intune-portal ];
 +    systemd.packages = [ pkgs.microsoft-identity-broker ];
 +
-+    systemd.services.microsoft-identity-device-broker.enable = true;
 +    systemd.services.microsoft-identity-device-broker.serviceConfig.ExecStartPre = "";
-+    systemd.user.services.microsoft-identity-broker.enable = true;
 +    systemd.user.services.microsoft-identity-broker.serviceConfig.ExecStartPre = "";
 +
-+
 +    systemd.tmpfiles.packages = [ pkgs.intune-portal ];
-+    # Only really want the wants file set, but haven't been able to figure out how to do what without setting the whole thing here
-+    systemd.user.timers.intune-agent = {
-+      enable = true;
-+      description = "Intune Agent scheduler";
-+      after = [ "graphical-session.target" ];
-+      partOf = [ "graphical-session.target" ];
-+      unitConfig = {
-+        DefaultDependencies = "no";
-+      };
-+      timerConfig = {
-+        AccuracySec = "2m";
-+        OnStartupSec = "5m";
-+        OnUnitActiveSec = "1h";
-+        RandomizedDelaySec = "10m";
-+      };
-+      wantedBy = [ "graphical-session.target" ];
-+    };
-+
 +    services.dbus.packages = [ pkgs.microsoft-identity-broker ];
 +  };
 +
@@ -150,7 +129,7 @@ index 00000000000..c625647ff78
 +})
 diff --git a/pkgs/applications/misc/intune-portal/default.nix b/pkgs/applications/misc/intune-portal/default.nix
 new file mode 100644
-index 00000000000..120207477a0
+index 00000000000..0b332e50e56
 --- /dev/null
 +++ b/pkgs/applications/misc/intune-portal/default.nix
 @@ -0,0 +1,105 @@
@@ -181,7 +160,7 @@ index 00000000000..120207477a0
 +
 +  src = fetchurl {
 +    url = "https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/i/${pname}/${pname}_${version}_amd64.deb";
-+    hash = "sha512-ikaZSzN/1VBMIKTHUytisGk4JxIwzLMCZRchTlKt1dOotJExLbYmNFwckxmYEKRHjZLDPUKOumcI8bwavJyadA==";
++    hash = "sha256-Y8f2JEAitxqgcU6GOKaVvSjKKtxg3oxy6xHyJnjTTJo=";
 +  };
 +
 +  nativeBuildInputs = [ dpkg ];
@@ -314,7 +293,7 @@ index a2eda0dc3c1..9bf75a89fe6 100644
    in ''
 diff --git a/pkgs/development/java-modules/jnr-posix/default.nix b/pkgs/development/java-modules/jnr-posix/default.nix
 new file mode 100644
-index 00000000000..d054de0555f
+index 00000000000..31514e453ce
 --- /dev/null
 +++ b/pkgs/development/java-modules/jnr-posix/default.nix
 @@ -0,0 +1,74 @@
@@ -335,7 +314,7 @@ index 00000000000..d054de0555f
 +    owner = "jnr";
 +    repo = "jnr-posix";
 +    rev = "jnr-posix-${version}";
-+    hash = "sha512-NI2u2H5dxp+spyZbbzJeiV3FS38TMDmDqjjZzllZVp2qsbKkvv9+szeobh9Zb7dsIfRxhAQgZvw8rjNXbGmzSw==";
++    hash = "sha256-Hf6xExhPeoObUj56dY+b9UQ0+Y8KAYSdg12Y95Nbefk=";
 +  };
 +
 +  deps = stdenv.mkDerivation {
@@ -394,7 +373,7 @@ index 00000000000..d054de0555f
 +}
 diff --git a/pkgs/development/libraries/msalsdk-dbusclient/default.nix b/pkgs/development/libraries/msalsdk-dbusclient/default.nix
 new file mode 100644
-index 00000000000..528fb3641e1
+index 00000000000..7f6135c6394
 --- /dev/null
 +++ b/pkgs/development/libraries/msalsdk-dbusclient/default.nix
 @@ -0,0 +1,40 @@
@@ -410,7 +389,7 @@ index 00000000000..528fb3641e1
 +
 +  src = fetchurl {
 +    url = "https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/m/${pname}/${pname}_${version}_amd64.deb";
-+    hash = "sha512-Y5uz0+bIpw0Em2vbE8DyqahXIpfmvTguac73dDTl5AOks3/3LnSR9VticHnZKeHsWSCDvbOFZFnasUYej9nTSQ==";
++    hash = "sha256-AVPrNxCjXGza2gGETP0YrlXeEgI6AjlrSVTtqKb2UBI=";
 +  };
 +
 +  nativeBuildInputs = [ dpkg ];
@@ -472,7 +451,7 @@ index 00000000000..e804eeb935e
 +done | tail -n 1 | (read version; update-source-version msalsdk-dbusclient $version)
 diff --git a/pkgs/tools/security/microsoft-identity-broker/default.nix b/pkgs/tools/security/microsoft-identity-broker/default.nix
 new file mode 100644
-index 00000000000..8c24927d8c8
+index 00000000000..abea05d6cb9
 --- /dev/null
 +++ b/pkgs/tools/security/microsoft-identity-broker/default.nix
 @@ -0,0 +1,104 @@
@@ -493,7 +472,7 @@ index 00000000000..8c24927d8c8
 +
 +  src = fetchurl {
 +    url = "https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/m/${pname}/${pname}_${version}_amd64.deb";
-+    hash = "sha512-d7eKqB9+OUr/B1ZMwX9T9PfbBn9KpUEmJcCe7LHOoMj1fsETDIjvLmXtzijGwVLhYc1JvjbJXEWoTw0oBb9cFQ==";
++    hash = "sha256-yPpTbcnl6tlbiUqw6AyMncahx2K9a6T6aP5YZ8t/KnY=";
 +  };
 +
 +  nativeBuildInputs = [ dpkg makeWrapper openjdk11 zip ];

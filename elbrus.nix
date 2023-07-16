@@ -19,7 +19,16 @@
 
   environment.systemPackages = with pkgs; [
     microsoft-edge
+    rustup
+    clang
+    vscode
+    gnumake
+    pkgconfig
+    openssl
+    virtiofsd
+    #qemu
   ];
+  environment.sessionVariables.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
 
   virtualisation.kvmgt.enable = true;
   virtualisation.kvmgt.vgpus = {
