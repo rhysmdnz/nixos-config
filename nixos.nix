@@ -63,7 +63,6 @@
     ripgrep
     fend
     python3
-    exa
     gparted
     ntfs3g
     deja-dup
