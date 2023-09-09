@@ -52,8 +52,8 @@
     ];
   };
 
-  programs.exa.enable = true;
-  programs.exa.enableAliases = true;
+  programs.eza.enable = true;
+  programs.eza.enableAliases = true;
   programs.starship.enable = true;
   programs.starship.settings = {
     add_newline = false;
