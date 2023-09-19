@@ -11,6 +11,13 @@
     enable = true;
     userName = "Rhys Davies";
     userEmail = "rhys@memes.nz";
+    extraConfig.gpg.format = "ssh";
+    signing.key = "~/.ssh/id_ed25519";
+    signing.signByDefault = true;
+    extraConfig.gpg.ssh.allowedSignersFile = "${pkgs.writeText ''"allowed_signers''
+    ''
+    rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
+    ''}";
   };
 
   programs.zsh.sessionVariables = {
