@@ -1,8 +1,8 @@
 diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
-index 0899e702bab..cc181563380 100644
+index 811a46563fb4..3ebc608f9e32 100644
 --- a/nixos/modules/module-list.nix
 +++ b/nixos/modules/module-list.nix
-@@ -1088,6 +1088,7 @@
+@@ -1142,6 +1142,7 @@
    ./services/security/hologram-agent.nix
    ./services/security/hologram-server.nix
    ./services/security/infnoise.nix
@@ -11,10 +11,10 @@ index 0899e702bab..cc181563380 100644
    ./services/security/munge.nix
    ./services/security/nginx-sso.nix
 diff --git a/nixos/modules/security/pam.nix b/nixos/modules/security/pam.nix
-index 6e8be412de8..c3589ebe960 100644
+index d83259ccbebc..acf7c8ea4cfd 100644
 --- a/nixos/modules/security/pam.nix
 +++ b/nixos/modules/security/pam.nix
-@@ -553,6 +553,7 @@ let
+@@ -568,6 +568,7 @@ let
                || cfg.pamMount
                || cfg.enableKwallet
                || cfg.enableGnomeKeyring
@@ -22,7 +22,7 @@ index 6e8be412de8..c3589ebe960 100644
                || cfg.googleAuthenticator.enable
                || cfg.gnupg.enable
                || cfg.failDelay.enable
-@@ -579,6 +580,9 @@ let
+@@ -598,6 +599,9 @@ let
                optionalString cfg.enableGnomeKeyring ''
                  auth optional ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
                '' +
@@ -32,7 +32,7 @@ index 6e8be412de8..c3589ebe960 100644
                optionalString cfg.gnupg.enable ''
                  auth optional ${pkgs.pam_gnupg}/lib/security/pam_gnupg.so ${optionalString cfg.gnupg.storeOnly " store-only"}
                '' +
-@@ -729,6 +733,9 @@ let
+@@ -764,6 +768,9 @@ let
            '' +
            optionalString (config.virtualisation.lxc.lxcfs.enable) ''
              session optional ${pkgs.lxc}/lib/security/pam_cgfs.so -c all
@@ -42,7 +42,7 @@ index 6e8be412de8..c3589ebe960 100644
            ''
          );
      };
-@@ -1367,6 +1374,9 @@ in
+@@ -1476,6 +1483,9 @@ in
        optionalString (isEnabled (cfg: cfg.enableGnomeKeyring)) ''
          mr ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so,
        '' +
@@ -54,10 +54,10 @@ index 6e8be412de8..c3589ebe960 100644
        '' +
 diff --git a/nixos/modules/services/security/intune.nix b/nixos/modules/services/security/intune.nix
 new file mode 100644
-index 00000000000..8e3739277d0
+index 000000000000..7e2d05be978a
 --- /dev/null
 +++ b/nixos/modules/services/security/intune.nix
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,56 @@
 +{ config
 +, pkgs
 +, lib
@@ -82,10 +82,31 @@ index 00000000000..8e3739277d0
 +    environment.systemPackages = [ pkgs.microsoft-identity-broker pkgs.intune-portal ];
 +    systemd.packages = [ pkgs.microsoft-identity-broker ];
 +
++    systemd.services.microsoft-identity-device-broker.enable = true;
 +    systemd.services.microsoft-identity-device-broker.serviceConfig.ExecStartPre = "";
++    systemd.user.services.microsoft-identity-broker.enable = true;
 +    systemd.user.services.microsoft-identity-broker.serviceConfig.ExecStartPre = "";
 +
++
 +    systemd.tmpfiles.packages = [ pkgs.intune-portal ];
++    # Only really want the wants file set, but haven't been able to figure out how to do what without setting the whole thing here
++    systemd.user.timers.intune-agent = {
++      enable = true;
++      description = "Intune Agent scheduler";
++      after = [ "graphical-session.target" ];
++      partOf = [ "graphical-session.target" ];
++      unitConfig = {
++        DefaultDependencies = "no";
++      };
++      timerConfig = {
++        AccuracySec = "2m";
++        OnStartupSec = "5m";
++        OnUnitActiveSec = "1h";
++        RandomizedDelaySec = "10m";
++      };
++      wantedBy = [ "graphical-session.target" ];
++    };
++
 +    services.dbus.packages = [ pkgs.microsoft-identity-broker ];
 +  };
 +
@@ -94,10 +115,10 @@ index 00000000000..8e3739277d0
 +  };
 +}
 diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
-index ee5b5e8396d..b2bc32ca76f 100644
+index 0574c1db8754..d965fc0253a0 100644
 --- a/nixos/tests/all-tests.nix
 +++ b/nixos/tests/all-tests.nix
-@@ -411,6 +411,7 @@ in {
+@@ -477,6 +477,7 @@ in {
    memcached = handleTest ./memcached.nix {};
    merecat = handleTest ./merecat.nix {};
    metabase = handleTest ./metabase.nix {};
@@ -107,7 +128,7 @@ index ee5b5e8396d..b2bc32ca76f 100644
    minecraft-server = handleTest ./minecraft-server.nix {};
 diff --git a/nixos/tests/microsoft-identity-broker.nix b/nixos/tests/microsoft-identity-broker.nix
 new file mode 100644
-index 00000000000..c625647ff78
+index 000000000000..c625647ff78b
 --- /dev/null
 +++ b/nixos/tests/microsoft-identity-broker.nix
 @@ -0,0 +1,16 @@
@@ -129,7 +150,7 @@ index 00000000000..c625647ff78
 +})
 diff --git a/pkgs/applications/misc/intune-portal/default.nix b/pkgs/applications/misc/intune-portal/default.nix
 new file mode 100644
-index 00000000000..0b332e50e56
+index 000000000000..5f9ba62754cd
 --- /dev/null
 +++ b/pkgs/applications/misc/intune-portal/default.nix
 @@ -0,0 +1,105 @@
@@ -156,11 +177,11 @@ index 00000000000..0b332e50e56
 +}:
 +stdenv.mkDerivation rec {
 +  pname = "intune-portal";
-+  version = "1.2303.10";
++  version = "1.2307.12";
 +
 +  src = fetchurl {
 +    url = "https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/i/${pname}/${pname}_${version}_amd64.deb";
-+    hash = "sha256-Y8f2JEAitxqgcU6GOKaVvSjKKtxg3oxy6xHyJnjTTJo=";
++    hash = "sha256-49aNkYKFbZG0h043a+Bj0w9Ph70EqhQbvLLW7YDnvFc=";
 +  };
 +
 +  nativeBuildInputs = [ dpkg ];
@@ -240,7 +261,7 @@ index 00000000000..0b332e50e56
 +}
 diff --git a/pkgs/applications/misc/intune-portal/update.sh b/pkgs/applications/misc/intune-portal/update.sh
 new file mode 100755
-index 00000000000..4908bcf4379
+index 000000000000..4908bcf43794
 --- /dev/null
 +++ b/pkgs/applications/misc/intune-portal/update.sh
 @@ -0,0 +1,26 @@
@@ -271,7 +292,7 @@ index 00000000000..4908bcf4379
 +    fi
 +done | tail -n 1 | (read version; update-source-version intune-portal $version)
 diff --git a/pkgs/applications/networking/browsers/microsoft-edge/browser.nix b/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
-index a2eda0dc3c1..9bf75a89fe6 100644
+index 7f72a42ffe0d..04778c3633ac 100644
 --- a/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
 +++ b/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
 @@ -32,6 +32,7 @@
@@ -282,7 +303,7 @@ index a2eda0dc3c1..9bf75a89fe6 100644
  }:
  
  let
-@@ -98,7 +99,7 @@ stdenv.mkDerivation rec {
+@@ -94,7 +95,7 @@ stdenv.mkDerivation rec {
          libuuid
        ];
        liboneauth = lib.makeLibraryPath [
@@ -293,7 +314,7 @@ index a2eda0dc3c1..9bf75a89fe6 100644
    in ''
 diff --git a/pkgs/development/java-modules/jnr-posix/default.nix b/pkgs/development/java-modules/jnr-posix/default.nix
 new file mode 100644
-index 00000000000..31514e453ce
+index 000000000000..68c683591735
 --- /dev/null
 +++ b/pkgs/development/java-modules/jnr-posix/default.nix
 @@ -0,0 +1,74 @@
@@ -308,13 +329,13 @@ index 00000000000..31514e453ce
 +}:
 +let
 +  pname = "jnr-posix";
-+  version = "3.1.16";
++  version = "3.1.18";
 +
 +  src = fetchFromGitHub {
 +    owner = "jnr";
 +    repo = "jnr-posix";
 +    rev = "jnr-posix-${version}";
-+    hash = "sha256-Hf6xExhPeoObUj56dY+b9UQ0+Y8KAYSdg12Y95Nbefk=";
++    hash = "sha256-zx8I9rsu9Kjef+LatDA1WIuO7Vgo0/JM5nGi3pSWch4=";
 +  };
 +
 +  deps = stdenv.mkDerivation {
@@ -334,7 +355,7 @@ index 00000000000..31514e453ce
 +    '';
 +
 +    outputHashMode = "recursive";
-+    outputHash = "sha256-9PxDQAMPr9gblkv+Zq04vydOE3bAyo8CQy5bLHhiCOk=";
++    outputHash = "sha256-gOw0KUFyZEMONwLwlHSiV+ZZ7JQhjZwg708Q1IciUfo=";
 +
 +    doCheck = false;
 +  };
@@ -373,7 +394,7 @@ index 00000000000..31514e453ce
 +}
 diff --git a/pkgs/development/libraries/msalsdk-dbusclient/default.nix b/pkgs/development/libraries/msalsdk-dbusclient/default.nix
 new file mode 100644
-index 00000000000..7f6135c6394
+index 000000000000..7f6135c6394d
 --- /dev/null
 +++ b/pkgs/development/libraries/msalsdk-dbusclient/default.nix
 @@ -0,0 +1,40 @@
@@ -419,7 +440,7 @@ index 00000000000..7f6135c6394
 +}
 diff --git a/pkgs/development/libraries/msalsdk-dbusclient/update.sh b/pkgs/development/libraries/msalsdk-dbusclient/update.sh
 new file mode 100755
-index 00000000000..e804eeb935e
+index 000000000000..e804eeb935ee
 --- /dev/null
 +++ b/pkgs/development/libraries/msalsdk-dbusclient/update.sh
 @@ -0,0 +1,26 @@
@@ -451,7 +472,7 @@ index 00000000000..e804eeb935e
 +done | tail -n 1 | (read version; update-source-version msalsdk-dbusclient $version)
 diff --git a/pkgs/tools/security/microsoft-identity-broker/default.nix b/pkgs/tools/security/microsoft-identity-broker/default.nix
 new file mode 100644
-index 00000000000..abea05d6cb9
+index 000000000000..b08cefbf2b6d
 --- /dev/null
 +++ b/pkgs/tools/security/microsoft-identity-broker/default.nix
 @@ -0,0 +1,104 @@
@@ -468,11 +489,11 @@ index 00000000000..abea05d6cb9
 +}:
 +stdenv.mkDerivation rec {
 +  pname = "microsoft-identity-broker";
-+  version = "1.4.1";
++  version = "1.6.1";
 +
 +  src = fetchurl {
 +    url = "https://packages.microsoft.com/ubuntu/22.04/prod/pool/main/m/${pname}/${pname}_${version}_amd64.deb";
-+    hash = "sha256-yPpTbcnl6tlbiUqw6AyMncahx2K9a6T6aP5YZ8t/KnY=";
++    hash = "sha256-DYXGqMBUGKw4xsWpD973t5ZccBTh0LmVfLMX1T5DNms=";
 +  };
 +
 +  nativeBuildInputs = [ dpkg makeWrapper openjdk11 zip ];
@@ -561,7 +582,7 @@ index 00000000000..abea05d6cb9
 +}
 diff --git a/pkgs/tools/security/microsoft-identity-broker/update.sh b/pkgs/tools/security/microsoft-identity-broker/update.sh
 new file mode 100755
-index 00000000000..f91583a761d
+index 000000000000..f91583a761df
 --- /dev/null
 +++ b/pkgs/tools/security/microsoft-identity-broker/update.sh
 @@ -0,0 +1,26 @@
@@ -592,10 +613,10 @@ index 00000000000..f91583a761d
 +    fi
 +done | tail -n 1 | (read version; update-source-version microsoft-identity-broker $version)
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 3fda0656361..1ec1e168482 100644
+index 833711d1e5e0..40622fa00c0f 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -22697,6 +22697,8 @@ with pkgs;
+@@ -24168,6 +24168,8 @@ with pkgs;
    microsoft-edge-beta = callPackage (import ../applications/networking/browsers/microsoft-edge).beta { };
    microsoft-edge-dev = callPackage (import ../applications/networking/browsers/microsoft-edge).dev { };
  
@@ -604,7 +625,7 @@ index 3fda0656361..1ec1e168482 100644
    micronucleus = callPackage ../development/tools/misc/micronucleus { };
  
    markdown-anki-decks = callPackage ../tools/misc/markdown-anki-decks { };
-@@ -22760,6 +22762,8 @@ with pkgs;
+@@ -24232,6 +24234,8 @@ with pkgs;
      inherit (darwin.apple_sdk.frameworks) Security;
    };
  
@@ -612,8 +633,8 @@ index 3fda0656361..1ec1e168482 100644
 +
    msgpack = callPackage ../development/libraries/msgpack { };
  
-   msoffcrypto-tool = with python3.pkgs; toPythonApplication msoffcrypto-tool;
-@@ -30964,6 +30968,8 @@ with pkgs;
+   msgpack-c = callPackage ../development/libraries/msgpack-c { };
+@@ -32742,6 +32746,8 @@ with pkgs;
  
    indigenous-desktop = callPackage ../applications/networking/feedreaders/indigenous-desktop { };
  
@@ -622,7 +643,7 @@ index 3fda0656361..1ec1e168482 100644
    jackline = callPackage ../applications/networking/instant-messengers/jackline { };
  
    jay = callPackage ../applications/window-managers/jay { };
-@@ -31429,6 +31435,8 @@ with pkgs;
+@@ -33241,6 +33247,8 @@ with pkgs;
  
    jitsi = callPackage ../applications/networking/instant-messengers/jitsi { };
  
@@ -630,4 +651,4 @@ index 3fda0656361..1ec1e168482 100644
 +
    joe = callPackage ../applications/editors/joe { };
  
-   josm = callPackage ../applications/misc/josm { };
+   johnny = callPackage ../applications/misc/johnny { };

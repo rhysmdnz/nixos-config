@@ -29,8 +29,8 @@
       channelsConfig = { allowUnfree = true; };
 
       channels.intuneNixpkgs.patches = [
-        intune-patch
-        #./intune.patch
+        #intune-patch
+        ./intune.patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
