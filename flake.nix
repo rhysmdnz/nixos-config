@@ -30,6 +30,7 @@
 
       channels.intuneNixpkgs.patches = [
         #intune-patch
+        ./hacks.patch
         ./intune.patch
       ];
 
