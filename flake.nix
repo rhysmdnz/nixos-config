@@ -28,6 +28,10 @@
 
       channelsConfig = { allowUnfree = true; };
 
+      channels.nixpkgs.patches = [
+        ./hacks.patch
+      ];
+
       channels.intuneNixpkgs.patches = [
         #intune-patch
         ./hacks.patch
