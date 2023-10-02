@@ -405,7 +405,7 @@
     "intune-patch": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-PPM9eoZb5XZr9h51TX8MJsvqw6yhbWSr3kqBl+J7Qws=",
+        "narHash": "sha256-B1Rp9gZd+GMJdO5kJ/rXH7UX7Nrr908yYzIlP39QeTk=",
         "type": "file",
         "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
       },
