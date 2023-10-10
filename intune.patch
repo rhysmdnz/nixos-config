@@ -1,8 +1,8 @@
 diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
-index 811a46563fb4..3ebc608f9e32 100644
+index ec6f410a48f6..8a32fa4d85e5 100644
 --- a/nixos/modules/module-list.nix
 +++ b/nixos/modules/module-list.nix
-@@ -1142,6 +1142,7 @@
+@@ -1148,6 +1148,7 @@
    ./services/security/hologram-agent.nix
    ./services/security/hologram-server.nix
    ./services/security/infnoise.nix
@@ -54,10 +54,10 @@ index d83259ccbebc..acf7c8ea4cfd 100644
        '' +
 diff --git a/nixos/modules/services/security/intune.nix b/nixos/modules/services/security/intune.nix
 new file mode 100644
-index 000000000000..7e2d05be978a
+index 000000000000..98052b5b5d5d
 --- /dev/null
 +++ b/nixos/modules/services/security/intune.nix
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,32 @@
 +{ config
 +, pkgs
 +, lib
@@ -80,33 +80,9 @@ index 000000000000..7e2d05be978a
 +
 +    users.groups.microsoft-identity-broker = { };
 +    environment.systemPackages = [ pkgs.microsoft-identity-broker pkgs.intune-portal ];
-+    systemd.packages = [ pkgs.microsoft-identity-broker ];
-+
-+    systemd.services.microsoft-identity-device-broker.enable = true;
-+    systemd.services.microsoft-identity-device-broker.serviceConfig.ExecStartPre = "";
-+    systemd.user.services.microsoft-identity-broker.enable = true;
-+    systemd.user.services.microsoft-identity-broker.serviceConfig.ExecStartPre = "";
-+
++    systemd.packages = [ pkgs.microsoft-identity-broker pkgs.intune-portal ];
 +
 +    systemd.tmpfiles.packages = [ pkgs.intune-portal ];
-+    # Only really want the wants file set, but haven't been able to figure out how to do what without setting the whole thing here
-+    systemd.user.timers.intune-agent = {
-+      enable = true;
-+      description = "Intune Agent scheduler";
-+      after = [ "graphical-session.target" ];
-+      partOf = [ "graphical-session.target" ];
-+      unitConfig = {
-+        DefaultDependencies = "no";
-+      };
-+      timerConfig = {
-+        AccuracySec = "2m";
-+        OnStartupSec = "5m";
-+        OnUnitActiveSec = "1h";
-+        RandomizedDelaySec = "10m";
-+      };
-+      wantedBy = [ "graphical-session.target" ];
-+    };
-+
 +    services.dbus.packages = [ pkgs.microsoft-identity-broker ];
 +  };
 +
@@ -115,48 +91,89 @@ index 000000000000..7e2d05be978a
 +  };
 +}
 diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
-index 0574c1db8754..d965fc0253a0 100644
+index 92389fdad55a..a1cb308ea4c2 100644
 --- a/nixos/tests/all-tests.nix
 +++ b/nixos/tests/all-tests.nix
-@@ -477,6 +477,7 @@ in {
+@@ -480,6 +480,7 @@ in {
    memcached = handleTest ./memcached.nix {};
    merecat = handleTest ./merecat.nix {};
    metabase = handleTest ./metabase.nix {};
-+  microsoft-identity-broker = handleTest ./microsoft-identity-broker.nix {};
++  microsoft-intune = handleTest ./microsoft-intune.nix {};
    mindustry = handleTest ./mindustry.nix {};
    minecraft = handleTest ./minecraft.nix {};
    minecraft-server = handleTest ./minecraft-server.nix {};
-diff --git a/nixos/tests/microsoft-identity-broker.nix b/nixos/tests/microsoft-identity-broker.nix
+diff --git a/nixos/tests/microsoft-intune.nix b/nixos/tests/microsoft-intune.nix
 new file mode 100644
-index 000000000000..c625647ff78b
+index 000000000000..e58acae3d4cb
 --- /dev/null
-+++ b/nixos/tests/microsoft-identity-broker.nix
-@@ -0,0 +1,16 @@
++++ b/nixos/tests/microsoft-intune.nix
+@@ -0,0 +1,56 @@
 +import ./make-test-python.nix ({ pkgs, ...} : {
-+  name = "microsoft-identity-broker";
++  name = "microsoft-intune";
 +  meta = with pkgs.lib.maintainers; {
 +    maintainers = [ rhysmdnz ];
 +  };
++  enableOCR = true;
 +
 +  nodes.machine =
-+    { pkgs, ... }:
-+    { services.intune.enable=true;
++    { nodes, ... }:
++    let user = nodes.machine.users.users.alice;
++    in {
++      services.intune.enable=true;
++      services.gnome.gnome-keyring.enable = true;
++      imports = [ ./common/user-account.nix ./common/x11.nix ];
++      test-support.displayManager.auto.user = user.name;
++      environment = {
++        variables.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${builtins.toString user.uid}/bus";
++      };
++    };
++  nodes.pam =
++    { nodes, ... }:
++    let user = nodes.machine.users.users.alice;
++    in {
++      services.intune.enable=true;
++      imports = [ ./common/user-account.nix ];
 +    };
 +
 +  testScript = ''
 +    start_all()
++
++    # Check System Daemons successfully start
 +    machine.succeed("systemctl start microsoft-identity-device-broker.service")
++    machine.succeed("systemctl start intune-daemon.service")
++
++    # Check User Daemons and intune-portal execurtable works
++    # Going any further than starting it would require internet access and a microsoft account
++    machine.wait_for_x()
++    # TODO: This needs an unlocked user keychain before it will work
++    #machine.succeed("su - alice -c 'systemctl start --user microsoft-identity-broker.service'")
++    machine.succeed("su - alice -c 'systemctl start --user intune-agent.service'")
++    machine.succeed("su - alice -c intune-portal >&2 &")
++    machine.wait_for_text("Intune Agent")
++
++    # Check logging in creates password file
++    def login_as_alice():
++        pam.wait_until_tty_matches("1", "login: ")
++        pam.send_chars("alice\n")
++        pam.wait_until_tty_matches("1", "Password: ")
++        pam.send_chars("foobar\n")
++        pam.wait_until_tty_matches("1", "alice\@pam")
++
++    pam.wait_for_unit("multi-user.target")
++    login_as_alice()
++    pam.wait_for_file("/run/intune/1000/pwquality")
 +  '';
 +})
 diff --git a/pkgs/applications/misc/intune-portal/default.nix b/pkgs/applications/misc/intune-portal/default.nix
 new file mode 100644
-index 000000000000..5f9ba62754cd
+index 000000000000..5490286e2b4e
 --- /dev/null
 +++ b/pkgs/applications/misc/intune-portal/default.nix
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,115 @@
 +{ stdenv
 +, lib
 +, fetchurl
++, nixosTests
 +, dpkg
 +, libuuid
 +, xorg
@@ -221,6 +238,7 @@ index 000000000000..5f9ba62754cd
 +
 +      patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) --set-rpath ${libPath.intune} opt/microsoft/intune/bin/intune-portal
 +      patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) --set-rpath ${libPath.intune} opt/microsoft/intune/bin/intune-agent
++      patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) --set-rpath ${libPath.intune} opt/microsoft/intune/bin/intune-daemon
 +      patchelf --set-rpath ${libPath.pam} ./usr/lib/x86_64-linux-gnu/security/pam_intune.so
 +
 +      runHook postBuild
@@ -245,11 +263,19 @@ index 000000000000..5f9ba62754cd
 +        ExecStart=/opt/microsoft/intune/bin/intune-agent \
 +        ExecStart=$out/bin/intune-agent
 +
++    substituteInPlace $out/lib/systemd/system/intune-daemon.service \
++      --replace \
++        ExecStart=/opt/microsoft/intune/bin/intune-daemon \
++        ExecStart=$out/bin/intune-daemon
++
 +    runHook postInstall
 +  '';
 +
-+  dontPatchELF = true;
-+  passthru.updateScript = ./update.sh;
++  #dontPatchELF = true;
++  passthru = {
++    tests = nixosTests.microsoft-intune;
++    updateScript = ./update.sh;
++  };
 +
 +  meta = with lib; {
 +    description = "Microsoft Intune Portal allows you to securely access corporate apps, data, and resources";
@@ -292,7 +318,7 @@ index 000000000000..4908bcf43794
 +    fi
 +done | tail -n 1 | (read version; update-source-version intune-portal $version)
 diff --git a/pkgs/applications/networking/browsers/microsoft-edge/browser.nix b/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
-index 7f72a42ffe0d..04778c3633ac 100644
+index d6898e9d86c2..f4b88c9745fa 100644
 --- a/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
 +++ b/pkgs/applications/networking/browsers/microsoft-edge/browser.nix
 @@ -32,6 +32,7 @@
@@ -303,7 +329,7 @@ index 7f72a42ffe0d..04778c3633ac 100644
  }:
  
  let
-@@ -94,7 +95,7 @@ stdenv.mkDerivation rec {
+@@ -95,7 +96,7 @@ stdenv.mkDerivation rec {
          libuuid
        ];
        liboneauth = lib.makeLibraryPath [
@@ -314,7 +340,7 @@ index 7f72a42ffe0d..04778c3633ac 100644
    in ''
 diff --git a/pkgs/development/java-modules/jnr-posix/default.nix b/pkgs/development/java-modules/jnr-posix/default.nix
 new file mode 100644
-index 000000000000..68c683591735
+index 000000000000..7743cd71bd77
 --- /dev/null
 +++ b/pkgs/development/java-modules/jnr-posix/default.nix
 @@ -0,0 +1,74 @@
@@ -370,7 +396,7 @@ index 000000000000..68c683591735
 +  '';
 +
 +  buildPhase = ''
-+    runHook preBuild 
++    runHook preBuild
 +
 +    mvn package --offline -Dmaven.test.skip=true -Dmaven.repo.local=$(cp -dpR ${deps}/.m2 ./ && chmod +w -R .m2 && pwd)/.m2
 +
@@ -472,10 +498,10 @@ index 000000000000..e804eeb935ee
 +done | tail -n 1 | (read version; update-source-version msalsdk-dbusclient $version)
 diff --git a/pkgs/tools/security/microsoft-identity-broker/default.nix b/pkgs/tools/security/microsoft-identity-broker/default.nix
 new file mode 100644
-index 000000000000..b08cefbf2b6d
+index 000000000000..29ad27a4b0d7
 --- /dev/null
 +++ b/pkgs/tools/security/microsoft-identity-broker/default.nix
-@@ -0,0 +1,104 @@
+@@ -0,0 +1,111 @@
 +{ stdenv
 +, lib
 +, fetchurl
@@ -486,6 +512,7 @@ index 000000000000..b08cefbf2b6d
 +, openjfx17
 +, zip
 +, nixosTests
++, bash
 +}:
 +stdenv.mkDerivation rec {
 +  pname = "microsoft-identity-broker";
@@ -544,12 +571,18 @@ index 000000000000..b08cefbf2b6d
 +  postInstall = ''
 +    substituteInPlace $out/lib/systemd/system/microsoft-identity-device-broker.service \
 +      --replace \
++        ExecStartPre=!sh \
++        ExecStartPre=!${bash}/bin/sh \
++      --replace \
 +        ExecStart=/opt/microsoft/identity-broker/bin/microsoft-identity-device-broker \
 +        ExecStart=$out/bin/microsoft-identity-device-broker \
 +      --replace \
 +        /usr/lib/jvm/java-11-openjdk-amd64 \
 +        ${openjdk11}/bin/java
 +    substituteInPlace $out/lib/systemd/user/microsoft-identity-broker.service \
++      --replace \
++        ExecStartPre=sh \
++        ExecStartPre=${bash}/bin/sh \
 +      --replace \
 +        ExecStart=/opt/microsoft/identity-broker/bin/microsoft-identity-broker \
 +        ExecStart=$out/bin/microsoft-identity-broker \
@@ -567,7 +600,7 @@ index 000000000000..b08cefbf2b6d
 +  '';
 +
 +  passthru = {
-+    tests = nixosTests.microsoft-identity-broker;
++    tests = nixosTests.microsoft-intune;
 +    updateScript = ./update.sh;
 +  };
 +
@@ -613,10 +646,10 @@ index 000000000000..f91583a761df
 +    fi
 +done | tail -n 1 | (read version; update-source-version microsoft-identity-broker $version)
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 833711d1e5e0..40622fa00c0f 100644
+index 505401c56f07..a0feb6e94a48 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -24168,6 +24168,8 @@ with pkgs;
+@@ -24137,6 +24137,8 @@ with pkgs;
    microsoft-edge-beta = callPackage (import ../applications/networking/browsers/microsoft-edge).beta { };
    microsoft-edge-dev = callPackage (import ../applications/networking/browsers/microsoft-edge).dev { };
  
@@ -625,7 +658,7 @@ index 833711d1e5e0..40622fa00c0f 100644
    micronucleus = callPackage ../development/tools/misc/micronucleus { };
  
    markdown-anki-decks = callPackage ../tools/misc/markdown-anki-decks { };
-@@ -24232,6 +24234,8 @@ with pkgs;
+@@ -24201,6 +24203,8 @@ with pkgs;
      inherit (darwin.apple_sdk.frameworks) Security;
    };
  
@@ -634,7 +667,7 @@ index 833711d1e5e0..40622fa00c0f 100644
    msgpack = callPackage ../development/libraries/msgpack { };
  
    msgpack-c = callPackage ../development/libraries/msgpack-c { };
-@@ -32742,6 +32746,8 @@ with pkgs;
+@@ -32680,6 +32684,8 @@ with pkgs;
  
    indigenous-desktop = callPackage ../applications/networking/feedreaders/indigenous-desktop { };
  
@@ -643,7 +676,7 @@ index 833711d1e5e0..40622fa00c0f 100644
    jackline = callPackage ../applications/networking/instant-messengers/jackline { };
  
    jay = callPackage ../applications/window-managers/jay { };
-@@ -33241,6 +33247,8 @@ with pkgs;
+@@ -33177,6 +33183,8 @@ with pkgs;
  
    jitsi = callPackage ../applications/networking/instant-messengers/jitsi { };
  

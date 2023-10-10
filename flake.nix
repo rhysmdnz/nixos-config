@@ -33,9 +33,9 @@
       ];
 
       channels.intuneNixpkgs.patches = [
-        #intune-patch
+        intune-patch
         ./hacks.patch
-        ./intune.patch
+        #./intune.patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
