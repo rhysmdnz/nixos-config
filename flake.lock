@@ -684,13 +684,13 @@
     "pie-patch": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-ItZqAVJnUbLFnkZyugjZKyDxEwMDPtUD0YQp5IqZYtk=",
+        "narHash": "sha256-STy/Rc9+ZUpgy9Ws0/ydM9zviT4cDHsODYRVKyDzeek=",
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/252310.patch"
       },
       "original": {
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/252310.patch"
       }
     },
     "pre-commit-hooks-nix": {

@@ -24,7 +24,7 @@
   };
 
   inputs.pie-patch = {
-    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
+    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/252310.patch;
     flake = false;
   };
 
