@@ -11,7 +11,7 @@
     pkiBundle = "/etc/secureboot";
   };
 
-  networking.hostName = "normandy";
+  #networking.hostName = "normandy";
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
