@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "bootstrap-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-8gKUuN16EOc0TtB/+4+cqOGT6TcfjZOeRSe5JKlpi5g=",
+        "type": "file",
+        "url": "https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff"
+      }
+    },
     "crane": {
       "inputs": {
         "flake-compat": [
@@ -742,6 +754,7 @@
     },
     "root": {
       "inputs": {
+        "bootstrap-patch": "bootstrap-patch",
         "darwin": "darwin",
         "emacs": "emacs",
         "home-manager": "home-manager",

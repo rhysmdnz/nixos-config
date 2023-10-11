@@ -28,7 +28,12 @@
     flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, pieNixpkgs, intune-patch, nix-index-database, pie-patch, ... } @ inputs:
+  inputs.bootstrap-patch = {
+    url = https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff;
+    flake = false;
+  };
+
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, pieNixpkgs, intune-patch, nix-index-database, pie-patch, bootstrap-patch, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -45,6 +50,7 @@
       ];
 
       channels.pieNixpkgs.patches = [
+        bootstrap-patch
         pie-patch
       ];
 
