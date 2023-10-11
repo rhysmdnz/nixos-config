@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     intuneNixpkgs.follows = "nixpkgs";
-    pieNixpkgs.follows = "nixpkgs";
+    pieNixpkgs.url = "github:rhysmdnz/nixpkgs/bootstrap-hacks";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
@@ -28,12 +28,12 @@
     flake = false;
   };
 
-  inputs.bootstrap-patch = {
-    url = https://github.com/rhysmdnz/nixpkgs/commit/7038fb566e63e3d0bc6d4337e773df3d5c75e96b.diff;
-    flake = false;
-  };
+ # inputs.bootstrap-patch = {
+ #   url = https://github.com/rhysmdnz/nixpkgs/commit/7038fb566e63e3d0bc6d4337e773df3d5c75e96b.diff;
+ #   flake = false;
+ #};
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, pieNixpkgs, intune-patch, nix-index-database, pie-patch, bootstrap-patch, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, pieNixpkgs, intune-patch, nix-index-database, pie-patch, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -50,7 +50,7 @@
       ];
 
       channels.pieNixpkgs.patches = [
-        bootstrap-patch
+        #bootstrap-patch
         pie-patch
       ];
 
