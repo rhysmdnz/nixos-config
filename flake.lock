@@ -3,13 +3,13 @@
     "bootstrap-patch": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-8gKUuN16EOc0TtB/+4+cqOGT6TcfjZOeRSe5JKlpi5g=",
+        "narHash": "sha256-i2VSDCWaXNr1hytuxuZN4C4/wdS/ha4obKjZ7JDf3X0=",
         "type": "file",
-        "url": "https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff"
+        "url": "https://github.com/rhysmdnz/nixpkgs/commit/7038fb566e63e3d0bc6d4337e773df3d5c75e96b.diff"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff"
+        "url": "https://github.com/rhysmdnz/nixpkgs/commit/7038fb566e63e3d0bc6d4337e773df3d5c75e96b.diff"
       }
     },
     "crane": {

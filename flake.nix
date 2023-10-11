@@ -29,7 +29,7 @@
   };
 
   inputs.bootstrap-patch = {
-    url = https://github.com/rhysmdnz/nixpkgs/commit/285db40cbbdf7d22f130d47d6e6fb0c60e5d3838.diff;
+    url = https://github.com/rhysmdnz/nixpkgs/commit/7038fb566e63e3d0bc6d4337e773df3d5c75e96b.diff;
     flake = false;
   };
 
