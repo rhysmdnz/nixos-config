@@ -681,6 +681,18 @@
         "type": "github"
       }
     },
+    "pie-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-ItZqAVJnUbLFnkZyugjZKyDxEwMDPtUD0YQp5IqZYtk=",
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+      }
+    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -741,6 +753,10 @@
         "nix-doom-emacs": "nix-doom-emacs",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",
+        "pie-patch": "pie-patch",
+        "pieNixpkgs": [
+          "nixpkgs"
+        ],
         "utils": "utils"
       }
     },
