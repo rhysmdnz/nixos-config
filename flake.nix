@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     intuneNixpkgs.follows = "nixpkgs";
+    pieNixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
@@ -22,20 +23,29 @@
     flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, ... } @ inputs:
+  inputs.pie-patch = {
+    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
+    flake = false;
+  };
+
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, pieNixpkgs, intune-patch, nix-index-database, pie-patch, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
 
       channels.nixpkgs.patches = [
-        ./hacks.patch
+      #  ./hacks.patch
       ];
 
       channels.intuneNixpkgs.patches = [
         intune-patch
         ./hacks.patch
         #./intune.patch
+      ];
+
+      channels.pieNixpkgs.patches = [
+        pie-patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
@@ -63,6 +73,16 @@
       };
 
       hosts.normandy = {
+        modules = [
+          ./nixos.nix
+          ./normandy.nix
+          lanzaboote.nixosModules.lanzaboote
+          home-manager.nixosModules.home-manager
+        ];
+      };
+
+      hosts.normandy-test = {
+        channelName = "pieNixpkgs";
         modules = [
           ./nixos.nix
           ./normandy.nix
