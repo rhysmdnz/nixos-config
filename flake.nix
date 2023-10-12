@@ -51,7 +51,7 @@
 
       channels.pieNixpkgs.patches = [
         #bootstrap-patch
-        pie-patch
+        #pie-patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
