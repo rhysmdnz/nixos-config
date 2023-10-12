@@ -695,11 +695,11 @@
     },
     "pieNixpkgs": {
       "locked": {
-        "lastModified": 1697019507,
-        "narHash": "sha256-WO6Go16ovMZwOW1hd9zcTKE46oVJ9rtW/BXlNHNAVDU=",
+        "lastModified": 1697073696,
+        "narHash": "sha256-x3Y96qXtSx+rZRxEOs6v4Am9gM3iQtRWkt9QZ3JJyLo=",
         "owner": "rhysmdnz",
         "repo": "nixpkgs",
-        "rev": "473312666b3c261b07c8c6528828615101e16529",
+        "rev": "faf9e0bae1d96a5dc6de1cd591b79025c0f7943b",
         "type": "github"
       },
       "original": {
