@@ -68,6 +68,7 @@
     deja-dup
     thin-provisioning-tools
     emacs-pgtk 
+    logseq
   ];
 
   nixpkgs = {
