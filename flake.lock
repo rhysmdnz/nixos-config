@@ -74,6 +74,18 @@
         "type": "github"
       }
     },
+    "edge-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-xvOvlXUlNQdz9kjP070ci9RwWNvA5kgG6NGSffFJ9ck=",
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/264153.patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/264153.patch"
+      }
+    },
     "emacs": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -747,6 +759,7 @@
     "root": {
       "inputs": {
         "darwin": "darwin",
+        "edge-patch": "edge-patch",
         "emacs": "emacs",
         "home-manager": "home-manager",
         "intune-patch": "intune-patch",

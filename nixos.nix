@@ -71,18 +71,6 @@
     #logseq
   ];
 
-  nixpkgs = {
-    overlays = [
-      (self: super: rec {
-        microsoft-edge = super.microsoft-edge.overrideAttrs (finalAttrs: previousAttrs: {
-          postFixup = previousAttrs.postFixup + ''
-            wrapProgram "$out/bin/microsoft-edge"  --add-flags --ozone-platform-hint=auto
-          '';
-        });
-      })
-    ];
-  };
-
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.nix-index.enable = true;
