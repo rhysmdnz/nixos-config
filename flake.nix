@@ -86,7 +86,6 @@
         outputs = { ... }: {
           elbrus = self.nixosConfigurations.elbrus.config.system.build.toplevel;
           normandy = self.nixosConfigurations.normandy.config.system.build.toplevel;
-          normandy-test = self.nixosConfigurations.normandy-test.config.system.build.toplevel;
         };
       };
     };
