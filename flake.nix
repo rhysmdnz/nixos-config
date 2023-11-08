@@ -22,12 +22,7 @@
     flake = false;
   };
 
-  inputs.edge-patch = {
-    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/264153.patch;
-    flake = false;
-  };
-
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, edge-patch, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -36,7 +31,6 @@
 
       channels.intuneNixpkgs.patches = [
         intune-patch
-        edge-patch
       ];
 
       sharedOverlays = [ emacs.overlay ];
