@@ -83,11 +83,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1701366111,
-        "narHash": "sha256-8G2B4rzHMBYEC1tjdGeOOw/Yqpbnt6+laZIVbCxo13E=",
+        "lastModified": 1701397589,
+        "narHash": "sha256-5k/pL3lOHeXPPayRnw3TUCIHJ59DJ+4XJq0dGLmvhvc=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "1b8163de282e43d005b28e768fd156d417d441d9",
+        "rev": "f7753ffa160ec5e2960357290267bc7b7171e6d9",
         "type": "github"
       },
       "original": {
@@ -396,7 +396,7 @@
     "intune-patch": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-qTfnugO36aBSVQY4JMqlvOYluBaaS0+6UvK8f9Uqeso=",
+        "narHash": "sha256-zpXrFWTIipPY70pjyFIQFJOmzXcN6v+GLY0+9kk0L0o=",
         "type": "file",
         "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
       },
@@ -559,11 +559,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1701239926,
-        "narHash": "sha256-k5R3QQJMGU11nhTPctbpqWenAkRnqngH5VnGMQCtHyg=",
+        "lastModified": 1701368325,
+        "narHash": "sha256-3OqZyi2EdopJxpxwrySPyCTuCvfBY4oXTLVgQ4B6qDg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e2fa3d60550627938495aa368a1d4635c9cf64ff",
+        "rev": "3934dbde4f4a0e266825348bc4ad1bdd00a8d6a3",
         "type": "github"
       },
       "original": {
