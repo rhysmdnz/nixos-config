@@ -85,5 +85,7 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
 
