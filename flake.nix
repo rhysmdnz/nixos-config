@@ -15,14 +15,15 @@
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   inputs.intune-patch = {
-    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
+    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi;
     flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, nixos-hardware, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
@@ -73,6 +74,8 @@
           ./elbrus.nix
           lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
+          nixos-hardware.nixosModules.common-cpu-intel
+          nixos-hardware.nixosModules.common-gpu-nvidia-disable
         ];
       };
 

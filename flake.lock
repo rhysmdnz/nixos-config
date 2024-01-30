@@ -83,11 +83,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1706547981,
-        "narHash": "sha256-gaFfQqXN2SxjUIh8/gDGmQard6nQ1J8ChgH+KP77jBg=",
+        "lastModified": 1706576296,
+        "narHash": "sha256-QHMdTsEUw4SjSu/vPJk6OhvWZ2crUSsrX0z9+KmOe8E=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "bf073f540fd96d1c5f3faf56a7f4664c8bb49ede",
+        "rev": "de3f66c6abccf36c44a642b4dfa48d6326d0292e",
         "type": "github"
       },
       "original": {
@@ -398,11 +398,11 @@
       "locked": {
         "narHash": "sha256-SvBGl4Z4gnUSWJSZ6vRQDF+Ii2buAFj01UYVbnv17qg=",
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi"
       },
       "original": {
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi"
       }
     },
     "lanzaboote": {
@@ -506,6 +506,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-straight.el",
+        "type": "github"
+      }
+    },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1706182238,
+        "narHash": "sha256-Ti7CerGydU7xyrP/ow85lHsOpf+XMx98kQnPoQCSi1g=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "f84eaffc35d1a655e84749228cde19922fcf55f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixos-hardware",
         "type": "github"
       }
     },
@@ -728,6 +744,7 @@
         "lanzaboote": "lanzaboote",
         "nix-doom-emacs": "nix-doom-emacs",
         "nix-index-database": "nix-index-database",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "utils": "utils"
       }

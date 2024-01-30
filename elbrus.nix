@@ -6,8 +6,8 @@
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.plymouth.enable = true;
-  boot.plymouth.theme = "solar";
+  #boot.plymouth.enable = true;
+  #boot.plymouth.theme = "solar";
   boot.bootspec.enable = true;
 
   boot.lanzaboote = {
@@ -27,13 +27,6 @@
     virtiofsd
     #qemu
   ];
-
-  virtualisation.kvmgt.enable = true;
-  virtualisation.kvmgt.vgpus = {
-    "i915-GVTg_V5_8" = {
-      uuid = [ "f471a88a-c8b1-4ab5-9444-1e57f012eb55" ];
-    };
-  };
 
   programs.chromium.enable = true;
   programs.chromium.extraOpts = {
@@ -106,17 +99,8 @@
     [{ device = "/dev/disk/by-partuuid/0df7c43a-4fe7-4f4a-b54e-acdf930a289a"; randomEncryption.enable = true; randomEncryption.allowDiscards = true; }];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.opengl = {
-    extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
 
-  hardware.ipu6.enable = true;
-  hardware.ipu6.platform = "ipu6ep";
+  #hardware.ipu6.enable = true;
+  #hardware.ipu6.platform = "ipu6ep";
 
 }
