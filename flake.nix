@@ -19,7 +19,7 @@
   };
 
   inputs.intune-patch = {
-    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi;
+    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
     flake = false;
   };
 

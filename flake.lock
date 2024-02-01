@@ -398,11 +398,11 @@
       "locked": {
         "narHash": "sha256-+1dRnUOm0CS+jGebTXN6QWPDw2APr6WFaPG9wozMUJc=",
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
       },
       "original": {
         "type": "file",
-        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch?dsasad=hi"
+        "url": "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch"
       }
     },
     "lanzaboote": {
