@@ -34,7 +34,7 @@
         intune-patch
       ];
 
-      sharedOverlays = [ emacs.overlay ];
+      #sharedOverlays = [ emacs.overlay ];
 
       hostDefaults.modules = [
         nix-index-database.nixosModules.nix-index
