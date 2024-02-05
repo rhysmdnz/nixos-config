@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    intuneNixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
@@ -18,21 +17,12 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
-  inputs.intune-patch = {
-    url = https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/221628.patch;
-    flake = false;
-  };
-
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, intuneNixpkgs, intune-patch, nix-index-database, nixos-hardware, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, nix-index-database, nixos-hardware, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
 
-
-      channels.intuneNixpkgs.patches = [
-        intune-patch
-      ];
 
       #sharedOverlays = [ emacs.overlay ];
 
@@ -68,7 +58,6 @@
       };
 
       hosts.elbrus = {
-        channelName = "intuneNixpkgs";
         modules = [
           ./nixos.nix
           ./elbrus.nix
