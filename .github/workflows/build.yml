@@ -26,7 +26,7 @@ jobs:
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0
       with:
-        endpoint: ${{ secrets.ATTIC_ENDPOINT }}
-        cache: ${{ secrets.ATTIC_CACHE }}
+        endpoint: ${{ vars.ATTIC_ENDPOINT }}
+        cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
     - run: nixci -- --refresh -j auto --keep-going
