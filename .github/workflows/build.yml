@@ -3,6 +3,7 @@ on: [push]
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-14]
     runs-on: ${{ matrix.os }}
@@ -22,4 +23,10 @@ jobs:
     - uses: yaxitech/nix-install-pkgs-action@v3
       with:
         packages: "nixpkgs#nixci"
+    - name: Setup Attic cache
+      uses: ryanccn/attic-action@v0
+      with:
+        endpoint: ${{ secrets.ATTIC_ENDPOINT }}
+        cache: ${{ secrets.ATTIC_CACHE }}
+        token: ${{ secrets.ATTIC_TOKEN }}
     - run: nixci -- --refresh -j auto --keep-going
