@@ -1,0 +1,32 @@
+name: "Build systems"
+on: [push]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Maximize build space
+      if: runner.os == 'Linux'
+      uses: AdityaGarg8/remove-unwanted-software@v2
+      with:
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        remove-codeql: 'true'
+        remove-docker-images: 'true'
+    - uses: actions/checkout@v4.1.1
+    - uses: DeterminateSystems/nix-installer-action@v9
+    - uses: DeterminateSystems/magic-nix-cache-action@v3
+    - uses: yaxitech/nix-install-pkgs-action@v3
+      with:
+        packages: "nixpkgs#nixci"
+    - name: Setup Attic cache
+      uses: ryanccn/attic-action@v0
+      with:
+        endpoint: ${{ vars.ATTIC_ENDPOINT }}
+        cache: ${{ vars.ATTIC_CACHE }}
+        token: ${{ secrets.ATTIC_TOKEN }}
+    - run: nixci -- --refresh -j auto --keep-going
