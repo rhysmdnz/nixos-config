@@ -30,4 +30,4 @@ jobs:
         cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
           #    - run: TMPDIR=/mnt nixci -- --refresh -j auto --keep-going
-    - run: cat /etc/nix/nix.conf 
+    - run: nix show-config
