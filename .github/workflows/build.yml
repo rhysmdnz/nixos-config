@@ -29,4 +29,4 @@ jobs:
         endpoint: ${{ vars.ATTIC_ENDPOINT }}
         cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
-    - run: sudo dmesg -w & nixci -- --refresh -j auto --keep-going
+    - run: nixci -- --refresh -j auto --keep-going; sudo dmesg; sudo journalctl -e
