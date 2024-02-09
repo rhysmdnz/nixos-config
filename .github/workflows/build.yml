@@ -31,5 +31,5 @@ jobs:
         token: ${{ secrets.ATTIC_TOKEN }}
     - run: nix --version
     - run: nix build --refresh -j 1 --keep-going .#nixosConfigurations.normandy.config.system.build.toplevel || true; sudo dmesg; sudo journalctl -e; df -h
-      env:
-        TMPDIR: /mnt
+      #env:
+      #  TMPDIR: /mnt
