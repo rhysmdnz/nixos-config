@@ -24,11 +24,11 @@ jobs:
       #with:
       #  packages: "nixpkgs#nixci"
       #- name: Setup Attic cache
-      #uses: ryanccn/attic-action@v0
-        #with:
-        #endpoint: ${{ vars.ATTIC_ENDPOINT }}
-          #cache: ${{ vars.ATTIC_CACHE }}
-          #    token: ${{ secrets.ATTIC_TOKEN }}
+    uses: ryanccn/attic-action@v0
+      with:
+        endpoint: ${{ vars.ATTIC_ENDPOINT }}
+        cache: ${{ vars.ATTIC_CACHE }}
+        token: ${{ secrets.ATTIC_TOKEN }}
     - run: nix --version
     - run: nix build --refresh -j 1 --keep-going .#nixosConfigurations.normandy.config.system.build.toplevel || true; sudo dmesg; sudo journalctl -e; df -h
       #env:
