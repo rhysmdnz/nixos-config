@@ -32,6 +32,6 @@ jobs:
         cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
     - run: nix --version
-    - run: nixci -- --refresh -j 1 --keep-going || true; sudo dmesg; sudo journalctl -e
+    - run: nixci -- --refresh -j 1 --keep-going || true; sudo dmesg; sudo journalctl -e; df -h
       env:
         TMPDIR: /mnt
