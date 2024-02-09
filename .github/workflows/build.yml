@@ -24,7 +24,7 @@ jobs:
       #with:
       #  packages: "nixpkgs#nixci"
       #- name: Setup Attic cache
-    uses: ryanccn/attic-action@v0
+    - uses: ryanccn/attic-action@v0
       with:
         endpoint: ${{ vars.ATTIC_ENDPOINT }}
         cache: ${{ vars.ATTIC_CACHE }}
