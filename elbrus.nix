@@ -42,7 +42,7 @@
     enable = true;
     logRefusedPackets = true;
     interfaces.virbr0 = {
-      allowedTCPPorts = [ 5656 ];
+      allowedTCPPorts = [ 5656 5657 ];
     };
     interfaces.virbr1 = {
       allowedTCPPorts = [ 8000 ];
