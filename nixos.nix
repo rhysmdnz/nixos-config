@@ -9,7 +9,7 @@
   boot.initrd.systemd.enable = true;
 
   hardware.steam-hardware.enable = true;
-  hardware.xone.enable = true;
+  #hardware.xone.enable = true;
 
   services.fstrim.enable = true;
   services.hardware.openrgb.enable = false;
