@@ -26,7 +26,7 @@
 
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     enableVteIntegration = pkgs.stdenv.isLinux;
