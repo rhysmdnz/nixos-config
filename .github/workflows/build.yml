@@ -17,7 +17,7 @@ jobs:
         remove-haskell: 'true'
         remove-codeql: 'true'
         remove-docker-images: 'true'
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.4
     - uses: DeterminateSystems/nix-installer-action@v9
     - uses: DeterminateSystems/magic-nix-cache-action@v3
     - uses: yaxitech/nix-install-pkgs-action@v3
