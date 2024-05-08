@@ -1,5 +1,28 @@
 { config, pkgs, lib, ... }:
 
+let
+  ivsc-firmware = with pkgs;
+    stdenv.mkDerivation rec {
+      pname = "ivsc-firmware";
+      version = "main";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "intel";
+        repo = "ivsc-firmware";
+        rev = "10c214fea5560060d387fbd2fb8a1af329cb6232";
+        sha256 = "sha256-kEoA0yeGXuuB+jlMIhNm+SBljH+Ru7zt3PzGb+EPBPw=";
+
+      };
+
+      installPhase = ''
+        mkdir -p $out/lib/firmware/vsc/soc_a1_prod
+
+        cp firmware/ivsc_pkg_ovti01a0_0.bin $out/lib/firmware/vsc/soc_a1_prod/ivsc_pkg_ovti01a0_0_a1_prod.bin
+        cp firmware/ivsc_skucfg_ovti01a0_0_1.bin $out/lib/firmware/vsc/soc_a1_prod/ivsc_skucfg_ovti01a0_0_1_a1_prod.bin
+        cp firmware/ivsc_fw.bin $out/lib/firmware/vsc/soc_a1_prod/ivsc_fw_a1_prod.bin
+      '';
+    };
+in
 {
 
   # Use the systemd-boot EFI boot loader.
@@ -100,10 +123,16 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
-  #hardware.ipu6.enable = true;
-  #hardware.ipu6.platform = "ipu6ep";
-  services.usbguard.enable = true;
-  services.usbguard.dbus.enable = true;
+  hardware.ipu6.enable = true;
+  hardware.ipu6.platform = "ipu6ep";
+  boot.extraModprobeConfig = "options v4l2loopback nr_devices=0";
+  hardware.firmware = [
+    ivsc-firmware
+    pkgs.sof-firmware
+  ];
+
+  #services.usbguard.enable = true;
+  #services.usbguard.dbus.enable = true;
   services.usbguard.rules = ''
     allow id 1d6b:0002 serial "0000:00:14.0" name "xHCI Host Controller" hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" parent-hash "rV9bfLq7c2eA4tYjVjwO4bxhm+y6GgZpl9J60L0fBkY=" with-interface 09:00:00 with-connect-type ""
     allow id 1d6b:0003 serial "0000:00:14.0" name "xHCI Host Controller" hash "prM+Jby/bFHCn2lNjQdAMbgc6tse3xVx+hZwjOPHSdQ=" parent-hash "rV9bfLq7c2eA4tYjVjwO4bxhm+y6GgZpl9J60L0fBkY=" with-interface 09:00:00 with-connect-type ""
@@ -136,6 +165,12 @@
         }
     });
   '';
+
+  programs.dconf.profiles.gdm.databases = [{
+    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    settings."org/gnome/login-screen".enable-fingerprint-authentication = false;
+  }];
+
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.dockerCompat = true;
 

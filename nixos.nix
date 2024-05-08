@@ -8,6 +8,8 @@
 
   boot.initrd.systemd.enable = true;
 
+  boot.tmp.cleanOnBoot = true;
+
   hardware.steam-hardware.enable = true;
   #hardware.xone.enable = true;
 
@@ -16,20 +18,18 @@
   services.fwupd.enable = true;
   services.resolved.enable = true;
 
-  #security.rtkit.enable = true;
-  #hardware.pulseaudio.enable = false;
-  #services.pipewire =
-  #  {
-  #    enable = true;
-  #    alsa.enable = true;
-  #    alsa.support32Bit = true;
-  #    pulse.enable = true;
-  #  };
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
 
-
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";

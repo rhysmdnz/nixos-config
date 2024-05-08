@@ -10,7 +10,7 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    #lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -22,9 +22,6 @@
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
-
-
-      #sharedOverlays = [ emacs.overlay ];
 
       hostDefaults.modules = [
         nix-index-database.nixosModules.nix-index
