@@ -8,7 +8,7 @@
     settings.trusted-users = [ "rhys" ];
     settings.substituters = [ "https://nix-cache.memes.nz/nix-cache/" "https://cache.memes.nz/cache" ];
     settings.trusted-public-keys = [ "nix-cache:JW9dxrc5qdmyDkUstVqjlVcBpunX4Jo6ueshaJIWCK4=" "cache:/89NJtgM/IWySqvXSsfNiWWOhSdXcOj6AmHZcVkwLyA=" ];
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     generateNixPathFromInputs = true;
     linkInputs = true;
     extraOptions = ''
