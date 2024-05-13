@@ -19,7 +19,7 @@ jobs:
         remove-docker-images: 'true'
     - uses: actions/checkout@v4.1.1
     - uses: DeterminateSystems/nix-installer-action@v9
-    - uses: DeterminateSystems/magic-nix-cache-action@v3
+    - uses: DeterminateSystems/magic-nix-cache-action@v6
     - uses: yaxitech/nix-install-pkgs-action@v3
       with:
         packages: "nixpkgs#nixci"
