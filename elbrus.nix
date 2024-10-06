@@ -173,5 +173,6 @@ in
 
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.dockerCompat = true;
+  programs.gnupg.agent.enable = true;
 
 }

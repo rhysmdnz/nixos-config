@@ -23,6 +23,8 @@
 
       channelsConfig = { allowUnfree = true; };
 
+      channels.nixpkgs.patches = [ ./test2.diff ];
+
       hostDefaults.modules = [
         {
           home-manager.useGlobalPkgs = true;
