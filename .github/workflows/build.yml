@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v4.2.0
     - uses: DeterminateSystems/nix-installer-action@v14
     - name: Setup Attic cache
-      uses: ryanccn/attic-action@v0
+      uses: rhysmdnz/attic-action@main
       with:
         endpoint: ${{ vars.ATTIC_ENDPOINT }}
         cache: ${{ vars.ATTIC_CACHE }}
