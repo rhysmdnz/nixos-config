@@ -19,6 +19,7 @@ jobs:
         remove-docker-images: 'true'
     - uses: actions/checkout@v4.2.0
     - uses: DeterminateSystems/nix-installer-action@v14
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Setup Attic cache
       uses: rhysmdnz/attic-action@v0
       with:
