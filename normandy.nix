@@ -56,6 +56,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.open = true;
 
   boot.initrd.luks.devices = {
     root = {
