@@ -15,15 +15,16 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixpkgsMic.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, nix-index-database, nixos-hardware, ... } @ inputs:
+  outputs = { self, nixpkgs, nixpkgsMic, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, nix-index-database, nixos-hardware, ... } @ inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
       channelsConfig = { allowUnfree = true; };
 
-      channels.nixpkgs.patches = [ ./test2.diff ];
+      channels.nixpkgsMic.patches = [ ./test2.diff ];
 
       hostDefaults.modules = [
         {
@@ -58,6 +59,7 @@
       };
 
       hosts.elbrus = {
+        channelName = "nixpkgsMic";
         modules = [
           ./nixos.nix
           ./elbrus.nix

@@ -693,6 +693,9 @@
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "nixpkgsMic": [
+          "nixpkgs"
+        ],
         "utils": "utils"
       }
     },
