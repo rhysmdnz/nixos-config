@@ -24,7 +24,6 @@
       channelsConfig = { allowUnfree = true; };
 
       hostDefaults.modules = [
-        nix-index-database.nixosModules.nix-index
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -42,6 +41,7 @@
         modules = [
           ./idenna.nix
           home-manager.darwinModules.home-manager
+          nix-index-database.darwinModules.nix-index
         ];
       };
 
@@ -51,6 +51,7 @@
           ./normandy.nix
           lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
+          nix-index-database.nixosModules.nix-index
         ];
       };
 
@@ -62,6 +63,7 @@
           home-manager.nixosModules.home-manager
           nixos-hardware.nixosModules.common-cpu-intel
           nixos-hardware.nixosModules.common-gpu-nvidia-disable
+          nix-index-database.nixosModules.nix-index
         ];
       };
 
