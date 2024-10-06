@@ -24,7 +24,7 @@
 
       channelsConfig = { allowUnfree = true; };
 
-      channels.nixpkgsMic.patches = [ ./test2.diff ];
+      #channels.nixpkgsMic.patches = [ ./test2.diff ];
 
       hostDefaults.modules = [
         {
