@@ -23,12 +23,12 @@ jobs:
 #    - uses: yaxitech/nix-install-pkgs-action@v3
 #      with:
 #        packages: "nixpkgs#nixci"
-    - name: Install omnix
-      run: nix --accept-flake-config profile install "github:juspay/omnix"
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0
       with:
         endpoint: ${{ vars.ATTIC_ENDPOINT }}
         cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
+    - name: Install omnix
+      run: nix --accept-flake-config profile install "github:juspay/omnix"
     - run: om ci -- --refresh -j auto --keep-going
