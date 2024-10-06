@@ -20,13 +20,15 @@ jobs:
     - uses: actions/checkout@v4.1.1
     - uses: DeterminateSystems/nix-installer-action@v9
     - uses: DeterminateSystems/magic-nix-cache-action@v3
-    - uses: yaxitech/nix-install-pkgs-action@v3
-      with:
-        packages: "nixpkgs#nixci"
+#    - uses: yaxitech/nix-install-pkgs-action@v3
+#      with:
+#        packages: "nixpkgs#nixci"
+    - name: Install omnix
+      run: nix --accept-flake-config profile install "github:juspay/omnix"
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0
       with:
         endpoint: ${{ vars.ATTIC_ENDPOINT }}
         cache: ${{ vars.ATTIC_CACHE }}
         token: ${{ secrets.ATTIC_TOKEN }}
-    - run: nixci build -- --refresh -j auto --keep-going
+    - run: om ci -- --refresh -j auto --keep-going
