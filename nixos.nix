@@ -51,8 +51,8 @@
   environment.systemPackages = with pkgs; [
     wget
     vim
-    gnome.gnome-tweaks
-    gnome.gnome-boxes
+    gnome-tweaks
+    gnome-boxes
     virt-manager
     virt-viewer
     file
