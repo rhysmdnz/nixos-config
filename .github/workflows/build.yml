@@ -17,7 +17,7 @@ jobs:
         remove-haskell: 'true'
         remove-codeql: 'true'
         remove-docker-images: 'true'
-    - uses: actions/checkout@v4.2.1
+    - uses: actions/checkout@v4.2.2
     - uses: DeterminateSystems/nix-installer-action@v14
     - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Setup Attic cache
