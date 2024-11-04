@@ -49,6 +49,8 @@ in
     openssl
     virtiofsd
     #qemu
+    awscli2
+    ssm-session-manager-plugin
   ];
 
   programs.chromium.enable = true;
