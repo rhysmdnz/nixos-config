@@ -18,7 +18,7 @@ jobs:
         remove-codeql: 'true'
         remove-docker-images: 'true'
     - uses: actions/checkout@v4.2.2
-    - uses: DeterminateSystems/nix-installer-action@v14
+    - uses: DeterminateSystems/nix-installer-action@v15
     - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Setup Attic cache
       uses: rhysmdnz/attic-action@v0
