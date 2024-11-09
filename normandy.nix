@@ -21,6 +21,10 @@
     })
   ];
 
+  environment.systemPackages = with pkgs; [
+    mongodb-7_0
+  ];
+
   services.hercules-ci-agent.enable = true;
   services.hercules-ci-agent.settings.concurrentTasks = 32;
 
