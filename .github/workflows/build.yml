@@ -23,7 +23,7 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@v15
       with:
         extra-conf: |
-          build-dir = /opt/nix-build
+          build-dir = /opt
     - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Setup Attic cache
       uses: rhysmdnz/attic-action@v0
