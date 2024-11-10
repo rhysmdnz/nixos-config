@@ -17,6 +17,8 @@ jobs:
         remove-haskell: 'true'
         remove-codeql: 'true'
         remove-docker-images: 'true'
+        remove-large-packages: 'true'
+        remove-cached-tools: 'true'
     - uses: actions/checkout@v4.2.2
     - uses: DeterminateSystems/nix-installer-action@v15
     - uses: DeterminateSystems/magic-nix-cache-action@main
