@@ -15,12 +15,6 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  nixpkgs.overlays = [
-    (self: super: {
-      nvidia-x11 = super.nvidia-x11.override { disable32Bit = true; };
-    })
-  ];
-
   environment.systemPackages = with pkgs; [
     mongodb-7_0
   ];
@@ -59,7 +53,6 @@
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.open = true;
 
   boot.initrd.luks.devices = {
