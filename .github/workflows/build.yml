@@ -20,7 +20,7 @@ jobs:
     #     remove-large-packages: 'true'
     #     remove-cached-tools: 'true'
     - uses: actions/checkout@v4.2.2
-    - uses: DeterminateSystems/nix-installer-action@v15
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
         extra-conf: |
           build-dir = /opt
