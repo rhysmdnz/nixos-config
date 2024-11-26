@@ -13,7 +13,7 @@
 
   #networking.hostName = "normandy";
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia_production" ];
 
   environment.systemPackages = with pkgs; [
     mongodb-7_0
