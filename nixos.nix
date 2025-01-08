@@ -66,6 +66,7 @@
     deja-dup
     thin-provisioning-tools
     emacs29-pgtk 
+    uv
     #logseq
   ];
 
