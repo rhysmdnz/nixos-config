@@ -67,6 +67,7 @@
     thin-provisioning-tools
     emacs29-pgtk 
     uv
+    ruff
     #logseq
   ];
 
