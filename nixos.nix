@@ -65,7 +65,7 @@
     ntfs3g
     deja-dup
     thin-provisioning-tools
-    emacs29-pgtk 
+    emacs-pgtk
     uv
     ruff
     #logseq
