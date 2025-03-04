@@ -15,7 +15,7 @@
   "packageRules": [
     {
       "matchManagers": ["nix"],
-      "enable": false
+      "enabled": false
     }
   ]
 }
