@@ -10,11 +10,14 @@
     "enabled": true,
     "schedule": [
       "* 0-3 * * *"
-    ]
+    ],
+    "automerge": true
   },
   "packageRules": [
     {
-      "matchManagers": ["nix"],
+      "matchManagers": [
+        "nix"
+      ],
       "enabled": false
     }
   ]
