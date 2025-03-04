@@ -11,5 +11,11 @@
     "schedule": [
       "* 0-3 * * *"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["nix"],
+      "enable": false
+    }
+  ]
 }
