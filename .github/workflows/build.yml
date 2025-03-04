@@ -24,7 +24,6 @@ jobs:
       with:
         extra-conf: |
           build-dir = /opt
-    - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Setup Attic cache
       uses: ryanccn/attic-action@v0.3.1
       with:
