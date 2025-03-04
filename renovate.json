@@ -18,6 +18,9 @@
       "matchManagers": [
         "nix"
       ],
+      "matchPackageNames": [
+        "*"
+      ],
       "enabled": false
     }
   ]
