@@ -1,11 +1,10 @@
 { pkgs, lib, ... }:
 {
 
-#  programs.doom-emacs = {
-#    enable = pkgs.stdenv.isLinux && pkgs.stdenv.cc.isGNU;
-#    doomPrivateDir = ./doom.d;
-#    emacsPackage = pkgs.emacsPgtk;
-#  };
+  programs.doom-emacs = {
+    enable = true;
+    doomDir = ./doom.d;
+  };
 
   programs.git = {
     enable = true;
@@ -14,9 +13,8 @@
     extraConfig.gpg.format = "ssh";
     signing.key = "~/.ssh/id_ed25519";
     signing.signByDefault = true;
-    extraConfig.gpg.ssh.allowedSignersFile = "${pkgs.writeText ''"allowed_signers''
-    ''
-    rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
+    extraConfig.gpg.ssh.allowedSignersFile = "${pkgs.writeText ''"allowed_signers'' ''
+      rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
     ''}";
   };
 

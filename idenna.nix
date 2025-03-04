@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./nix-conf.nix
-    ];
+  imports = [
+    ./nix-conf.nix
+  ];
 
   users.users.rhys = {
     name = "rhys";
@@ -15,7 +14,6 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     vim
-    emacs
     fend
     nixpkgs-fmt
     binwalk
@@ -29,6 +27,8 @@
     pwgen
     ripgrep
     rustup
+    nixd
+    nixfmt-rfc-style
   ];
 
   # Auto upgrade nix package and the daemon service.

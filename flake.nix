@@ -3,10 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
-    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
-    emacs.url = "github:nix-community/emacs-overlay";
-    emacs.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
@@ -15,23 +11,38 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixpkgsMic.follows = "nixpkgs";
+    nix-doom-emacs-unstraightened.url = "github:marienz/nix-doom-emacs-unstraightened";
+    nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
   };
 
-  outputs = { self, nixpkgs, nixpkgsMic, home-manager, nix-doom-emacs, emacs, darwin, lanzaboote, utils, nix-index-database, nixos-hardware, ... } @ inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      darwin,
+      lanzaboote,
+      utils,
+      nix-index-database,
+      nixos-hardware,
+      ...
+    }@inputs:
     utils.lib.mkFlake {
       inherit self inputs;
 
-      channelsConfig = { allowUnfree = true; };
-
-      #channels.nixpkgsMic.patches = [ ./test2.diff ];
+      channelsConfig = {
+        allowUnfree = true;
+      };
 
       hostDefaults.modules = [
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.rhys = {
-            imports = [ nix-doom-emacs.hmModule ./home.nix ];
+            imports = [
+              inputs.nix-doom-emacs-unstraightened.hmModule
+              ./home.nix
+            ];
           };
         }
       ];
@@ -59,7 +70,6 @@
       };
 
       hosts.elbrus = {
-        channelName = "nixpkgsMic";
         modules = [
           ./nixos.nix
           ./elbrus.nix

@@ -1,10 +1,15 @@
-{ config, pkgs, lib, outputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  outputs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./nix-conf.nix
-    ];
+  imports = [
+    ./nix-conf.nix
+  ];
 
   boot.initrd.systemd.enable = true;
 
@@ -26,7 +31,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -65,10 +69,8 @@
     ntfs3g
     deja-dup
     thin-provisioning-tools
-    emacs-pgtk
     uv
     ruff
-    #logseq
   ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -92,7 +94,11 @@
     home = "/home/rhys";
     description = "Rhys Davies";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "libvirtd" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "libvirtd"
+      "networkmanager"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICwWm3Yv/f8pmUfZIm8SvsbrewsNcpUHpJ3zrODSt/0 rhys@tempest"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
