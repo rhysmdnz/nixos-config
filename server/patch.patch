@@ -1,0 +1,110 @@
+From 5ae0b27ab985cad18ca814d3a93fe35b028aeee7 Mon Sep 17 00:00:00 2001
+From: Franz Pletz <fpletz@fnordicwalking.de>
+Date: Sun, 24 Nov 2024 22:33:10 +0100
+Subject: [PATCH] nginx: fix compatibility with zlib-ng
+
+Fix #357522.
+---
+ pkgs/servers/http/nginx/generic.nix | 18 ++++++++++++++++--
+ pkgs/top-level/all-packages.nix     |  6 +-----
+ 2 files changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/pkgs/servers/http/nginx/generic.nix b/pkgs/servers/http/nginx/generic.nix
+index a9346c8e0fa2b..e2f1bb3473e26 100644
+--- a/pkgs/servers/http/nginx/generic.nix
++++ b/pkgs/servers/http/nginx/generic.nix
+@@ -1,4 +1,4 @@
+-outer@{ lib, stdenv, fetchurl, fetchpatch, openssl, zlib, pcre2, libxml2, libxslt
++outer@{ lib, stdenv, fetchurl, fetchpatch, openssl, zlib-ng, pcre2, libxml2, libxslt
+ , nginx-doc
+ 
+ , nixosTests
+@@ -66,7 +66,7 @@ stdenv.mkDerivation {
+     removeReferencesTo
+   ] ++ nativeBuildInputs;
+ 
+-  buildInputs = [ openssl zlib pcre2 libxml2 libxslt perl ]
++  buildInputs = [ openssl zlib-ng pcre2 libxml2 libxslt perl ]
+     ++ buildInputs
+     ++ mapModules "inputs"
+     ++ lib.optional withGeoIP geoip
+@@ -126,6 +126,13 @@ stdenv.mkDerivation {
+   env.NIX_CFLAGS_COMPILE = toString ([
+     "-I${libxml2.dev}/include/libxml2"
+     "-Wno-error=implicit-fallthrough"
++    (
++      # zlig-ng patch needs this
++      if stdenv.cc.isGNU then
++        "-Wno-error=discarded-qualifiers"
++      else
++        "-Wno-error=incompatible-pointer-types-discards-qualifiers"
++    )
+   ] ++ lib.optionals (stdenv.cc.isGNU && lib.versionAtLeast stdenv.cc.version "11") [
+     # fix build vts module on gcc11
+     "-Wno-error=stringop-overread"
+@@ -155,6 +162,13 @@ stdenv.mkDerivation {
+       '';
+     })
+     ./nix-skip-check-logs-path.patch
++  ] ++ lib.optionals (pname != "openresty") [
++    # https://github.com/NixOS/nixpkgs/issues/357522
++    # https://github.com/zlib-ng/patches/blob/5a036c0a00120c75ee573b27f4f44ade80d82ff2/nginx/README.md
++    (fetchpatch {
++      url = "https://raw.githubusercontent.com/zlib-ng/patches/38756e6325a5d2cc32709b8e9549984c63a78815/nginx/1.26.2-zlib-ng.patch";
++      hash = "sha256-LX5kP6jFiqgt4ApKw5eqOAFJNkc5QI6kX8ZRvBYTi9k=";
++    })
+   ] ++ lib.optionals (stdenv.hostPlatform != stdenv.buildPlatform) [
+     (fetchpatch {
+       url = "https://raw.githubusercontent.com/openwrt/packages/c057dfb09c7027287c7862afab965a4cd95293a3/net/nginx/patches/102-sizeof_test_fix.patch";
+diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
+index f58581a16a0a8..60e6f7cda8987 100644
+--- a/pkgs/top-level/all-packages.nix
++++ b/pkgs/top-level/all-packages.nix
+@@ -1610,7 +1610,6 @@ with pkgs;
+   android-tools = lowPrio (darwin.apple_sdk_11_0.callPackage ../tools/misc/android-tools { });
+ 
+   angie = callPackage ../servers/http/angie {
+-    zlib = zlib-ng.override { withZlibCompat = true; };
+     withPerl = false;
+     # We don't use `with` statement here on purpose!
+     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
+@@ -1618,7 +1617,6 @@ with pkgs;
+   };
+ 
+   angieQuic = callPackage ../servers/http/angie {
+-    zlib = zlib-ng.override { withZlibCompat = true; };
+     withPerl = false;
+     withQuic = true;
+     # We don't use `with` statement here on purpose!
+@@ -11843,7 +11841,6 @@ with pkgs;
+   nginx = nginxStable;
+ 
+   nginxQuic = callPackage ../servers/http/nginx/quic.nix {
+-    zlib = zlib-ng.override { withZlibCompat = true; };
+     withPerl = false;
+     # We don't use `with` statement here on purpose!
+     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
+@@ -11853,7 +11850,6 @@ with pkgs;
+   };
+ 
+   nginxStable = callPackage ../servers/http/nginx/stable.nix {
+-    zlib = zlib-ng.override { withZlibCompat = true; };
+     withPerl = false;
+     # We don't use `with` statement here on purpose!
+     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
+@@ -11861,7 +11857,6 @@ with pkgs;
+   };
+ 
+   nginxMainline = callPackage ../servers/http/nginx/mainline.nix {
+-    zlib = zlib-ng.override { withZlibCompat = true; };
+     withKTLS = true;
+     withPerl = false;
+     # We don't use `with` statement here on purpose!
+@@ -11890,6 +11885,7 @@ with pkgs;
+   openafs = callPackage ../servers/openafs/1.8 { };
+ 
+   openresty = callPackage ../servers/http/openresty {
++    zlib-ng = zlib;
+     withPerl = false;
+     modules = [];
+   };
