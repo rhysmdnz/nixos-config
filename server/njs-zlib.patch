@@ -1,0 +1,156 @@
+diff --git a/pkgs/servers/http/nginx/modules.nix b/pkgs/servers/http/nginx/modules.nix
+index 2565cfc465e6..60890dc9c9e2 100644
+--- a/pkgs/servers/http/nginx/modules.nix
++++ b/pkgs/servers/http/nginx/modules.nix
+@@ -507,10 +507,15 @@ let self = {
+     src = fetchFromGitHub {
+       owner = "nginx";
+       repo = "njs";
+-      rev = "0.8.7";
+-      hash = "sha256-VEXzP+cN5hnDeniccwY7GIi4x460rnWO/o7ja3DyRCc=";
++      rev = "0.8.9";
++      hash = "sha256-TalS9EJP+vB1o3BKaTvXXnudjKhNOcob3kDAyeKej3c=";
+     };
+ 
++    #inputs = [ zstd ];
++    #patches = [
++    #  ./nginx-njs-zlib-ng.patch
++    #];
++
+     # njs module sources have to be writable during nginx build, so we copy them
+     # to a temporary directory and change the module path in the configureFlags
+     preConfigure = ''
+@@ -519,6 +524,7 @@ let self = {
+       cp --recursive "${src}" "$NJS_SOURCE_DIR"
+       chmod -R u+rwX,go+rX "$NJS_SOURCE_DIR"
+       export configureFlags="''${configureFlags/"${src}"/"$NJS_SOURCE_DIR/nginx"}"
++      patch -p1 --directory=$NJS_SOURCE_DIR < ${./nginx-njs-zlib-ng.patch}
+       unset NJS_SOURCE_DIR
+     '';
+ 
+diff --git a/pkgs/servers/http/nginx/nginx-njs-zlib-ng.patch b/pkgs/servers/http/nginx/nginx-njs-zlib-ng.patch
+new file mode 100644
+index 000000000000..8528817432cb
+--- /dev/null
++++ b/pkgs/servers/http/nginx/nginx-njs-zlib-ng.patch
+@@ -0,0 +1,120 @@
++diff --git a/external/njs_zlib_module.c b/external/njs_zlib_module.c
++index 7945e646..3ba4d69e 100644
++--- a/external/njs_zlib_module.c
+++++ b/external/njs_zlib_module.c
++@@ -6,7 +6,7 @@
++ 
++ #include <njs.h>
++ #include <string.h>
++-#include <zlib.h>
+++#include <zlib-ng.h>
++ 
++ #define NJS_ZLIB_CHUNK_SIZE  1024
++ 
++@@ -190,7 +190,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++     size_t              chunk_size;
++     ssize_t             size;
++     njs_chb_t           chain;
++-    z_stream            stream;
+++    zng_stream            stream;
++     njs_int_t           ret;
++     njs_str_t           data, dictionary;
++     njs_value_t         *options, *value;
++@@ -305,7 +305,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++     stream.zfree = njs_zlib_free;
++     stream.opaque = njs_vm_memory_pool(vm);
++ 
++-    rc = deflateInit2(&stream, level, Z_DEFLATED, window_bits, mem_level,
+++    rc = zng_deflateInit2(&stream, level, Z_DEFLATED, window_bits, mem_level,
++                       strategy);
++     if (njs_slow_path(rc != Z_OK)) {
++         njs_vm_internal_error(vm, "deflateInit2() failed");
++@@ -313,7 +313,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++     }
++ 
++     if (dictionary.start != NULL) {
++-        rc = deflateSetDictionary(&stream, dictionary.start, dictionary.length);
+++        rc = zng_deflateSetDictionary(&stream, dictionary.start, dictionary.length);
++         if (njs_slow_path(rc != Z_OK)) {
++             njs_vm_internal_error(vm, "deflateSetDictionary() failed");
++             return NJS_ERROR;
++@@ -331,7 +331,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++ 
++         stream.avail_out = chunk_size;
++ 
++-        rc = deflate(&stream, Z_FINISH);
+++        rc = zng_deflate(&stream, Z_FINISH);
++         if (njs_slow_path(rc < 0)) {
++             njs_vm_internal_error(vm, "failed to deflate the data: %s",
++                                   stream.msg);
++@@ -342,7 +342,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++ 
++     } while (stream.avail_out == 0);
++ 
++-    deflateEnd(&stream);
+++    zng_deflateEnd(&stream);
++ 
++     size = njs_chb_size(&chain);
++     if (njs_slow_path(size < 0)) {
++@@ -363,7 +363,7 @@ njs_zlib_ext_deflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++ 
++ fail:
++ 
++-    deflateEnd(&stream);
+++    zng_deflateEnd(&stream);
++     njs_chb_destroy(&chain);
++ 
++     return NJS_ERROR;
++@@ -379,7 +379,7 @@ njs_zlib_ext_inflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++     size_t              chunk_size;
++     ssize_t             size;
++     njs_chb_t           chain;
++-    z_stream            stream;
+++    zng_stream            stream;
++     njs_int_t           ret;
++     njs_str_t           data, dictionary;
++     njs_value_t         *options, *value;
++@@ -447,14 +447,14 @@ njs_zlib_ext_inflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++     stream.zfree = njs_zlib_free;
++     stream.opaque = njs_vm_memory_pool(vm);
++ 
++-    rc = inflateInit2(&stream, window_bits);
+++    rc = zng_inflateInit2(&stream, window_bits);
++     if (njs_slow_path(rc != Z_OK)) {
++         njs_vm_internal_error(vm, "inflateInit2() failed");
++         return NJS_ERROR;
++     }
++ 
++     if (dictionary.start != NULL) {
++-        rc = inflateSetDictionary(&stream, dictionary.start, dictionary.length);
+++        rc = zng_inflateSetDictionary(&stream, dictionary.start, dictionary.length);
++         if (njs_slow_path(rc != Z_OK)) {
++             njs_vm_internal_error(vm, "deflateSetDictionary() failed");
++             return NJS_ERROR;
++@@ -472,7 +472,7 @@ njs_zlib_ext_inflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++ 
++         stream.avail_out = chunk_size;
++ 
++-        rc = inflate(&stream, Z_NO_FLUSH);
+++        rc = zng_inflate(&stream, Z_NO_FLUSH);
++         if (njs_slow_path(rc < 0)) {
++             njs_vm_internal_error(vm, "failed to inflate the compressed "
++                                   "data: %s", stream.msg);
++@@ -487,7 +487,7 @@ njs_zlib_ext_inflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++         njs_chb_written(&chain, chunk_size - stream.avail_out);
++     }
++ 
++-    rc = inflateEnd(&stream);
+++    rc = zng_inflateEnd(&stream);
++     if (njs_slow_path(rc != Z_OK)) {
++         njs_vm_error(vm, "failed to end the inflate stream");
++         return NJS_ERROR;
++@@ -512,7 +512,7 @@ njs_zlib_ext_inflate(njs_vm_t *vm, njs_value_t *args, njs_uint_t nargs,
++ 
++ fail:
++ 
++-    inflateEnd(&stream);
+++    zng_inflateEnd(&stream);
++     njs_chb_destroy(&chain);
++ 
++     return NJS_ERROR;
