@@ -49,7 +49,7 @@
 
   networking.useNetworkd = true;
 
-  system.autoUpgrade.enable = false;
+  system.autoUpgrade.enable = true;
   system.autoUpgrade.flags = [ "--recreate-lock-file" ];
   system.autoUpgrade.allowReboot = true;
   system.autoUpgrade.flake = "/etc/nixos#memesnz1";
