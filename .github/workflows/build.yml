@@ -1,5 +1,7 @@
 name: "Build systems"
 on: [push]
+permissions:
+  contents: read
 jobs:
   build:
     strategy:
