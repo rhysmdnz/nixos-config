@@ -30,7 +30,7 @@
   boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
 
   boot.initrd.secrets = {
-    "/etc/diskkey" = ./key;
+    "/etc/diskkey" = "/etc/nixos/key";
   };
 
   boot.initrd.luks.devices = {
