@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgsServer.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin";
@@ -34,17 +35,10 @@
         allowUnfree = true;
       };
 
+      channels.nixpkgsServer.patches = [ ./server/njs-zlib.patch ];
+
       hostDefaults.modules = [
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.rhys = {
-            imports = [
-              inputs.nix-doom-emacs-unstraightened.hmModule
-              ./home.nix
-            ];
-          };
-        }
+
       ];
 
       hosts.idenna = {
@@ -56,6 +50,16 @@
           ./idenna.nix
           home-manager.darwinModules.home-manager
           nix-index-database.darwinModules.nix-index
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.rhys = {
+              imports = [
+                inputs.nix-doom-emacs-unstraightened.hmModule
+                ./home.nix
+              ];
+            };
+          }
         ];
       };
 
@@ -66,6 +70,16 @@
           lanzaboote.nixosModules.lanzaboote
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.nix-index
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.rhys = {
+              imports = [
+                inputs.nix-doom-emacs-unstraightened.hmModule
+                ./home.nix
+              ];
+            };
+          }
         ];
       };
 
@@ -77,6 +91,25 @@
           home-manager.nixosModules.home-manager
           nixos-hardware.nixosModules.common-cpu-intel
           nixos-hardware.nixosModules.common-gpu-nvidia-disable
+          nix-index-database.nixosModules.nix-index
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.rhys = {
+              imports = [
+                inputs.nix-doom-emacs-unstraightened.hmModule
+                ./home.nix
+              ];
+            };
+          }
+        ];
+      };
+
+      hosts.memesnz1 = {
+        channelName = "nixpkgsServer";
+        modules = [
+          ./nix-conf.nix
+          ./server/configuration.nix
           nix-index-database.nixosModules.nix-index
         ];
       };
