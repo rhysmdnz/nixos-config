@@ -31,15 +31,14 @@ jobs:
             extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
       - run: nix config show
       - run: cat /etc/nix/nix.conf
-      - run: |
-          mkdir -p ~/.config/nix
-          cp /etc/nix/nix.custom.conf ~/.config/nix/nix.conf
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0.3.1
         with:
           endpoint: ${{ vars.ATTIC_ENDPOINT }}
           cache: ${{ vars.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_TOKEN }}
+      - run: |
+          echo /etc/nix/nix.custom.conf >> ~/.config/nix/nix.conf
       - name: Install omnix
         run: nix --accept-flake-config profile install "github:juspay/omnix"
       - run: nix config show
