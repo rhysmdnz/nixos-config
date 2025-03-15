@@ -30,6 +30,7 @@ jobs:
             extra-substituters = https://nix-community.cachix.org
             extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
       - run: nix config show
+      - run: cat /etc/nix/nix.conf
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0.3.1
         with:
@@ -39,4 +40,5 @@ jobs:
       - name: Install omnix
         run: nix --accept-flake-config profile install "github:juspay/omnix"
       - run: nix config show
+      - run: cat /etc/nix/nix.conf
     # - run: om ci run  -- --refresh -j auto --keep-going
