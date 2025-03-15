@@ -42,4 +42,5 @@ jobs:
       - run: nix config show
       - run: cat /etc/nix/nix.conf
       - run: ls ~/.config/nix
+      - run: cat ~/.config/nix/nix.conf
     # - run: om ci run  -- --refresh -j auto --keep-going
