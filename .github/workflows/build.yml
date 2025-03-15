@@ -10,31 +10,32 @@ jobs:
         os: [memes-ubuntu, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
-    # - name: Maximize build space
-    #   if: runner.os == 'Linux'
-    #   uses: AdityaGarg8/remove-unwanted-software@v4
-    #   with:
-    #     remove-dotnet: 'true'
-    #     remove-android: 'true'
-    #     remove-haskell: 'true'
-    #     remove-codeql: 'true'
-    #     remove-docker-images: 'true'
-    #     remove-large-packages: 'true'
-    #     remove-cached-tools: 'true'
-    - uses: actions/checkout@v4.2.2
-    - uses: DeterminateSystems/nix-installer-action@v16
-      with:
-        extra-conf: |
-          build-dir = /opt
-          download-buffer-size = 524288000
-          extra-substituters = https://nix-community.cachix.org
-          extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-    - name: Setup Attic cache
-      uses: ryanccn/attic-action@v0.3.1
-      with:
-        endpoint: ${{ vars.ATTIC_ENDPOINT }}
-        cache: ${{ vars.ATTIC_CACHE }}
-        token: ${{ secrets.ATTIC_TOKEN }}
-    - name: Install omnix
-      run: nix --accept-flake-config profile install "github:juspay/omnix"
-    - run: om ci run  -- --refresh -j auto --keep-going
+      # - name: Maximize build space
+      #   if: runner.os == 'Linux'
+      #   uses: AdityaGarg8/remove-unwanted-software@v4
+      #   with:
+      #     remove-dotnet: 'true'
+      #     remove-android: 'true'
+      #     remove-haskell: 'true'
+      #     remove-codeql: 'true'
+      #     remove-docker-images: 'true'
+      #     remove-large-packages: 'true'
+      #     remove-cached-tools: 'true'
+      - uses: actions/checkout@v4.2.2
+      - uses: DeterminateSystems/nix-installer-action@v16
+        with:
+          extra-conf: |
+            build-dir = /opt
+            download-buffer-size = 524288000
+            extra-substituters = https://nix-community.cachix.org
+            extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0.3.1
+        with:
+          endpoint: ${{ vars.ATTIC_ENDPOINT }}
+          cache: ${{ vars.ATTIC_CACHE }}
+          token: ${{ secrets.ATTIC_TOKEN }}
+      - name: Install omnix
+        run: nix --accept-flake-config profile install "github:juspay/omnix"
+      - run: nix show-config
+    # - run: om ci run  -- --refresh -j auto --keep-going
