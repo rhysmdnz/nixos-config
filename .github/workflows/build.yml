@@ -41,4 +41,5 @@ jobs:
         run: nix --accept-flake-config profile install "github:juspay/omnix"
       - run: nix config show
       - run: cat /etc/nix/nix.conf
+      - run: ls ~/.config/nix
     # - run: om ci run  -- --refresh -j auto --keep-going
