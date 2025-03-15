@@ -29,6 +29,7 @@ jobs:
             download-buffer-size = 524288000
             extra-substituters = https://nix-community.cachix.org
             extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+      - run: nix config show
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0.3.1
         with:
@@ -37,5 +38,5 @@ jobs:
           token: ${{ secrets.ATTIC_TOKEN }}
       - name: Install omnix
         run: nix --accept-flake-config profile install "github:juspay/omnix"
-      - run: nix show-config
+      - run: nix config show
     # - run: om ci run  -- --refresh -j auto --keep-going
