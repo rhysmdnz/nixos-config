@@ -35,7 +35,7 @@
         allowUnfree = true;
       };
 
-      channels.nixpkgsServer.patches = [ ./server/njs-zlib.patch ];
+      # channels.nixpkgsServer.patches = [ ./server/njs-zlib.patch ];
 
       hostDefaults.modules = [
 

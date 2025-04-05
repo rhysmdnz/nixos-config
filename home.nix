@@ -1,10 +1,10 @@
 { pkgs, lib, ... }:
 {
 
-  programs.doom-emacs = {
-    enable = true;
-    doomDir = ./doom.d;
-  };
+  #programs.doom-emacs = {
+  #  enable = true;
+  #  doomDir = ./doom.d;
+  #};
 
   programs.git = {
     enable = true;
