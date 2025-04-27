@@ -19,10 +19,10 @@
       systemctl stop postgresql
 
       # XXX replace `<new version>` with the psqlSchema here
-      export NEWDATA="/var/lib/postgresql/${pkgs.postgresql_16.psqlSchema}"
+      export NEWDATA="/var/lib/postgresql/${pkgs.postgresql_17.psqlSchema}"
 
       # XXX specify the postgresql package you'd like to upgrade to
-      export NEWBIN="${pkgs.postgresql_16}/bin"
+      export NEWBIN="${pkgs.postgresql_17}/bin"
 
       export OLDDATA="${config.services.postgresql.dataDir}"
       export OLDBIN="${config.services.postgresql.package}/bin"
