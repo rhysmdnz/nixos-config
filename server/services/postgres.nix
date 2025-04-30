@@ -4,7 +4,7 @@
   services.postgresql = {
     enable = true;
     enableTCPIP = true;
-    package = pkgs.postgresql_16;
+    package = pkgs.postgresql_17;
   };
 
   services.postgresqlBackup.enable = true;
