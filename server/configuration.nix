@@ -82,7 +82,7 @@
   };
 
   services.unifi.enable = true;
-  services.unifi.unifiPackage = pkgs.unifi8;
+  services.unifi.unifiPackage = pkgs.unifi;
   services.unifi.openFirewall = false;
   services.unifi.mongodbPackage = pkgs.mongodb-7_0;
 
