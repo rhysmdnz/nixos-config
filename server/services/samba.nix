@@ -4,6 +4,7 @@
   services.samba = {
     enable = true;
     openFirewall = true;
+    package = pkgs.samba4Full;
     settings = {
       "Rhys' Time Machine" = {
         path = "/mnt/s/time-machine/rhys";
