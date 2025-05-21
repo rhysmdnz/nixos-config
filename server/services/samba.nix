@@ -3,7 +3,7 @@
 {
   services.samba = {
     enable = true;
-    openFirewall = false;
+    openFirewall = true;
     settings = {
       "Rhys' Time Machine" = {
         path = "/mnt/s/time-machine/rhys";
@@ -40,5 +40,14 @@
         "vfs objects" = "catia fruit streams_xattr";
       };
     };
+  };
+  services.avahi = {
+    publish.enable = true;
+    publish.userServices = true;
+    # ^^ Needed to allow samba to automatically register mDNS records (without the need for an `extraServiceFile`
+    #nssmdns4 = true;
+    # ^^ Not one hundred percent sure if this is needed- if it aint broke, don't fix it
+    enable = true;
+    openFirewall = true;
   };
 }
