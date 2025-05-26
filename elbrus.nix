@@ -41,7 +41,6 @@ in
   networking.hostName = "elbrus";
 
   environment.systemPackages = with pkgs; [
-    microsoft-edge
     rustup
     clang
     vscode
