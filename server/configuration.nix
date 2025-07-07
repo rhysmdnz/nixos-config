@@ -30,6 +30,8 @@
 
   services.netdata.enable = true;
 
+  security.sudo.wheelNeedsPassword = false;
+
   #services.resolved.enable = true;
 
   # Use the systemd-boot EFI boot loader.
