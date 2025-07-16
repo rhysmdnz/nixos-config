@@ -9,11 +9,11 @@
     locations."/".root = ./src;
     locations."/".extraConfig = ''
       add_header Access-Control-Allow-Origin *;
+      map $scheme $hsts_header {
+          https   "max-age=63072000; includeSubdomains; preload";
+      }
+      add_header Strict-Transport-Security $hsts_header;
     '';
-
-    locations."/metrics" = {
-      proxyPass = "http://127.0.0.1:9100";
-    };
 
     locations."/.well-known/host-meta".extraConfig = ''
       return 301 https://social.memes.nz$request_uri;
