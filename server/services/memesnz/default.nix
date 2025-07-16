@@ -9,9 +9,6 @@
     locations."/".root = ./src;
     locations."/".extraConfig = ''
       add_header Access-Control-Allow-Origin *;
-      map $scheme $hsts_header {
-          https   "max-age=63072000; includeSubdomains; preload";
-      }
       add_header Strict-Transport-Security $hsts_header;
     '';
 
