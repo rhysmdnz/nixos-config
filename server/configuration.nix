@@ -109,9 +109,16 @@
       js_import http from ${./services/mastodon/http.js};
       js_fetch_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 
-      add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-
       proxy_cache_path /tmp/nginx_mstdn_media levels=1:2 keys_zone=mastodon_media:100m max_size=1g inactive=24h;
+    '';
+
+    appendHttpConfig = ''
+      # Add HSTS header with preloading to HTTPS requests.
+      # Adding this header to HTTP requests is discouraged
+      map $scheme $hsts_header {
+          https   "max-age=63072000; includeSubdomains; preload";
+      }
+      add_header Strict-Transport-Security $hsts_header;
     '';
 
     virtualHosts = {
