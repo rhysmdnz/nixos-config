@@ -76,17 +76,6 @@
 
   security.acme.defaults.email = "letsencrypt@memes.nz";
   security.acme.acceptTerms = true;
-  security.acme.certs."unifi.memes.nz" = {
-    domain = "unifi.memes.nz";
-    dnsProvider = "gcloud";
-    credentialsFile = "/etc/gcloud/dns_creds";
-    dnsPropagationCheck = true;
-  };
-
-  services.unifi.enable = true;
-  services.unifi.unifiPackage = pkgs.unifi;
-  services.unifi.openFirewall = true;
-  services.unifi.mongodbPackage = pkgs.mongodb-7_0;
 
   users.users.nginx.extraGroups = [ "mastodon" ];
 
@@ -122,17 +111,6 @@
     '';
 
     virtualHosts = {
-      "unifi.memes.nz" = {
-        enableACME = true;
-        acmeRoot = null;
-        forceSSL = true;
-        listenAddresses = [ "100.99.68.10" ];
-
-        locations."/" = {
-          proxyPass = "https://127.0.0.1:8443";
-          proxyWebsockets = true;
-        };
-      };
       "johnguant.com" = {
         enableACME = true;
         forceSSL = true;
