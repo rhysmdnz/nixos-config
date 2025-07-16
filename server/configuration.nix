@@ -85,7 +85,7 @@
 
   services.unifi.enable = true;
   services.unifi.unifiPackage = pkgs.unifi;
-  services.unifi.openFirewall = false;
+  services.unifi.openFirewall = true;
   services.unifi.mongodbPackage = pkgs.mongodb-7_0;
 
   users.users.nginx.extraGroups = [ "mastodon" ];
