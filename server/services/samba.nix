@@ -4,7 +4,7 @@
   services.samba = {
     enable = true;
     openFirewall = true;
-    package = pkgs.samba4Full;
+    package = pkgs.samba4Full.override { enableCephFS = false; };
     settings = {
       "Rhys' Time Machine" = {
         path = "/mnt/s/time-machine/rhys";
