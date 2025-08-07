@@ -24,6 +24,7 @@
       (pkgs.callPackage ../packages/keycloak-bcrypt { })
       (pkgs.callPackage ../packages/keycloak-systemd-notify { })
     ];
+    package = pkgs.keycloak.override { extraFeatures = [ "passkeys" ]; };
     settings.hostname = "account.memes.nz";
     settings.proxy-headers = "xforwarded";
     settings.http-enabled = true;
