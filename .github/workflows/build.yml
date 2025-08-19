@@ -29,7 +29,7 @@ jobs:
             extra-substituters = https://nix-community.cachix.org
             extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@f6b7e98e9ba10c6db4841e4996cd3fe4bdb3f3ed # v0.3.2
+        uses: ryanccn/attic-action@7fbafba3978e86e585cb68a82c08b30f3672b62d # v0.4.0
         with:
           endpoint: ${{ vars.ATTIC_ENDPOINT }}
           cache: ${{ vars.ATTIC_CACHE }}
