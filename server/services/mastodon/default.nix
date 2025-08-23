@@ -22,6 +22,9 @@
       proxyPass = "http://mastodon-streaming";
       proxyWebsockets = true;
     };
+    extraConfig = ''
+      client_max_body_size 99m;
+    '';
   };
   services.nginx.upstreams.mastodon-streaming = {
     extraConfig = ''
