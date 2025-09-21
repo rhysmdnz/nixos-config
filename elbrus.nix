@@ -1,8 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  ivsc-firmware = with pkgs;
-    stdenv.mkDerivation rec {
+  ivsc-firmware =
+    with pkgs;
+    stdenv.mkDerivation {
       pname = "ivsc-firmware";
       version = "main";
 
@@ -66,7 +72,10 @@ in
     enable = true;
     logRefusedPackets = true;
     interfaces.virbr0 = {
-      allowedTCPPorts = [ 5656 5657 ];
+      allowedTCPPorts = [
+        5656
+        5657
+      ];
     };
     interfaces.virbr1 = {
       allowedTCPPorts = [ 8000 ];
@@ -82,7 +91,6 @@ in
   security.tpm2.enable = true;
   security.tpm2.pkcs11.enable = true;
 
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -91,7 +99,16 @@ in
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" "tpm_tis" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "thunderbolt"
+    "vmd"
+    "nvme"
+    "usb_storage"
+    "sd_mod"
+    "tpm_tis"
+    "rtsx_pci_sdmmc"
+  ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
@@ -107,20 +124,23 @@ in
       bypassWorkqueues = true;
     };
   };
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/933ef0e3-bc3b-466c-ad3b-66302d439f0e";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/933ef0e3-bc3b-466c-ad3b-66302d439f0e";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/29A3-03ED";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/29A3-03ED";
+    fsType = "vfat";
+  };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-partuuid/0df7c43a-4fe7-4f4a-b54e-acdf930a289a"; randomEncryption.enable = true; randomEncryption.allowDiscards = true; }];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-partuuid/0df7c43a-4fe7-4f4a-b54e-acdf930a289a";
+      randomEncryption.enable = true;
+      randomEncryption.allowDiscards = true;
+    }
+  ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
@@ -167,10 +187,12 @@ in
     });
   '';
 
-  programs.dconf.profiles.gdm.databases = [{
-    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-    settings."org/gnome/login-screen".enable-fingerprint-authentication = false;
-  }];
+  programs.dconf.profiles.gdm.databases = [
+    {
+      settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+      settings."org/gnome/login-screen".enable-fingerprint-authentication = false;
+    }
+  ];
 
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.dockerCompat = true;

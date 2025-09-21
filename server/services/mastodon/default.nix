@@ -28,12 +28,10 @@
       least_conn;
     '';
     servers = builtins.listToAttrs (
-      map
-        (i: {
-          name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
-          value = { };
-        })
-        (lib.range 1 config.services.mastodon.streamingProcesses)
+      map (i: {
+        name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
+        value = { };
+      }) (lib.range 1 config.services.mastodon.streamingProcesses)
     );
   };
 
@@ -185,7 +183,7 @@
   #    "minio.service"
   #  ];
 
-    #confinement.enable = true;
+  #confinement.enable = true;
 
   #  serviceConfig = {
   #    ExecStart = "${pkgs.minio-client}/bin/mc --config-dir /etc/mc-b2 mirror --exclude '*cache/*' --watch --remove local/mastodon b2/memesnz-mastodon-backup --json";
@@ -194,38 +192,38 @@
   #    Group = "mastodon-media-backup";
   #    Restart = "always";
 
-      # Confinement
+  # Confinement
   #    ProtectSystem = "strict";
   #    PrivateDevices = true;
   #    PrivateTmp = true;
   #    PrivateUsers = true;
   #    ProtectControlGroups = true;
-   #   ProtectKernelModules = true;
-    #  ProtectKernelTunables = true;
+  #   ProtectKernelModules = true;
+  #  ProtectKernelTunables = true;
 
   #    ProcSubset = "pid";
   #    ProtectHome = true;
-   #   ProtectClock = true;
-   #   ProtectHostname = true;
-   #   ProtectKernelLogs = true;
-   #   ProtectProc = "invisible";
-   #   RestrictNamespaces = true;
-   #   LockPersonality = true;
-      #MemoryDenyWriteExecute = false;
-   #   RestrictRealtime = true;
-   #   RestrictSUIDSGID = true;
-   #   RestrictAddressFamilies = [
-   #     "AF_INET"
-   #     "AF_INET6"
-   #   ];
-   #   RemoveIPC = true;
-      ## System Call Filtering
-   #   SystemCallArchitectures = "native";
-   #   SystemCallFilter = "~@mount @clock @cpu-emulation @debug @module @obsolete @privileged @raw-io @reboot @swap";
-      ## Security
-    #  NoNewPrivileges = true;
+  #   ProtectClock = true;
+  #   ProtectHostname = true;
+  #   ProtectKernelLogs = true;
+  #   ProtectProc = "invisible";
+  #   RestrictNamespaces = true;
+  #   LockPersonality = true;
+  #MemoryDenyWriteExecute = false;
+  #   RestrictRealtime = true;
+  #   RestrictSUIDSGID = true;
+  #   RestrictAddressFamilies = [
+  #     "AF_INET"
+  #     "AF_INET6"
+  #   ];
+  #   RemoveIPC = true;
+  ## System Call Filtering
+  #   SystemCallArchitectures = "native";
+  #   SystemCallFilter = "~@mount @clock @cpu-emulation @debug @module @obsolete @privileged @raw-io @reboot @swap";
+  ## Security
+  #  NoNewPrivileges = true;
 
-   #   CapabilityBoundingSet = "";
-   # };
+  #   CapabilityBoundingSet = "";
+  # };
   #};
 }
