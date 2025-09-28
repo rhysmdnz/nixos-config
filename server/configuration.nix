@@ -193,6 +193,7 @@
 
   # Open ports in the firewall.
   networking.firewall.allowedUDPPorts = [
+    443
     config.services.tailscale.port
     51413
   ];
@@ -207,7 +208,6 @@
   ];
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
-  networking.firewall.allowedUDPPorts = [ 443 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
