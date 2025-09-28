@@ -12,6 +12,7 @@
     locations."/".extraConfig = ''
       add_header Access-Control-Allow-Origin *;
       add_header Strict-Transport-Security $hsts_header;
+      add_header Alt-Svc 'h3=":443"; ma=86400, h2=":443"; ma=86400';
     '';
 
     locations."/.well-known/host-meta".extraConfig = ''
