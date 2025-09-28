@@ -16,7 +16,7 @@
     vim
     fend
     nixpkgs-fmt
-    binwalk
+    # binwalk
     fd
     gh
     git
