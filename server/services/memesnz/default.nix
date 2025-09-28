@@ -5,6 +5,8 @@
     enableACME = true;
     forceSSL = true;
     default = true;
+    http3 = true;
+    quic = true;
 
     locations."/".root = ./src;
     locations."/".extraConfig = ''

@@ -85,6 +85,7 @@
   services.nginx = {
     enable = true;
     enableReload = true;
+    package = pkgs.nginxQuic;
     recommendedTlsSettings = true;
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
@@ -115,6 +116,8 @@
         enableACME = true;
         forceSSL = true;
         globalRedirect = "memes.nz";
+        http3 = true;
+        quic = true;
       };
     };
 
@@ -190,6 +193,7 @@
 
   # Open ports in the firewall.
   networking.firewall.allowedUDPPorts = [
+    443
     config.services.tailscale.port
     51413
   ];
@@ -204,15 +208,14 @@
   ];
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
   networking.firewall.checkReversePath = "loose";
-  # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  services.nginx.package = pkgs.nginxStable.overrideAttrs {
-    CFLAGS = "-Wno-error=discarded-qualifiers";
-  };
+  # services.nginx.package = pkgs.nginxStable.overrideAttrs {
+  #  CFLAGS = "-Wno-error=discarded-qualifiers";
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
