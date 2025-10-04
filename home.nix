@@ -6,6 +6,9 @@
   #  doomDir = ./doom.d;
   #};
 
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+
   programs.git = {
     enable = true;
     userName = "Rhys Davies";
@@ -28,17 +31,24 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     enableVteIntegration = pkgs.stdenv.isLinux;
-    initExtraBeforeCompInit = ''
-      zstyle ':completion:*' menu select
-      zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
-    '';
-    initExtra = ''
-      setopt INC_APPEND_HISTORY
-      function set_win_title(){
-        echo -ne "\033]0; ''${PWD/''$HOME/~}\007"
-      }
-      precmd_functions+=(set_win_title)
-    '';
+    initContent =
+      let
+        zshConfigBeforeCompInit = lib.mkOrder 550 ''
+          zstyle ':completion:*' menu select
+          zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
+        '';
+        zshConfig = lib.mkOrder 1000 ''
+          setopt INC_APPEND_HISTORY
+          function set_win_title(){
+            echo -ne "\033]0; ''${PWD/''$HOME/~}\007"
+          }
+          precmd_functions+=(set_win_title)
+        '';
+      in
+      lib.mkMerge [
+        zshConfigBeforeCompInit
+        zshConfig
+      ];
     history = {
       share = false;
       size = 10000000000;

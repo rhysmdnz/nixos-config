@@ -3,9 +3,9 @@ let
   mkBcacheFs = path: devs: opts: rec {
     description = path;
     bindsTo = (
-      builtins.map
-        (d: "${lib.strings.removePrefix "-" (builtins.replaceStrings [ "/" ] [ "-" ] d)}.device")
-        devs
+      builtins.map (
+        d: "${lib.strings.removePrefix "-" (builtins.replaceStrings [ "/" ] [ "-" ] d)}.device"
+      ) devs
     );
     after = bindsTo ++ [ "local-fs-pre.target" ];
     before = [
@@ -30,13 +30,10 @@ let
   };
 in
 {
-  systemd.services.mnt-s =
-    mkBcacheFs "/mnt/s"
-      [
-        "/dev/mapper/s1"
-        "/dev/mapper/s2"
-        "/dev/mapper/s3"
-        "/dev/mapper/s4"
-      ]
-      "noatime,nodev,nosuid,noexec";
+  systemd.services.mnt-s = mkBcacheFs "/mnt/s" [
+    "/dev/mapper/s1"
+    "/dev/mapper/s2"
+    "/dev/mapper/s3"
+    "/dev/mapper/s4"
+  ] "noatime,nodev,nosuid,noexec";
 }

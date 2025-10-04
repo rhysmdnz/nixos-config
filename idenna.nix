@@ -16,13 +16,11 @@
     vim
     fend
     nixpkgs-fmt
-    binwalk
+    # binwalk
     fd
     gh
     git
     jq
-    nodePackages.npm
-    nodePackages.yarn
     poetry
     pwgen
     ripgrep
