@@ -109,7 +109,6 @@
   virtualisation.libvirtd = {
     enable = true;
     qemu.runAsRoot = false;
-    qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
     qemu.swtpm.enable = true;
     extraConfig = ''
       memory_backing_dir = "/dev/shm/"
