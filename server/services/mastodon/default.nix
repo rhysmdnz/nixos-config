@@ -107,6 +107,7 @@
     S3_HOSTNAME = "nix-cache.memes.nz";
     S3_ENDPOINT = "https://nix-cache.memes.nz";
     AWS_ACCESS_KEY_ID = "1ZH4qoHKpNbdFHpTEKzc";
+    FETCH_REPLIES_ENABLED = "true";
   };
   systemd.services.mastodon-search-index = {
     description = "Mastodon search index update";
