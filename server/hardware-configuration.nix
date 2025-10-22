@@ -68,11 +68,11 @@
     options = [ "subvol=root" ];
   };
 
-  fileSystems."/mnt/s" =
-    {
-      device = "/dev/mapper/s1:/dev/mapper/s2:/dev/mapper/s3:/dev/mapper/s4";
-      fsType = "bcachefs";
-    };
+  #fileSystems."/mnt/s" =
+  #  {
+  #    device = "/dev/mapper/s1:/dev/mapper/s2:/dev/mapper/s3";
+  #    fsType = "bcachefs";
+  #  };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/C123-4B30";
