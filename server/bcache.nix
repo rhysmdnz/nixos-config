@@ -39,4 +39,5 @@ in
         "/dev/mapper/s4"
       ]
       "noatime,nodev,nosuid,noexec";
+  boot.supportedFilesystems.bcachefs = true;
 }
