@@ -85,7 +85,7 @@
   services.nginx = {
     enable = true;
     enableReload = true;
-    package = pkgs.nginxQuic;
+    # package = pkgs.nginxQuic;
     recommendedTlsSettings = true;
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
