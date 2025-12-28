@@ -8,14 +8,18 @@
 
   programs.git = {
     enable = true;
-    userName = "Rhys Davies";
-    userEmail = "rhys@memes.nz";
-    extraConfig.gpg.format = "ssh";
+    settings = {
+      user.name = "Rhys Davies";
+      user.email = "rhys@memes.nz";
+      gpg.format = "ssh";
+      gpg.ssh.allowedSignersFile = "${pkgs.writeText ''"allowed_signers'' ''
+        rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
+      ''}";
+    };
+
     signing.key = "~/.ssh/id_ed25519";
     signing.signByDefault = true;
-    extraConfig.gpg.ssh.allowedSignersFile = "${pkgs.writeText ''"allowed_signers'' ''
-      rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
-    ''}";
+
   };
 
   programs.zsh.sessionVariables = {
@@ -28,17 +32,24 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     enableVteIntegration = pkgs.stdenv.isLinux;
-    initExtraBeforeCompInit = ''
-      zstyle ':completion:*' menu select
-      zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
-    '';
-    initExtra = ''
-      setopt INC_APPEND_HISTORY
-      function set_win_title(){
-        echo -ne "\033]0; ''${PWD/''$HOME/~}\007"
-      }
-      precmd_functions+=(set_win_title)
-    '';
+    initContent =
+      let
+        initExtraBeforeCompInit = lib.mkOrder 550 ''
+          zstyle ':completion:*' menu select
+          zstyle ':completion:*' list-colors "\$\{(s.:.)LS_COLORS}"
+        '';
+        initExtra = ''
+          setopt INC_APPEND_HISTORY
+          function set_win_title(){
+            echo -ne "\033]0; ''${PWD/''$HOME/~}\007"
+          }
+          precmd_functions+=(set_win_title)
+        '';
+      in
+      lib.mkMerge [
+        initExtraBeforeCompInit
+        initExtra
+      ];
     history = {
       share = false;
       size = 10000000000;
