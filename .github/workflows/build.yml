@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Maximize build space
         if: runner.os == 'Linux'
-        uses: wimpysworld/nothing-but-nix@dd6ef566962bfa4656301706035da97ebbe90e9b # v9
+        uses: wimpysworld/nothing-but-nix@687c797a730352432950c707ab493fcc951818d7 # v10
         with:
           hatchet-protocol: 'cleave'  # Options: holster, carve, cleave (default), rampage
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
