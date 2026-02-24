@@ -18,7 +18,9 @@
 
   #networking.hostName = "normandy";
 
-  services.xserver.videoDrivers = [ "nvidia_production" ];
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.open = true;
 
   services.hercules-ci-agent.enable = true;
   services.hercules-ci-agent.settings.concurrentTasks = 32;
@@ -65,7 +67,6 @@
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  hardware.nvidia.open = true;
 
   boot.initrd.luks.devices = {
     root = {
