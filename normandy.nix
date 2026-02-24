@@ -67,7 +67,6 @@
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  hardware.nvidia.open = true;
 
   boot.initrd.luks.devices = {
     root = {
