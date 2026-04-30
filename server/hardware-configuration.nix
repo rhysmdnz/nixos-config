@@ -60,6 +60,18 @@
       preLVM = true;
       keyFile = "/etc/diskkey";
     };
+    ssd1 = {
+      device = "/dev/disk/by-uuid/64406f01-36e2-4002-8080-9b09611a11bb";
+      preLVM = true;
+      keyFile = "/etc/diskkey";
+      allowDiscards = true;
+    };
+    ssd2 = {
+      device = "/dev/disk/by-uuid/250f96b5-9c13-4e2e-a0d9-5514ab828469";
+      preLVM = true;
+      keyFile = "/etc/diskkey";
+      allowDiscards = true;
+    };
   };
 
   fileSystems."/" = {
