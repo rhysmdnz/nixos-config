@@ -37,6 +37,8 @@ in
         "/dev/mapper/s2"
         "/dev/mapper/s3"
         "/dev/mapper/s4"
+        "/dev/mapper/ssd1"
+        "/dev/mapper/ssd2"
       ]
       "noatime,nodev,nosuid,noexec";
   boot.supportedFilesystems.bcachefs = true;
