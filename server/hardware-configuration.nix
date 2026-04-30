@@ -25,7 +25,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  hardware.cpu.intel.updateMicrocode = true;
+  hardware.cpu.amd.updateMicrocode = true;
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
 
