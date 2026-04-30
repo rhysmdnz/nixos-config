@@ -79,8 +79,7 @@
 
   users.users.nginx.extraGroups = [ "mastodon" ];
 
-  services.elasticsearch.enable = true;
-  services.elasticsearch.package = pkgs.elasticsearch7;
+  services.opensearch.enable = true;
 
   services.nginx = {
     enable = true;
