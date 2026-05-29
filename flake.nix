@@ -35,7 +35,7 @@
         allowUnfree = true;
       };
 
-      # channels.nixpkgsServer.patches = [ ./server/njs-zlib.patch ];
+      channels.nixpkgsServer.config.permittedInsecurePackages = [ "minio-2025-10-15T17-29-55Z" ];
 
       hostDefaults.modules = [
 
