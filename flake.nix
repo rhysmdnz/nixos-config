@@ -107,6 +107,7 @@
 
       hosts.memesnz1 = {
         channelName = "nixpkgsServer";
+        config.permittedInsecurePackages = [ "minio-2025-10-15T17-29-55Z" ];
         modules = [
           ./nix-conf.nix
           ./server/configuration.nix
