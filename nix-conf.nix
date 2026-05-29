@@ -1,9 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   nix = {
-    gc.automatic = true;
-    gc.options = "-d";
+    gc = lib.mkIf (!pkgs.stdenv.isDarwin) {
+      automatic = true;
+      options = "-d";
+    };
     settings.auto-optimise-store = if pkgs.stdenv.isDarwin then false else true;
     settings.trusted-users = [ "rhys" ];
     settings.substituters = [ "https://cache.memes.nz/cache" "https://nix-community.cachix.org" ];

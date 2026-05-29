@@ -30,7 +30,7 @@
   ];
 
   # Auto upgrade nix package and the daemon service.
-  nix.enable = true;
+  nix.enable = false;
 
   programs.nix-index.enable = true;
 
