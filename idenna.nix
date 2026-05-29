@@ -21,8 +21,6 @@
     gh
     git
     jq
-    nodePackages.npm
-    nodePackages.yarn
     poetry
     pwgen
     ripgrep
