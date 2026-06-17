@@ -9,7 +9,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.bootspec.enable = true;
+  #boot.bootspec.enable = true;
 
   boot.lanzaboote = {
     enable = true;
