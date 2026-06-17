@@ -31,7 +31,7 @@ in
 
   #boot.plymouth.enable = true;
   #boot.plymouth.theme = "solar";
-  boot.bootspec.enable = true;
+  #boot.bootspec.enable = true;
 
   boot.lanzaboote = {
     enable = true;
