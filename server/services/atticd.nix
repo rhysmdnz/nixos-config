@@ -28,7 +28,7 @@
 
     settings = {
       listen = "[::]:5867";
-      database.url = "postgres:///atticd";
+      database.url = "postgresql:///atticd?host=/run/postgresql&user=atticd";
 
       # Data chunking
       #
