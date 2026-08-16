@@ -31,12 +31,10 @@
       least_conn;
     '';
     servers = builtins.listToAttrs (
-      map
-        (i: {
-          name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
-          value = { };
-        })
-        (lib.range 1 config.services.mastodon.streamingProcesses)
+      map (i: {
+        name = "unix:/run/mastodon-streaming/streaming-${toString i}.socket";
+        value = { };
+      }) (lib.range 1 config.services.mastodon.streamingProcesses)
     );
   };
 
@@ -172,64 +170,4 @@
     "network-online.target"
   ];
   systemd.services.mastodon-init-dirs.requires = [ "network-online.target" ];
-
-  users.users.mastodon-media-backup = {
-    group = "mastodon-media-backup";
-    isSystemUser = true;
-  };
-
-  users.groups.mastodon-media-backup = { };
-
-  #systemd.services.mastodon-media-backup = {
-  #  description = "Mastodon to backblaze b2 sync";
-
-  #  wantedBy = [ "multi-user.target" ];
-  #  after = [
-  #    "network.target"
-  #    "minio.service"
-  #  ];
-
-    #confinement.enable = true;
-
-  #  serviceConfig = {
-  #    ExecStart = "${pkgs.minio-client}/bin/mc --config-dir /etc/mc-b2 mirror --exclude '*cache/*' --watch --remove local/mastodon b2/memesnz-mastodon-backup --json";
-  #    ConfigurationDirectory = "mc-b2";
-  #    User = "mastodon-media-backup";
-  #    Group = "mastodon-media-backup";
-  #    Restart = "always";
-
-      # Confinement
-  #    ProtectSystem = "strict";
-  #    PrivateDevices = true;
-  #    PrivateTmp = true;
-  #    PrivateUsers = true;
-  #    ProtectControlGroups = true;
-   #   ProtectKernelModules = true;
-    #  ProtectKernelTunables = true;
-
-  #    ProcSubset = "pid";
-  #    ProtectHome = true;
-   #   ProtectClock = true;
-   #   ProtectHostname = true;
-   #   ProtectKernelLogs = true;
-   #   ProtectProc = "invisible";
-   #   RestrictNamespaces = true;
-   #   LockPersonality = true;
-      #MemoryDenyWriteExecute = false;
-   #   RestrictRealtime = true;
-   #   RestrictSUIDSGID = true;
-   #   RestrictAddressFamilies = [
-   #     "AF_INET"
-   #     "AF_INET6"
-   #   ];
-   #   RemoveIPC = true;
-      ## System Call Filtering
-   #   SystemCallArchitectures = "native";
-   #   SystemCallFilter = "~@mount @clock @cpu-emulation @debug @module @obsolete @privileged @raw-io @reboot @swap";
-      ## Security
-    #  NoNewPrivileges = true;
-
-   #   CapabilityBoundingSet = "";
-   # };
-  #};
 }

@@ -13,16 +13,18 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./services/matrix/synapse.nix
+    ./services/matrix/matrix-appservice-irc.nix
     ./services/matrix/matrix-authentication-service.nix
     ./services/matrix/element-web.nix
     ./services/mastodon
-    ./services/matrix/maubot.nix
     ./services/samba.nix
     ./services/minio.nix
     ./services/keycloak.nix
     ./services/postgres.nix
     ./services/memesnz
     ./services/atticd.nix
+    ./services/smokeping
     ./bcache.nix
   ];
 
@@ -37,8 +39,6 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "memesnz1"; # Define your hostname.
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
@@ -72,8 +72,6 @@
     ];
   };
 
-  virtualisation.docker.storageDriver = "overlay2";
-
   security.acme.defaults.email = "letsencrypt@memes.nz";
   security.acme.acceptTerms = true;
 
@@ -88,6 +86,7 @@
     recommendedTlsSettings = true;
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
     recommendedProxySettings = true;
 
     additionalModules = [ pkgs.nginxModules.njs ];
@@ -131,10 +130,7 @@
     isNormalUser = true;
     home = "/home/rhys";
     description = "Rhys Davies";
-    extraGroups = [
-      "wheel"
-      "lxd"
-    ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3Wq1iElJ+tcr7SOEIQaTYrF09Ci6bAFnI4MJ88Kxz9ELo8EoO9kxjzqtppKaALPKX6DJGOeA8NxuOma0dmDCE= rhys@iphone"
@@ -144,10 +140,7 @@
   users.users.jamie = {
     isNormalUser = true;
     home = "/home/jamie";
-    extraGroups = [
-      "wheel"
-      "lxd"
-    ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDhVQD2IiQhzxFdJH2yF4ig3Zu3xMsisHxb2RKM3O3FaPt6hVEvgBoGSP8MuuD1Ay9t20eKZ0CFKP+v764l+AKTiMRVDiYlDO8gPoq7JQ+y6j005bry9ScPOxDs5i30opaaOYGtnbnQqgMu2QUAWgrUlMWH2jFAU9xO3yQaU4DSQK7heIP9uwvDzpQFTLy2aAma0z90fLIxg55q60ucnfwigFYGIyoFGBYnLRntCJuJ1n5qhV7Qj6dG/5rVHUrGI0cZg7vM3+kkJ8er7p9QQ3Hh9oPTwM8ueuks7k5CdKJwMy73/uJ3H3RDqVh3k73MIzcsq5x/yycFtRHbGZxmQsKTaZln8ariEY85/14jXKFYxytpgs0PKGlP/kQpCMPCArkNEL5G6WEZ+e8I4Q9huzD3uJ9lDqDLGSNJ24Ml9I0H/MF/BpPsMkFzohLyOPXu0rqbOIJX3UKTqnzDVayQ9fhEIWlgAvxZeyg6oB/XqJswbzHJHfURg9D9qX0SMve9k03HKLycB2rqpbCRajpII+C9JcN03I16/YV7iDNrjv9C72RkXc7kfuYCY2J38jdqnxMz5u5x4Vq/jp6cBjPFQC3cep5zsdRYOmwA8IwZAYPfg7+3qSgatLMouMcXxIGKrLMZvKaN1nwpjxWrcLqvS2p/MQqi42gRDNuEXa27MstxHw=="
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMgTSnkhEU29jf36kfrGZCc/FfWBDsP2bP2C3lPUz2TO jamie@meow"
@@ -157,18 +150,10 @@
   users.users.sharlot = {
     isNormalUser = true;
     home = "/home/sharlot";
-    extraGroups = [
-      "wheel"
-      "sonarr"
-    ];
+    extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQT+JUxSRm9j36WWr+fWwMiDZlr75Nwx9pkuMMmeSVfnTib7liptCtQYlwuO99baJTe0eMLTqt6p6KCiUOTILpp2nYflggXJgwOd7nWPuiJySMxRz/UXI42IV5HK0ljv4eahUDs0pY8BE80BQe/tO21dh1k7R4L0qS0jpWpPU/07z6SEIS2Bbt5FE24ryrYX1i9yUQl7ReIXPETCbq63tWWkszR+JDsDyn3Kuo00f5DbjKt2VO29DxBlVb4uGAvJCCrh5pPTAsLy2uW1kqB8v0RzsXNqLyGqC5Ov7jUNYi78aHZ8ikPw1DfB4ZhE9D1Ss5POmxUJ9AsvrtQyFxUQMJ imported-openssh-key"
     ];
-  };
-
-  users.users.amber = {
-    isNormalUser = true;
-    home = "/home/amber";
   };
 
   users.groups.sftponly = { };

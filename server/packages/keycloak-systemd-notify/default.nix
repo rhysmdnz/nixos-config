@@ -1,7 +1,6 @@
 {
   stdenv,
   lib,
-  fetchurl,
 }:
 
 stdenv.mkDerivation rec {
@@ -21,10 +20,10 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/leroyguillaume/keycloak-bcrypt";
-    description = "Add BCrypt password provider in Keycloak";
+    homepage = "https://github.com/quarkiverse/quarkus-systemd-notify";
+    description = "Notify Linux service manager (systemd) about start-up completion and other service status changes";
     sourceProvenance = with sourceTypes; [ binaryBytecode ];
-    license = licenses.apsl20;
+    license = licenses.asl20;
     maintainers = with maintainers; [ rhysmdnz ];
   };
 }

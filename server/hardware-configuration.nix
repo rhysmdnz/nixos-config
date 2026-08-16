@@ -23,7 +23,7 @@
     "nvme"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
   hardware.cpu.amd.updateMicrocode = true;
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
@@ -96,11 +96,8 @@
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver
-      intel-vaapi-driver
       libva-vdpau-driver
       libvdpau-va-gl
-      intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
     ];
   };
 

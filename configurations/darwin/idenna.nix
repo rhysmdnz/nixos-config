@@ -2,8 +2,13 @@
 
 {
   imports = [
-    ./nix-conf.nix
+    ../../nix-conf.nix
   ];
+
+  nixpkgs.hostPlatform = "aarch64-darwin";
+  networking.hostName = "idenna";
+
+  home-manager.users.rhys.imports = [ ../../home.nix ];
 
   users.users.rhys = {
     name = "rhys";
@@ -14,8 +19,7 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     vim
-    fend
-    nixpkgs-fmt
+    #fend
     binwalk
     fd
     gh
@@ -26,7 +30,7 @@
     ripgrep
     rustup
     nixd
-    nixfmt-rfc-style
+    nixfmt
   ];
 
   # Auto upgrade nix package and the daemon service.
