@@ -100,19 +100,6 @@ in
       };
 
       app_service_config_files = [ "/var/lib/matrix-appservice-irc/registration.yml" ];
-
-      media_storage_providers = [
-        {
-          module = "s3_storage_provider.S3StorageProviderBackend";
-          store_local = true;
-          store_remote = true;
-          store_synchronous = true;
-          config = {
-            bucket = "matrix-media";
-            endpoint_url = "http://localhost:9745";
-          };
-        }
-      ];
     };
   };
 }
