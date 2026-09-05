@@ -32,8 +32,6 @@
     package = pkgs.nixVersions.latest;
     nixPath = [ "/etc/nix/inputs" ];
     registry = lib.mapAttrs (_name: input: { flake = input; }) flake.inputs;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 }
