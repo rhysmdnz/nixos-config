@@ -21,6 +21,7 @@
   };
 
   services.minio.enable = true;
+  services.minio.package = pkgs.silo;
   services.minio.listenAddress = ":9745";
   services.minio.rootCredentialsFile = "/etc/minio/minio-root-credentials";
   services.minio.dataDir = [ "/mnt/s/minio-data" ];
