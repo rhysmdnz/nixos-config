@@ -1,4 +1,18 @@
 { config, pkgs, ... }:
+let
+  securityHeaders = ''
+    add_header Strict-Transport-Security $hsts_header always;
+    add_header Content-Security-Policy "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" always;
+    add_header Cross-Origin-Opener-Policy same-origin always;
+    add_header Alt-Svc 'h3=":443"; ma=86400' always;
+  '';
+  wellKnownHeaders = securityHeaders + ''
+    add_header Cross-Origin-Resource-Policy cross-origin always;
+  '';
+in
 {
 
   services.nginx.virtualHosts."memes.nz" = {
@@ -9,17 +23,16 @@
     quic = true;
 
     locations."/".root = ./src;
-    locations."/".extraConfig = ''
+    locations."/".extraConfig = securityHeaders + ''
+      add_header Cross-Origin-Resource-Policy same-origin always;
       add_header Access-Control-Allow-Origin *;
-      add_header Strict-Transport-Security $hsts_header;
-      add_header Alt-Svc 'h3=":443"; ma=86400, h2=":443"; ma=86400';
     '';
 
-    locations."/.well-known/host-meta".extraConfig = ''
+    locations."/.well-known/host-meta".extraConfig = wellKnownHeaders + ''
       return 301 https://social.memes.nz$request_uri;
     '';
 
-    locations."/.well-known/webfinger".extraConfig = ''
+    locations."/.well-known/webfinger".extraConfig = wellKnownHeaders + ''
       add_header 'Access-Control-Allow-Origin' '*';
       js_content http.webfinger;
     '';
@@ -32,7 +45,8 @@
           "m.server" = "matrix.memes.nz:443";
         };
       in
-      ''
+      wellKnownHeaders
+      + ''
         add_header Content-Type application/json;
         return 200 '${builtins.toJSON server}';
       '';
@@ -52,7 +66,8 @@
         };
       in
       # ACAO required to allow element-web on any URL to request this json file
-      ''
+      wellKnownHeaders
+      + ''
         add_header Content-Type application/json;
         add_header Access-Control-Allow-Origin *;
         return 200 '${builtins.toJSON client}';
