@@ -25,6 +25,7 @@
     ./services/memesnz
     ./services/atticd.nix
     ./services/smokeping
+    ./services/grimmory.nix
     ./bcache.nix
   ];
 

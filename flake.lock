@@ -51,6 +51,23 @@
         "type": "github"
       }
     },
+    "grimmory-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791432493,
+        "narHash": "sha256-4CV6zj5msVVr1Qv6Jrd8tLhvA7ksDbVS6Po7vE5mCnk=",
+        "owner": "kraftnix",
+        "repo": "nixpkgs",
+        "rev": "a8292feb25818201b50e0c39108be839a4b79115",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kraftnix",
+        "repo": "nixpkgs",
+        "rev": "a8292feb25818201b50e0c39108be839a4b79115",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -190,6 +207,7 @@
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
+        "grimmory-src": "grimmory-src",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nix-darwin": "nix-darwin",
