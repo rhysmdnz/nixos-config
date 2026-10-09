@@ -12,6 +12,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     nixos-unified.url = "github:srid/nixos-unified";
+    grimmory-src = {
+      url = "github:kraftnix/nixpkgs/a8292feb25818201b50e0c39108be839a4b79115";
+      flake = false;
+    };
   };
 
   outputs =
