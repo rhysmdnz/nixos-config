@@ -3,7 +3,7 @@
   lib,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "keycloak-systemd-notify";
   version = "1.5.1";
 
@@ -19,11 +19,11 @@ stdenv.mkDerivation rec {
     install "$src2" "$out"
   '';
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/quarkiverse/quarkus-systemd-notify";
     description = "Notify Linux service manager (systemd) about start-up completion and other service status changes";
-    sourceProvenance = with sourceTypes; [ binaryBytecode ];
-    license = licenses.asl20;
-    maintainers = with maintainers; [ rhysmdnz ];
+    sourceProvenance = [ lib.sourceTypes.binaryBytecode ];
+    license = lib.licenses.asl20;
+    maintainers = [ lib.maintainers.rhysmdnz ];
   };
 }

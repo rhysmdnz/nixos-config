@@ -1,11 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   systemd.services.keycloak.after = [ "postgresql.target" ];
   systemd.services.keycloak.bindsTo = [ "postgresql.target" ];
   systemd.services.keycloak.serviceConfig = {
     Type = "notify";
-    AmbientCapabilities = pkgs.lib.mkForce "CAP_SYS_ADMIN,CAP_NET_BIND_SERVICE";
+    AmbientCapabilities = lib.mkForce "CAP_SYS_ADMIN,CAP_NET_BIND_SERVICE";
     NotifyAccess = "all";
   };
   services.nginx.virtualHosts."account.memes.nz" = {
@@ -29,11 +34,13 @@
       pkgs.keycloak.plugins.junixsocket-native-common
     ];
     package = pkgs.keycloak.override { extraFeatures = [ "passkeys" ]; };
-    settings.hostname = "account.memes.nz";
-    settings.proxy-headers = "xforwarded";
-    settings.http-enabled = true;
-    settings.http-port = 7812;
-    settings.http-management-port = 7813;
+    settings = {
+      hostname = "account.memes.nz";
+      proxy-headers = "xforwarded";
+      http-enabled = true;
+      http-port = 7812;
+      http-management-port = 7813;
+    };
     database.host = "/run/postgresql";
   };
 }

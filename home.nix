@@ -67,20 +67,20 @@
           owner = "chisui";
           repo = "zsh-nix-shell";
           rev = "v0.4.0";
-          sha256 = "037wz9fqmx0ngcwl9az55fgkipb745rymznxnssr3rx9irb6apzg";
+          hash = "sha256-719lVo6p55G1tt3+6nMhZ904nyvlq0Q5exb0il36/Aw=";
         };
       }
     ];
   };
 
   programs.eza.enable = true;
+  programs.dircolors.enable = true;
   programs.starship.enable = true;
   programs.starship.settings = {
     add_newline = false;
     gcloud.disabled = true;
     aws.disabled = true;
   };
-  programs.dircolors.enable = true;
 
   home.stateVersion = "22.11";
 
