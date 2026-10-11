@@ -3,8 +3,15 @@
 {
   services.postgresql = {
     enable = true;
-    enableTCPIP = true;
     package = pkgs.postgresql_17;
+    authentication = ''
+      local mas           mas_user      peer map=mas
+      local "kiwicon-irc" kiwicon-irc-2 peer map=kiwicon-irc
+    '';
+    identMap = ''
+      mas         matrix-authentication-service mas_user
+      kiwicon-irc matrix-appservice-irc         kiwicon-irc-2
+    '';
   };
 
   services.postgresqlBackup.enable = true;
