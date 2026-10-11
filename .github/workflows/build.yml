@@ -45,7 +45,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: wimpysworld/nothing-but-nix@687c797a730352432950c707ab493fcc951818d7 # v10
         with:
-          hatchet-protocol: 'cleave'  # Options: holster, carve, cleave (default), rampage
+          hatchet-protocol: 'carve'  # Options: holster, carve, cleave (default), rampage
       - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           extra-conf: |
