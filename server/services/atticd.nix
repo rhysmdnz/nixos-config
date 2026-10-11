@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+_:
 
 {
   services.nginx.virtualHosts."cache.memes.nz" = {

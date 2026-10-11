@@ -2,11 +2,9 @@
 let
   mkBcacheFs = path: devs: opts: rec {
     description = path;
-    bindsTo = (
-      builtins.map (
-        d: "${lib.strings.removePrefix "-" (builtins.replaceStrings [ "/" ] [ "-" ] d)}.device"
-      ) devs
-    );
+    bindsTo = builtins.map (
+      d: "${lib.strings.removePrefix "-" (builtins.replaceStrings [ "/" ] [ "-" ] d)}.device"
+    ) devs;
     after = bindsTo ++ [ "local-fs-pre.target" ];
     before = [
       "umount.target"

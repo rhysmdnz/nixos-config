@@ -11,6 +11,8 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-unified.url = "github:srid/nixos-unified";
     grimmory-src = {
       url = "github:kraftnix/nixpkgs/a8292feb25818201b50e0c39108be839a4b79115";
@@ -28,7 +30,15 @@
       imports = [
         inputs.nixos-unified.flakeModules.default
         inputs.nixos-unified.flakeModules.autoWire # wires idenna + normandy
+        inputs.treefmt-nix.flakeModule
       ];
+
+      perSystem = {
+        treefmt = {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+        };
+      };
 
       flake.nixosConfigurations.memesnz1 = self.nixos-unified.lib.mkLinuxSystem {
         home-manager = false;

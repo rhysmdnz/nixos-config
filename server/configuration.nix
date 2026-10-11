@@ -5,7 +5,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 
@@ -29,137 +28,178 @@
     ./bcache.nix
   ];
 
-  boot.initrd.systemd.enable = true;
+  boot = {
+    initrd.systemd.enable = true;
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  services.netdata.enable = true;
-
-  security.sudo.wheelNeedsPassword = false;
-
-  #services.resolved.enable = true;
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    # Use the systemd-boot EFI boot loader.
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
 
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s31f6.useDHCP = true;
+  networking = {
+    # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+    # Per-interface useDHCP will be mandatory in the future, so this generated config
+    # replicates the default behaviour.
+    useDHCP = false;
+    interfaces.enp0s31f6.useDHCP = true;
+    useNetworkd = true;
 
-  networking.useNetworkd = true;
+    # Open ports in the firewall.
+    firewall = {
+      allowedUDPPorts = [
+        443
+        config.services.tailscale.port
+        51413
+      ];
 
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.flags = [ "--recreate-lock-file" ];
-  system.autoUpgrade.allowReboot = true;
-  system.autoUpgrade.flake = "/etc/nixos#memesnz1";
-
-  services.restic.backups.backup = {
-    initialize = true;
-    passwordFile = "/etc/restic/password";
-    environmentFile = "/etc/restic/b2-creds";
-    paths = [ "/var/backup" ];
-    repository = "b2:memesnz-backup";
-    timerConfig = {
-      OnUnitActiveSec = "1d";
-      OnCalendar = "daily";
+      allowedTCPPorts = [
+        22
+        80
+        443
+        6443
+        8000
+        51413
+      ];
+      trustedInterfaces = [ "tailscale0" ];
+      checkReversePath = "loose";
+      # Or disable the firewall altogether.
+      # enable = false;
     };
-
-    pruneOpts = [
-      "--keep-daily 7"
-    ];
   };
 
-  security.acme.defaults.email = "letsencrypt@memes.nz";
-  security.acme.acceptTerms = true;
-
-  users.users.nginx.extraGroups = [ "mastodon" ];
-
-  services.opensearch.enable = true;
-
-  services.nginx = {
+  system.autoUpgrade = {
     enable = true;
-    enableReload = true;
-    # package = pkgs.nginxQuic;
-    recommendedTlsSettings = true;
-    sslProtocols = "TLSv1.3";
-    sslCiphers = null;
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
-    recommendedBrotliSettings = true;
-    recommendedProxySettings = true;
+    flags = [ "--recreate-lock-file" ];
+    allowReboot = true;
+    flake = "/etc/nixos#memesnz1";
+  };
 
-    additionalModules = [ pkgs.nginxModules.njs ];
+  security = {
+    sudo.wheelNeedsPassword = false;
+    acme.defaults.email = "letsencrypt@memes.nz";
+    acme.acceptTerms = true;
+  };
 
-    resolver.addresses = [ "127.0.0.53" ];
+  services = {
+    netdata.enable = true;
+    opensearch.enable = true;
+    tailscale.enable = true;
 
-    commonHttpConfig = ''
-      js_import http from ${./services/mastodon/http.js};
-      js_fetch_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+    #resolved.enable = true;
 
-      proxy_cache_path /tmp/nginx_mstdn_media levels=1:2 keys_zone=mastodon_media:100m max_size=1g inactive=24h;
-    '';
+    restic.backups.backup = {
+      initialize = true;
+      passwordFile = "/etc/restic/password";
+      environmentFile = "/etc/restic/b2-creds";
+      paths = [ "/var/backup" ];
+      repository = "b2:memesnz-backup";
+      timerConfig = {
+        OnUnitActiveSec = "1d";
+        OnCalendar = "daily";
+      };
 
-    appendHttpConfig = ''
-      # Add HSTS header with preloading to HTTPS requests.
-      # Adding this header to HTTP requests is discouraged
-      map $scheme $hsts_header {
-          https   "max-age=63072000; includeSubdomains; preload";
-      }
-      add_header Strict-Transport-Security $hsts_header;
-    '';
+      pruneOpts = [
+        "--keep-daily 7"
+      ];
+    };
 
-    virtualHosts = {
-      "johnguant.com" = {
-        enableACME = true;
-        forceSSL = true;
-        globalRedirect = "memes.nz";
-        http3 = true;
-        quic = true;
+    nginx = {
+      enable = true;
+      enableReload = true;
+      # package = pkgs.nginxQuic;
+      recommendedTlsSettings = true;
+      sslProtocols = "TLSv1.3";
+      sslCiphers = null;
+      recommendedOptimisation = true;
+      recommendedGzipSettings = true;
+      recommendedBrotliSettings = true;
+      recommendedProxySettings = true;
+
+      additionalModules = [ pkgs.nginxModules.njs ];
+
+      resolver.addresses = [ "127.0.0.53" ];
+
+      commonHttpConfig = ''
+        js_import http from ${./services/mastodon/http.js};
+        js_fetch_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+
+        proxy_cache_path /tmp/nginx_mstdn_media levels=1:2 keys_zone=mastodon_media:100m max_size=1g inactive=24h;
+      '';
+
+      appendHttpConfig = ''
+        # Add HSTS header with preloading to HTTPS requests.
+        # Adding this header to HTTP requests is discouraged
+        map $scheme $hsts_header {
+            https   "max-age=63072000; includeSubdomains; preload";
+        }
+        add_header Strict-Transport-Security $hsts_header;
+      '';
+
+      virtualHosts = {
+        "johnguant.com" = {
+          enableACME = true;
+          forceSSL = true;
+          globalRedirect = "memes.nz";
+          http3 = true;
+          quic = true;
+        };
       };
     };
 
+    # Enable the OpenSSH daemon.
+    openssh = {
+      enable = true;
+      settings.PermitRootLogin = "no";
+      settings.PasswordAuthentication = false;
+    };
   };
 
-  programs.nix-index.enable = true;
-  programs.command-not-found.enable = false;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.rhys = {
-    uid = 1000;
-    isNormalUser = true;
-    home = "/home/rhys";
-    description = "Rhys Davies";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    openssh.authorizedKeys.keys = [
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3Wq1iElJ+tcr7SOEIQaTYrF09Ci6bAFnI4MJ88Kxz9ELo8EoO9kxjzqtppKaALPKX6DJGOeA8NxuOma0dmDCE= rhys@iphone"
-    ];
+  programs = {
+    nix-index.enable = true;
+    command-not-found.enable = false;
   };
 
-  users.users.jamie = {
-    isNormalUser = true;
-    home = "/home/jamie";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDhVQD2IiQhzxFdJH2yF4ig3Zu3xMsisHxb2RKM3O3FaPt6hVEvgBoGSP8MuuD1Ay9t20eKZ0CFKP+v764l+AKTiMRVDiYlDO8gPoq7JQ+y6j005bry9ScPOxDs5i30opaaOYGtnbnQqgMu2QUAWgrUlMWH2jFAU9xO3yQaU4DSQK7heIP9uwvDzpQFTLy2aAma0z90fLIxg55q60ucnfwigFYGIyoFGBYnLRntCJuJ1n5qhV7Qj6dG/5rVHUrGI0cZg7vM3+kkJ8er7p9QQ3Hh9oPTwM8ueuks7k5CdKJwMy73/uJ3H3RDqVh3k73MIzcsq5x/yycFtRHbGZxmQsKTaZln8ariEY85/14jXKFYxytpgs0PKGlP/kQpCMPCArkNEL5G6WEZ+e8I4Q9huzD3uJ9lDqDLGSNJ24Ml9I0H/MF/BpPsMkFzohLyOPXu0rqbOIJX3UKTqnzDVayQ9fhEIWlgAvxZeyg6oB/XqJswbzHJHfURg9D9qX0SMve9k03HKLycB2rqpbCRajpII+C9JcN03I16/YV7iDNrjv9C72RkXc7kfuYCY2J38jdqnxMz5u5x4Vq/jp6cBjPFQC3cep5zsdRYOmwA8IwZAYPfg7+3qSgatLMouMcXxIGKrLMZvKaN1nwpjxWrcLqvS2p/MQqi42gRDNuEXa27MstxHw=="
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMgTSnkhEU29jf36kfrGZCc/FfWBDsP2bP2C3lPUz2TO jamie@meow"
-    ];
-  };
+  users = {
+    users.nginx.extraGroups = [ "mastodon" ];
 
-  users.users.sharlot = {
-    isNormalUser = true;
-    home = "/home/sharlot";
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQT+JUxSRm9j36WWr+fWwMiDZlr75Nwx9pkuMMmeSVfnTib7liptCtQYlwuO99baJTe0eMLTqt6p6KCiUOTILpp2nYflggXJgwOd7nWPuiJySMxRz/UXI42IV5HK0ljv4eahUDs0pY8BE80BQe/tO21dh1k7R4L0qS0jpWpPU/07z6SEIS2Bbt5FE24ryrYX1i9yUQl7ReIXPETCbq63tWWkszR+JDsDyn3Kuo00f5DbjKt2VO29DxBlVb4uGAvJCCrh5pPTAsLy2uW1kqB8v0RzsXNqLyGqC5Ov7jUNYi78aHZ8ikPw1DfB4ZhE9D1Ss5POmxUJ9AsvrtQyFxUQMJ imported-openssh-key"
-    ];
-  };
+    # Define a user account. Don't forget to set a password with ‘passwd’.
+    users.rhys = {
+      uid = 1000;
+      isNormalUser = true;
+      home = "/home/rhys";
+      description = "Rhys Davies";
+      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+      openssh.authorizedKeys.keys = [
+        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA= Idenna@secretive.Idenna.local"
+        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBP3Wq1iElJ+tcr7SOEIQaTYrF09Ci6bAFnI4MJ88Kxz9ELo8EoO9kxjzqtppKaALPKX6DJGOeA8NxuOma0dmDCE= rhys@iphone"
+      ];
+    };
 
-  users.groups.sftponly = { };
+    users.jamie = {
+      isNormalUser = true;
+      home = "/home/jamie";
+      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+      openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDhVQD2IiQhzxFdJH2yF4ig3Zu3xMsisHxb2RKM3O3FaPt6hVEvgBoGSP8MuuD1Ay9t20eKZ0CFKP+v764l+AKTiMRVDiYlDO8gPoq7JQ+y6j005bry9ScPOxDs5i30opaaOYGtnbnQqgMu2QUAWgrUlMWH2jFAU9xO3yQaU4DSQK7heIP9uwvDzpQFTLy2aAma0z90fLIxg55q60ucnfwigFYGIyoFGBYnLRntCJuJ1n5qhV7Qj6dG/5rVHUrGI0cZg7vM3+kkJ8er7p9QQ3Hh9oPTwM8ueuks7k5CdKJwMy73/uJ3H3RDqVh3k73MIzcsq5x/yycFtRHbGZxmQsKTaZln8ariEY85/14jXKFYxytpgs0PKGlP/kQpCMPCArkNEL5G6WEZ+e8I4Q9huzD3uJ9lDqDLGSNJ24Ml9I0H/MF/BpPsMkFzohLyOPXu0rqbOIJX3UKTqnzDVayQ9fhEIWlgAvxZeyg6oB/XqJswbzHJHfURg9D9qX0SMve9k03HKLycB2rqpbCRajpII+C9JcN03I16/YV7iDNrjv9C72RkXc7kfuYCY2J38jdqnxMz5u5x4Vq/jp6cBjPFQC3cep5zsdRYOmwA8IwZAYPfg7+3qSgatLMouMcXxIGKrLMZvKaN1nwpjxWrcLqvS2p/MQqi42gRDNuEXa27MstxHw=="
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMgTSnkhEU29jf36kfrGZCc/FfWBDsP2bP2C3lPUz2TO jamie@meow"
+      ];
+    };
+
+    users.sharlot = {
+      isNormalUser = true;
+      home = "/home/sharlot";
+      extraGroups = [ "wheel" ];
+      openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQT+JUxSRm9j36WWr+fWwMiDZlr75Nwx9pkuMMmeSVfnTib7liptCtQYlwuO99baJTe0eMLTqt6p6KCiUOTILpp2nYflggXJgwOd7nWPuiJySMxRz/UXI42IV5HK0ljv4eahUDs0pY8BE80BQe/tO21dh1k7R4L0qS0jpWpPU/07z6SEIS2Bbt5FE24ryrYX1i9yUQl7ReIXPETCbq63tWWkszR+JDsDyn3Kuo00f5DbjKt2VO29DxBlVb4uGAvJCCrh5pPTAsLy2uW1kqB8v0RzsXNqLyGqC5Ov7jUNYi78aHZ8ikPw1DfB4ZhE9D1Ss5POmxUJ9AsvrtQyFxUQMJ imported-openssh-key"
+      ];
+    };
+
+    groups.sftponly = { };
+  };
 
   # List packages installed in system profile. To search, rue:
   # $ nix search wget
@@ -169,37 +209,6 @@
     tailscale
     git
   ];
-
-  services.tailscale.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = false;
-  };
-
-  # Open ports in the firewall.
-  networking.firewall.allowedUDPPorts = [
-    443
-    config.services.tailscale.port
-    51413
-  ];
-
-  networking.firewall.allowedTCPPorts = [
-    22
-    80
-    443
-    6443
-    8000
-    51413
-  ];
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
-  networking.firewall.checkReversePath = "loose";
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # services.nginx.package = pkgs.nginxStable.overrideAttrs {
   #  CFLAGS = "-Wno-error=discarded-qualifiers";
@@ -212,5 +221,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
-
 }
