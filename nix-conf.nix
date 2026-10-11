@@ -12,7 +12,7 @@
   environment.etc = lib.mapAttrs' (name: input: {
     name = "nix/inputs/${name}";
     value.source = input.outPath;
-  }) flake.inputs;
+  }) (removeAttrs flake.inputs [ "self" ]);
 
   nix = lib.mkIf config.nix.enable {
     gc = {
@@ -40,6 +40,6 @@
 
     package = pkgs.nixVersions.latest;
     nixPath = [ "/etc/nix/inputs" ];
-    registry = lib.mapAttrs (_name: input: { flake = input; }) flake.inputs;
+    registry = lib.mapAttrs (_name: input: { flake = input; }) (removeAttrs flake.inputs [ "self" ]);
   };
 }
