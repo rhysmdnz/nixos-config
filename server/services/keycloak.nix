@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -8,11 +7,6 @@
 {
   systemd.services.keycloak.after = [ "postgresql.target" ];
   systemd.services.keycloak.bindsTo = [ "postgresql.target" ];
-  systemd.services.keycloak.serviceConfig = {
-    Type = "notify";
-    AmbientCapabilities = lib.mkForce "CAP_SYS_ADMIN,CAP_NET_BIND_SERVICE";
-    NotifyAccess = "all";
-  };
   services.nginx.virtualHosts."account.memes.nz" = {
     enableACME = true;
     forceSSL = true;
@@ -29,7 +23,6 @@
     enable = true;
     plugins = [
       (pkgs.callPackage ../packages/keycloak-bcrypt { })
-      (pkgs.callPackage ../packages/keycloak-systemd-notify { })
       pkgs.keycloak.plugins.junixsocket-common
       pkgs.keycloak.plugins.junixsocket-native-common
     ];
