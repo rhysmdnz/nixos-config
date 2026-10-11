@@ -53,7 +53,21 @@ in
       matrix_authentication_service = {
         enabled = true;
         endpoint = "https://matrix-auth.memes.nz";
+        secret_path = "/etc/synapse/mas-secret";
       };
+
+      media_storage_providers = [
+        {
+          module = "s3_storage_provider.S3StorageProviderBackend";
+          store_local = true;
+          store_remote = true;
+          store_synchronous = true;
+          config = {
+            bucket = "matrix-media";
+            endpoint_url = "http://localhost:9745";
+          };
+        }
+      ];
 
       listeners = [
         {
@@ -102,4 +116,6 @@ in
       app_service_config_files = [ "/var/lib/matrix-appservice-irc/registration.yml" ];
     };
   };
+
+  systemd.services.matrix-synapse.serviceConfig.EnvironmentFile = "/etc/synapse/s3.env";
 }
