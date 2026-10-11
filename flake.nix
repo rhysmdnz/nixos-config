@@ -33,12 +33,21 @@
         inputs.treefmt-nix.flakeModule
       ];
 
-      perSystem = {
-        treefmt = {
-          projectRootFile = "flake.nix";
-          programs.nixfmt.enable = true;
+      perSystem =
+        { system, lib, ... }:
+        {
+          treefmt = {
+            projectRootFile = "flake.nix";
+            flakeCheck = system == "x86_64-linux";
+            programs.nixfmt.enable = true;
+          };
+
+          checks = lib.mapAttrs (_: c: c.config.system.build.toplevel) (
+            lib.filterAttrs (_: c: c.pkgs.stdenv.hostPlatform.system == system) (
+              self.nixosConfigurations // self.darwinConfigurations
+            )
+          );
         };
-      };
 
       flake.nixosConfigurations.memesnz1 = self.nixos-unified.lib.mkLinuxSystem {
         home-manager = false;
