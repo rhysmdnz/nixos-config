@@ -22,7 +22,6 @@
   services.keycloak = {
     enable = true;
     plugins = [
-      (pkgs.callPackage ../packages/keycloak-bcrypt { })
       pkgs.keycloak.plugins.junixsocket-common
       pkgs.keycloak.plugins.junixsocket-native-common
     ];
