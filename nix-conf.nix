@@ -14,14 +14,15 @@
     value.source = input.outPath;
   }) flake.inputs;
 
-  nix = {
-    gc = lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) {
+  nix = lib.mkIf config.nix.enable {
+    gc = {
       automatic = true;
-      options = "-d";
+      options = "--delete-older-than 30d";
     };
 
+    optimise.automatic = true;
+
     settings = {
-      auto-optimise-store = if pkgs.stdenv.hostPlatform.isDarwin then false else true;
       experimental-features = [
         "nix-command"
         "flakes"

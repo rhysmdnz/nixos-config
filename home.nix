@@ -6,19 +6,17 @@
     settings = {
       user.name = "Rhys Davies";
       user.email = "rhys@memes.nz";
-      gpg.format = "ssh";
       gpg.ssh.allowedSignersFile = "${pkgs.writeText "allowed_signers" ''
         rhys@memes.nz ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADS/M9YD+SZToazGVMVDR1P1JVW8LY6eY+MJ8skGp+S
+        rhys@memes.nz ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCY3oqsIGMbxTT3Ehh4iVyIbrmzXzKasaUrLcfhcBwhCagQ2M6ykW9FO6K6gMP/5xYZMC0Lw/ycjN0fefhGUaNA=
       ''}";
     };
 
-    signing.key = "~/.ssh/id_ed25519";
-    signing.signByDefault = true;
-
-  };
-
-  programs.zsh.sessionVariables = {
-    SSH_AUTH_SOCK = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin "/Users/rhys/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
+    signing = {
+      format = "ssh";
+      key = if pkgs.stdenv.hostPlatform.isDarwin then "~/.ssh/Idenna.pub" else "~/.ssh/id_ed25519";
+      signByDefault = true;
+    };
   };
 
   home.sessionPath = lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
@@ -31,6 +29,11 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     enableVteIntegration = pkgs.stdenv.hostPlatform.isLinux;
+
+    sessionVariables = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      SSH_AUTH_SOCK = "/Users/rhys/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh";
+    };
+
     profileExtra = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
       eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -63,12 +66,7 @@
       {
         name = "zsh-nix-shell";
         file = "nix-shell.plugin.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "chisui";
-          repo = "zsh-nix-shell";
-          rev = "v0.4.0";
-          hash = "sha256-719lVo6p55G1tt3+6nMhZ904nyvlq0Q5exb0il36/Aw=";
-        };
+        src = "${pkgs.zsh-nix-shell}/share/zsh-nix-shell";
       }
     ];
   };
