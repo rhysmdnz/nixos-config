@@ -69,6 +69,8 @@
       matrix.endpoint = "https://matrix.memes.nz/";
 
       passwords.enabled = false;
+
+      database.uri = "postgresql:///mas?host=/run/postgresql&user=mas_user";
     };
   };
 }

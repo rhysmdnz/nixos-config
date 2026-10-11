@@ -147,6 +147,7 @@
     };
     database = {
       engine = "postgres";
+      connectionString = "postgres://kiwicon-irc-2@%2Frun%2Fpostgresql/kiwicon-irc";
     };
   };
   systemd.services.matrix-appservice-irc.serviceConfig.SystemCallFilter = pkgs.lib.mkForce "~@mount";
