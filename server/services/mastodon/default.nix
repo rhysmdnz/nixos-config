@@ -161,7 +161,7 @@
     script = ''
       ${config.services.mastodon.package}/bin/tootctl search deploy
     '';
-    startAt = "*-*-* *:00:00";
+    startAt = "Thu *-*-* 07:51:12";
   };
 
   systemd.services.mastodon-init-dirs.after = [
