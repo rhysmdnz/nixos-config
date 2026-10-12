@@ -95,12 +95,8 @@
       initialize = true;
       passwordFile = "/etc/restic/password";
       environmentFile = "/etc/restic/b2-creds";
-      paths = [ "/var/backup" ];
+      paths = [ "/mnt/s/backup" ];
       repository = "b2:memesnz-backup";
-      timerConfig = {
-        OnUnitActiveSec = "1d";
-        OnCalendar = "daily";
-      };
 
       pruneOpts = [
         "--keep-daily 7"
