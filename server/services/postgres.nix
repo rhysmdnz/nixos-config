@@ -16,8 +16,8 @@
 
   services.postgresqlBackup.enable = true;
   services.postgresqlBackup.compression = "zstd";
-  services.postgresqlBackup.compressionLevel = 19;
   services.postgresqlBackup.location = "/mnt/s/backup/postgresql";
+  systemd.services.postgresqlBackup.onSuccess = [ "restic-backups-backup.service" ];
 
   environment.systemPackages = [
     (pkgs.writeScriptBin "upgrade-pg-cluster" ''
