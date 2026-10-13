@@ -24,14 +24,6 @@
     settings = {
       http.public_base = "https://matrix-auth.memes.nz/";
       http.issuer = "https://matrix-auth.memes.nz/";
-      http.trusted_proxies = [
-        "192.128.0.0/16"
-        "172.16.0.0/12"
-        "10.0.0.0/10"
-        "127.0.0.1/8"
-        "fd00::/8"
-        "::1/128"
-      ];
       http.listeners = [
         {
           name = "web";
