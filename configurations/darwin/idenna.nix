@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, flake, ... }:
 
 {
   imports = [
     ../../nix-conf.nix
+    flake.inputs.nix-index-database.darwinModules.nix-index
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -36,7 +37,9 @@
   # Auto upgrade nix package and the daemon service.
   nix.enable = false;
 
-  programs.nix-index.enable = true;
+  programs.nix-index.package =
+    flake.inputs.nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}.nix-index-with-small-db;
+  programs.nix-index-database.comma.enable = true;
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina

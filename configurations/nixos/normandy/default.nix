@@ -112,8 +112,9 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs = {
-    nix-index.enable = true;
-    command-not-found.enable = false;
+    nix-index.package =
+      flake.inputs.nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}.nix-index-with-small-db;
+    nix-index-database.comma.enable = true;
     zsh.enable = true;
     zsh.enableCompletion = true;
   };

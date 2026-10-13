@@ -5,6 +5,7 @@
 {
   config,
   pkgs,
+  flake,
   ...
 }:
 
@@ -155,8 +156,9 @@
   };
 
   programs = {
-    nix-index.enable = true;
-    command-not-found.enable = false;
+    nix-index.package =
+      flake.inputs.nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}.nix-index-with-small-db;
+    nix-index-database.comma.enable = true;
   };
 
   users = {
