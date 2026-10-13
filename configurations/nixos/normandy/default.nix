@@ -132,8 +132,6 @@
     podman.enable = true;
   };
 
-  networking.firewall.allowedTCPPorts = [ 22 ];
-
   users.users.rhys = {
     uid = 1000;
     isNormalUser = true;
