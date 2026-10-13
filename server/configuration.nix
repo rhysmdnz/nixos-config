@@ -23,6 +23,7 @@
     ./services/keycloak.nix
     ./services/postgres.nix
     ./services/memesnz
+    ./services/nginx.nix
     ./services/atticd.nix
     ./services/smokeping
     ./services/grimmory.nix
@@ -49,22 +50,7 @@
     interfaces.enp0s31f6.useDHCP = true;
     useNetworkd = true;
 
-    # Open ports in the firewall.
     firewall = {
-      allowedUDPPorts = [
-        443
-        config.services.tailscale.port
-        51413
-      ];
-
-      allowedTCPPorts = [
-        22
-        80
-        443
-        6443
-        8000
-        51413
-      ];
       trustedInterfaces = [ "tailscale0" ];
       checkReversePath = "loose";
       # Or disable the firewall altogether.
@@ -88,7 +74,10 @@
   services = {
     netdata.enable = true;
     opensearch.enable = true;
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+    };
 
     #resolved.enable = true;
 
@@ -102,49 +91,6 @@
       pruneOpts = [
         "--keep-daily 7"
       ];
-    };
-
-    nginx = {
-      enable = true;
-      enableReload = true;
-      # package = pkgs.nginxQuic;
-      recommendedTlsSettings = true;
-      sslProtocols = "TLSv1.3";
-      sslCiphers = null;
-      recommendedOptimisation = true;
-      recommendedGzipSettings = true;
-      recommendedBrotliSettings = true;
-      recommendedProxySettings = true;
-
-      additionalModules = [ pkgs.nginxModules.njs ];
-
-      resolver.addresses = [ "127.0.0.53" ];
-
-      commonHttpConfig = ''
-        js_import http from ${./services/mastodon/http.js};
-        js_fetch_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
-
-        proxy_cache_path /tmp/nginx_mstdn_media levels=1:2 keys_zone=mastodon_media:100m max_size=1g inactive=24h;
-      '';
-
-      appendHttpConfig = ''
-        # Add HSTS header with preloading to HTTPS requests.
-        # Adding this header to HTTP requests is discouraged
-        map $scheme $hsts_header {
-            https   "max-age=63072000; includeSubdomains; preload";
-        }
-        add_header Strict-Transport-Security $hsts_header;
-      '';
-
-      virtualHosts = {
-        "johnguant.com" = {
-          enableACME = true;
-          forceSSL = true;
-          globalRedirect = "memes.nz";
-          http3 = true;
-          quic = true;
-        };
-      };
     };
 
     # Enable the OpenSSH daemon.
@@ -162,8 +108,6 @@
   };
 
   users = {
-    users.nginx.extraGroups = [ "mastodon" ];
-
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.rhys = {
       uid = 1000;
@@ -207,10 +151,6 @@
     tailscale
     git
   ];
-
-  # services.nginx.package = pkgs.nginxStable.overrideAttrs {
-  #  CFLAGS = "-Wno-error=discarded-qualifiers";
-  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
