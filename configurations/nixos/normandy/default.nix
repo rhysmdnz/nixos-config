@@ -23,13 +23,12 @@
     tmp.cleanOnBoot = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
-    loader.systemd-boot.enable = false;
+    loader.systemd-boot.enable = lib.mkForce false;
     loader.efi.canTouchEfiVariables = true;
-    #bootspec.enable = true;
 
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
   };
 
@@ -107,6 +106,7 @@
     thin-provisioning-tools
     uv
     ruff
+    sbctl
   ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
