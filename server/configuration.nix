@@ -31,7 +31,6 @@
   ];
 
   boot = {
-    initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
     # Use the systemd-boot EFI boot loader.

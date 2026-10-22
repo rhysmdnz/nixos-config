@@ -35,39 +35,32 @@
   boot.initrd.luks.devices = {
     root = {
       device = "/dev/disk/by-uuid/f692ec25-2ad3-487b-b1f4-e103a6301dd6";
-      preLVM = true;
       allowDiscards = true;
       keyFile = "/etc/diskkey";
     };
     s1 = {
       device = "/dev/disk/by-uuid/ff52bdf7-08a7-45b7-acfd-3cb736bbacf8";
-      preLVM = true;
       keyFile = "/etc/diskkey";
     };
     s2 = {
       device = "/dev/disk/by-uuid/023921ee-2630-49d7-b7e8-e25db57e434b";
-      preLVM = true;
       keyFile = "/etc/diskkey";
     };
     s3 = {
       device = "/dev/disk/by-uuid/94ba2d51-7942-46a3-bb17-c4cefa75680a";
-      preLVM = true;
       keyFile = "/etc/diskkey";
     };
     s4 = {
       device = "/dev/disk/by-uuid/533ad7ce-03be-4507-a2d0-6b362fc599f3";
-      preLVM = true;
       keyFile = "/etc/diskkey";
     };
     ssd1 = {
       device = "/dev/disk/by-uuid/64406f01-36e2-4002-8080-9b09611a11bb";
-      preLVM = true;
       keyFile = "/etc/diskkey";
       allowDiscards = true;
     };
     ssd2 = {
       device = "/dev/disk/by-uuid/250f96b5-9c13-4e2e-a0d9-5514ab828469";
-      preLVM = true;
       keyFile = "/etc/diskkey";
       allowDiscards = true;
     };

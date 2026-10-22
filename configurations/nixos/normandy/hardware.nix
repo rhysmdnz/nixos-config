@@ -21,7 +21,6 @@
       luks.devices = {
         root = {
           device = "/dev/disk/by-uuid/893b99e5-e698-4683-87bc-27d06b9db814";
-          preLVM = true;
           allowDiscards = true;
           crypttabExtraOpts = [ "tpm2-device=auto" ];
         };
