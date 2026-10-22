@@ -19,7 +19,6 @@
   home-manager.users.rhys.imports = [ ../../../home.nix ];
 
   boot = {
-    initrd.systemd.enable = true;
     tmp.cleanOnBoot = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
