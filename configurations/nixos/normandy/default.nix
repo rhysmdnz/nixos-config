@@ -52,6 +52,7 @@
 
     graphics.enable = true;
     nvidia.open = true;
+    nvidia.powerManagement.enable = true;
   };
 
   services = {
@@ -81,9 +82,6 @@
     # Enable the OpenSSH daemon.
     openssh.enable = true;
     openssh.settings.PasswordAuthentication = false;
-
-    hercules-ci-agent.enable = true;
-    hercules-ci-agent.settings.concurrentTasks = 32;
 
     nscd.enable = false;
   };
@@ -158,32 +156,11 @@
     ];
   };
 
-  users.users.jamie = {
-    uid = 1001;
-    isNormalUser = true;
-    home = "/home/jamie";
-    description = "Jamie";
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpDBWqUFKaNthEoVRjNa5GWnrzVQRZsKBczsYM++B7F root@nixos"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFmjgKWGrFYlHDY67GEaOhH32DgxbucL/XNlSROXQjWU hydra@hydra"
-    ];
-  };
-
-  nix.settings.trusted-users = [ "jamie" ];
-
-  systemd.targets = {
-    sleep.enable = false;
-    suspend.enable = false;
-    hibernate.enable = false;
-    hybrid-sleep.enable = false;
-  };
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 }

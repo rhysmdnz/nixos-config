@@ -11,20 +11,20 @@ jobs:
       any-jobs: ${{ steps.matrix.outputs.any-jobs }}
       manifest-version: ${{ steps.matrix.outputs.manifest-version }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+      - uses: actions/checkout@v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: |
             extra-substituters = https://cache.memes.nz/cache https://nix-community.cachix.org
             extra-trusted-public-keys = cache:/89NJtgM/IWySqvXSsfNiWWOhSdXcOj6AmHZcVkwLyA= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3.1.0
+      - uses: Mic92/hestia@v3.1.0
         with:
           version: v3.1.0
           upstream-cache-filter: true
           upstream-cache-key-names: cache.nixos.org-1 nix-community.cachix.org-1
           filter-drv-closures: true
       - id: matrix
-        uses: Mic92/hestia/matrix@dfed9ced335d28978ba74e513939a10db1f71025 # v3.1.0
+        uses: Mic92/hestia/matrix@v3.1.0
         with:
           flake: ".#checks"
           nix-eval-jobs: "nix run --inputs-from . nixpkgs#nix-eval-jobs --"
@@ -43,29 +43,30 @@ jobs:
     steps:
       - name: Maximize build space
         if: runner.os == 'Linux'
-        uses: wimpysworld/nothing-but-nix@687c797a730352432950c707ab493fcc951818d7 # v10
+        uses: wimpysworld/nothing-but-nix@v10
         with:
           hatchet-protocol: 'carve'  # Options: holster, carve, cleave (default), rampage
-      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           extra-conf: |
             download-buffer-size = 524288000
             extra-substituters = https://cache.memes.nz/cache https://nix-community.cachix.org
             extra-trusted-public-keys = cache:/89NJtgM/IWySqvXSsfNiWWOhSdXcOj6AmHZcVkwLyA= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3.1.0
+      - uses: Mic92/hestia@v3.1.0
         with:
           version: v3.1.0
           upstream-cache-filter: true
           upstream-cache-key-names: cache.nixos.org-1 nix-community.cachix.org-1
           wait-manifest-version: ${{ needs.eval.outputs.manifest-version }}
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@dc99f5eb1d5c0495aa26f7b56337b30011fa153e # v0.5.2
+        uses: ryanccn/attic-action@v0.5.2
         with:
           endpoint: ${{ vars.ATTIC_ENDPOINT }}
           cache: ${{ vars.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_TOKEN }}
           skip-use: true
       - name: Prefetch drv closure
+        continue-on-error: true
         run: '"$HESTIA_BIN" prefetch ${{ matrix.installables }}'
       - run: nix build -L --no-link ${{ matrix.installables }}
 
