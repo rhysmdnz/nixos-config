@@ -6,8 +6,8 @@
     enableReload = true;
     # package = pkgs.nginxQuic;
     recommendedTlsSettings = true;
-    sslProtocols = "TLSv1.3";
-    sslCiphers = null;
+    #sslProtocols = "TLSv1.3";
+    #sslCiphers = null;
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
     recommendedBrotliSettings = true;
