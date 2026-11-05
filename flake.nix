@@ -14,10 +14,6 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     nixos-unified.url = "github:srid/nixos-unified";
-    grimmory-src = {
-      url = "github:kraftnix/nixpkgs/a8292feb25818201b50e0c39108be839a4b79115";
-      flake = false;
-    };
   };
 
   outputs =
