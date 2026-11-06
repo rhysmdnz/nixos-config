@@ -8,7 +8,7 @@ workflows:
         - 'determinatesystems/nix-installer-action@v23'
         - 'mic92/hestia@v3.1.0'
         - 'ryanccn/attic-action@v0.5.2'
-        - 'wimpysworld/nothing-but-nix@v10'
+        - 'wimpysworld/nothing-but-nix@v12'
     '.github/workflows/hestia-gc.yml':
         - 'determinatesystems/nix-installer-action@v23'
         - 'mic92/hestia@v3.1.0'
@@ -33,15 +33,15 @@ dependencies:
         commit: 'sha1-dc99f5eb1d5c0495aa26f7b56337b30011fa153e'
         owner_id: 70191398
         repo_id: 667885521
-    'srz-zumix/post-run-action@v3':
-        ref: 'v3'
+    'srz-zumix/post-run-action@42756f7452b9439d0365b7e087b2c364f54209c6':
+        ref: 'v3.0.2'
         commit: 'sha1-42756f7452b9439d0365b7e087b2c364f54209c6'
         owner_id: 1439172
         repo_id: 757239631
-    'wimpysworld/nothing-but-nix@v10':
-        ref: 'v10'
-        commit: 'sha1-687c797a730352432950c707ab493fcc951818d7'
+    'wimpysworld/nothing-but-nix@v12':
+        ref: 'v12'
+        commit: 'sha1-b2574ec1cf1462bee0a34de0fb6ff11ad3c43cb2'
         owner_id: 39407681
         repo_id: 982902962
         uses:
-            - 'srz-zumix/post-run-action@v3'
+            - 'srz-zumix/post-run-action@42756f7452b9439d0365b7e087b2c364f54209c6'
